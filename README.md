@@ -19,10 +19,12 @@ The tool also allows for up to two users to be added to one bank account, so tha
 ## Coming Soon
 
 Other features that will be added in the near future include:\
-    --Add entries for your earnings--\
+    --Add entries for your earnings\
     --Indicate transfers between your own bank accounts\
     --Display a previous month's spendings\
     --Automatically keep track of bills that stay the same each month (think rent, cell phone plan)
+    
+Please comment any other suggestions you have!
 
 ## Instructions for installation
 

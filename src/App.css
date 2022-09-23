@@ -14,14 +14,14 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #F2EBE5;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: darkgreen;
 }
 
 .App-link {
@@ -36,3 +36,139 @@
     transform: rotate(360deg);
   }
 }
+
+table {
+  border-collapse: collapse;
+  max-width: 95%;
+  border-width: 3px;
+  background-color: rgb(250, 230, 205);
+}
+
+th {
+  font-size: large;
+  border-style: solid;
+  border-color: midnightblue;
+  border-radius: 0px;
+  border-width: 1.5px;
+  padding: 10px;
+  min-width: 70px;
+  max-width: 100px;
+  height: 50px;
+}
+
+td {
+  font-size: large;
+  border-style: solid;
+  border-color: midnightblue;
+  border-radius: 0px;
+  border-width: 1.5px;
+  width: fit-content;
+  height: 50px;
+}
+
+.bold {
+  font-weight: bold;
+  border-left-width: 3px;
+  border-right-width: 3px;
+  background-color: #d09ab1;
+}
+
+.totalc {
+  border-left-width: 3px;
+  border-right-width: 3px;
+}
+
+.totalr, .toprow {
+  border-top-width: 3px;
+  border-bottom-width: 3px
+}
+
+.toprow {
+  background-color: #74809f;
+}
+
+.corner {
+  background-color: #b7708f;
+}
+
+.small {
+  font-size: 70%;
+  padding-left: 2px;
+  padding-right: 2px;
+  max-width: 70px;
+}
+
+button {
+  font-size: medium;
+  margin: 10px;
+  padding: 7px;
+}
+
+button.currency{
+  position: relative;
+  margin: 30px;
+  right: 10%;
+}
+
+button.button{
+  position: relative;
+  margin: 30px;
+  left: 30%;
+}
+
+td.button {
+  font-size: large;
+  border-style: solid;
+  background-color: #F2EBE5;
+  border-color: #F2EBE5;
+  border-radius: 0px;
+  border-width: 1.5px;
+  width: 78.5%;
+  text-align: left;
+}
+
+
+.single {
+  font-size: large;
+  border-style: solid;
+  border-color: midnightblue;
+  border-radius: 0px;
+  border-width: 1.5px;
+  padding: 10px;
+  min-width: 400px;
+  max-width: 1000px;
+  height: 20px;
+}
+
+
+p {
+  max-width: 75%;
+}
+
+input{
+  font-size: small;
+}
+
+select {
+  font-size: medium;
+  width: 170px;
+}
+
+select.currency {
+  width: fit-content
+}
+
+.invisible {
+  height: 0px;
+  color:#F2EBE5;
+  background-color: #F2EBE5;
+  border-style: none;
+  width: 75px;
+}
+
+
+.color1 {color: #9F496E;}
+.color2 {color: #2B262D;}
+.color3 {color: #c8a696;}
+.color4 {color: darkgreen;}
+.color5 {color: #405fab;}

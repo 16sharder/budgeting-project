@@ -24,7 +24,7 @@ Other features that will be added in the near future include:\
     --Display a previous month's spendings\
     --Automatically keep track of bills that stay the same each month (think rent, cell phone plan)
     
-Please comment any other suggestions you have!
+Please comment any other suggestions you have in the enhancement issue section!
 
 ## Instructions for installation
 

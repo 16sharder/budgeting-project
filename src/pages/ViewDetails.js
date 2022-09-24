@@ -3,6 +3,7 @@ import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import {retrieveDayEntries} from "../helperfuncs/FetchFunctions"
+import BorderDecorations, {BorderDecorationsBottom} from '../components/BorderDecoration';
 
 function ViewDetails () {
     const location = useLocation()
@@ -33,6 +34,7 @@ function ViewDetails () {
 
     return (
         <>
+            <BorderDecorations />
             <h2>{category} entries for {date}</h2>
             <div>
                 {entries.map((entry, index) => 
@@ -47,6 +49,7 @@ function ViewDetails () {
             <td className="button"><button onClick={() => history.push({pathname:"/weekly-view", state: {user: user, dates: weekDates, currency: currency}})} className="currency">Return to weekly view</button></td>
                 <td className="button"><button onClick={() => history.push({pathname:"/main", state: {user: user, currency: currency}})} className="button">Return to monthly view</button></td>
             </tr></tbody></table>
+            <BorderDecorationsBottom />
         </>
     )
 }

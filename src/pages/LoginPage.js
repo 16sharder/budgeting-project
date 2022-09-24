@@ -2,6 +2,8 @@ import React from 'react';
 import {useState} from "react"
 import {useHistory} from "react-router-dom"
 
+import BorderDecorations, {BorderDecorationsBottom} from '../components/BorderDecoration';
+
 function LoginPage () {
     const [name, setName] = useState("")
 
@@ -13,6 +15,7 @@ function LoginPage () {
 
     return (
         <>
+            <BorderDecorations />
             <h2>Welcome to your budgeting tool!</h2>
 
             <p className='color5'>This tool is designed to help users get a better understanding of their monthly expenses.
@@ -30,6 +33,7 @@ function LoginPage () {
                 onChange={newN => {setName(newN.target.value)}} />
             <p></p>
             <button className="button" onClick={send}>Continue</button>
+            <BorderDecorationsBottom />
         </>
     )
 }

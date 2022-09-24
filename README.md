@@ -26,7 +26,7 @@ Other features that will be added in the near future include:\
     
 Please comment any other suggestions you have in the enhancement issue section!
 
-## Instructions for installation
+## Instructions for Installation
 
 This project was designed with Visual Studio Code. It is recommended that you run this project there. 
 

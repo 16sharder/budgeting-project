@@ -2,6 +2,8 @@ import React from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
+import BorderDecorations, {BorderDecorationsBottom} from '../components/BorderDecoration';
+
 function AddEntry() {
     const history = useHistory()
     const location = useLocation()
@@ -58,6 +60,7 @@ function AddEntry() {
 
     return (
         <div>
+            <BorderDecorations />
             <h3>Create a new entry</h3>
             <div></div>
 
@@ -142,6 +145,7 @@ function AddEntry() {
                 <td className="button"><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency}})} className="currency">Back</button></td>
                 <td className="button"><button onClick={addEntry} className="button">Add</button></td>
             </tr></tbody></table>
+            <BorderDecorationsBottom />
         </div>
     )
 }

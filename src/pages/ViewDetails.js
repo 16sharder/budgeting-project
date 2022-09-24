@@ -46,8 +46,8 @@ function ViewDetails () {
             </div>
 
             <table><tbody><tr>
-            <td className="button"><button onClick={() => history.push({pathname:"/weekly-view", state: {user: user, dates: weekDates, currency: currency}})} className="currency">Return to weekly view</button></td>
-                <td className="button"><button onClick={() => history.push({pathname:"/main", state: {user: user, currency: currency}})} className="button">Return to monthly view</button></td>
+                <td className='invisBackground'><button onClick={() => history.push({pathname:"/weekly-view", state: {user: user, dates: weekDates, currency: currency}})} className="currency">Return to weekly view</button></td>
+                <td className='invisBackground'><button onClick={() => history.push({pathname:"/main", state: {user: user, currency: currency}})} className="button">Return to monthly view</button></td>
             </tr></tbody></table>
             <BorderDecorationsBottom />
         </>

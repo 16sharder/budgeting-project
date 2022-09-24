@@ -6,8 +6,7 @@ import {useHistory, useLocation} from "react-router-dom"
 import {calcWeekDates} from "../helperfuncs/DateCalculators"
 import {organizeDaysEntries, retrieveWeekEntries} from "../helperfuncs/FetchFunctions"
 import {calculateWeekTotals} from "../helperfuncs/OtherCalcs"
-
-
+import BorderDecorations, {BorderDecorationsBottom} from '../components/BorderDecoration';
 
 
 
@@ -61,6 +60,8 @@ function WeekPage () {
 
     return (
         <>
+            <BorderDecorations />
+            <p></p>
             <h2>{user}, here are your spendings for the week of {dates}</h2>
             <p>Please click on an entry if you would like to see more details</p>
 
@@ -71,6 +72,8 @@ function WeekPage () {
             </tr></tbody></table>
 
             <button onClick={() => history.push({pathname:"/main", state: {user: user, currency: currency}})}>Return to monthly view</button>
+            <p></p>
+            <div className='container bottomSep'></div>
         </>
     )
 }

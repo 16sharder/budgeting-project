@@ -37,9 +37,127 @@
   }
 }
 
+
+
+
+.container {
+  margin:0 auto;
+  padding:10px 25px;
+  color: #9F496E;
+}
+
+div.top {
+  width: 96.5%;
+  left: 0px;
+  top: 5px;
+  border-bottom: 5px solid;
+  position: absolute;
+}
+
+div.bottom {
+  width: 96.5%;
+  left: 0px;
+  bottom: 5px;
+  border-top: 5px solid;
+  position: absolute;
+}
+
+div.redleft {
+  height: 200%;
+  top: 0px;
+  left: 25px;
+  border-left: 5px solid;
+  position: fixed;
+}
+
+div.redright {
+  height: 200%;
+  top: 0px;
+  right: 25px;
+  border-right: 5px solid;
+  position: fixed;
+}
+
+
+div.blueleft {
+  height: 200%;
+  top: 0px;
+  left: 40px;
+  border-left: 5px solid;
+  color: #405fab;
+  position: fixed;
+}
+
+div.blueright {
+  height: 200%;
+  top: 0px;
+  right: 40px;
+  border-right: 5px solid;
+  color: #405fab;
+  position: fixed;
+}
+
+
+div.topleft {
+  width: 10px;
+  height: 25px;
+  top: -5px;
+  left: -5px;
+  color: darkgreen;
+  border-right: 5px solid;
+  border-bottom: 5px solid;
+  position: absolute
+}
+
+div.topright {
+  width: 10px;
+  height: 25px;
+  top: -5px;
+  right: -5px;
+  color: darkgreen;
+  border-left: 5px solid;
+  border-bottom: 5px solid;
+  position: absolute
+}
+
+div.bottomleft {
+  width: 10px;
+  height: 25px;
+  bottom: -5px;
+  left: -5px;
+  color: darkgreen;
+  border-right: 5px solid;
+  border-top: 5px solid;
+  position: absolute
+}
+
+div.bottomright {
+  width: 10px;
+  height: 25px;
+  bottom: -5px;
+  right: -5px;
+  color: darkgreen;
+  border-left: 5px solid;
+  border-top: 5px solid;
+  position: absolute
+}
+
+div.bottomSep {
+  width: 96.5%;
+  left: 0px;
+  bottom: 5px;
+  border-top: 5px solid;
+  position: relative;
+}
+
+
+
+
+
+
 table {
   border-collapse: collapse;
-  max-width: 95%;
+  max-width: 90%;
   border-width: 3px;
   background-color: rgb(250, 230, 205);
 }
@@ -71,6 +189,7 @@ td {
   border-left-width: 3px;
   border-right-width: 3px;
   background-color: #d09ab1;
+  text-align: center;
 }
 
 .totalc {
@@ -116,7 +235,7 @@ button.button{
   left: 30%;
 }
 
-td.button {
+td.button, th.button {
   font-size: large;
   border-style: solid;
   background-color: #F2EBE5;
@@ -125,6 +244,21 @@ td.button {
   border-width: 1.5px;
   width: 78.5%;
   text-align: left;
+}
+
+td.right {
+  text-align: right;
+}
+
+.acct {
+  font-size: x-large;
+  border-style: solid;
+  background-color: #F2EBE5;
+  border-color: #F2EBE5;
+  border-radius: 0px;
+  border-width: 1.5px;
+  min-width: 250px;
+  padding: 0px;
 }
 
 

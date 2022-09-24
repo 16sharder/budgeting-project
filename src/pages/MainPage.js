@@ -6,6 +6,7 @@ import {useHistory, useLocation} from "react-router-dom"
 import {createMonthDates} from "../helperfuncs/DateCalculators"
 import {organizeDaysEntries, retrieveWeekEntries} from "../helperfuncs/FetchFunctions"
 import {calculateWeekTotals, calculateNetWorth} from "../helperfuncs/OtherCalcs"
+import BorderDecorations from '../components/BorderDecoration';
 
 
 function MainPage () {
@@ -106,6 +107,8 @@ function MainPage () {
 
     return (
         <>
+            <BorderDecorations />
+            <p></p>
             <h2>{user}, here are your spendings for this month</h2>
 
             <MonthlyTable month={month} viewWeek={viewWeek} total={totalsArray} currency={currency}/>
@@ -122,6 +125,8 @@ function MainPage () {
             <h3>Total Net Worth</h3>
             <div className='color5'>{currency}{netWorth}</div>
             <button onClick={() => history.push("/")} className="button">Log out</button>
+            <p></p>
+            <div className='container bottomSep'></div>
         </>
     )
 }

@@ -292,6 +292,16 @@ select.currency {
   width: fit-content
 }
 
+.invisBackground {
+  font-size: large;
+  border-style: solid;
+  background-color: #F2EBE5;
+  border-color: #F2EBE5;
+  text-align: left;
+  position: relative;
+  right: 15px
+}
+
 .invisible {
   height: 0px;
   color:#F2EBE5;

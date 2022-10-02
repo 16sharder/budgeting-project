@@ -3,7 +3,7 @@ import MonthlyTable from "../components/MonthlyTable";
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import {createMonthDates} from "../helperfuncs/DateCalculators"
+import {createMonthDates, monthName} from "../helperfuncs/DateCalculators"
 import {organizeDaysEntries, retrieveWeekEntries, retrieveEarnings} from "../helperfuncs/FetchFunctions"
 import {calculateWeekTotals} from "../helperfuncs/OtherCalcs"
 
@@ -11,19 +11,20 @@ import { BorderDecorationsH } from '../components/BorderDecoration';
 import Navigation from '../components/Navigation';
 
 
-function MainPage () {
+function SpendingsPage () {
 
-    // retrieves the name previously passed in the form on the Login page
+    // retrieves the name previously passed in the form on the ChooseMonth page
     const location = useLocation()
     const user = location.state.user
     let currency = location.state.currency
+    const month = location.state.month
     const history = useHistory()
 
 
 
     // sends the user to a page displaying the desired week's information
     const viewWeek = async dates => {
-        history.push({pathname:"/weekly-view", state: {dates: dates, user: user, accounts: accounts, currency: currency}})
+        history.push({pathname:"/weekly-view2", state: {dates: dates, user: user, accounts: accounts, currency: currency, month: month}})
     }
 
 
@@ -31,12 +32,12 @@ function MainPage () {
 
 
     // retrieves the current date so as to know which month and weeks to display
-    const today = new Date()
-    const monthDatesArray = createMonthDates(today)
+    const date = new Date(2022, month, 1)
+    const monthDatesArray = createMonthDates(date)
 
 
     // retrieves the information for the month to be displayed
-    const [month, setMonth] = useState([])
+    const [monthArray, setMonth] = useState([])
 
     const loadMonth = async () => {
         let monthArray = []
@@ -59,7 +60,7 @@ function MainPage () {
     }
 
     // sums the entries for the month for each category
-    let totalsArray = calculateWeekTotals(month)
+    let totalsArray = calculateWeekTotals(monthArray)
 
 
 
@@ -89,15 +90,8 @@ function MainPage () {
         if (currency === "€") currency = "$"
         else if (currency === "$") currency = "€"
 
-        history.push({pathname:"/main", state: {user: user, currency: currency}})
+        history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month}})
         window.location.reload()
-    }
-
-
-    // either raises an error or sends the user to the add entry page
-    const sendAddEntry = () => {
-        if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
-        else history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts}})
     }
 
 
@@ -105,7 +99,7 @@ function MainPage () {
     // retrieves the persons earnings for the month
     const [earnings, setEarnings] = useState(0)
 
-    let monthNumStr = String(today.getMonth() + 1)
+    let monthNumStr = String(Number(month) + 1)
     if (monthNumStr.length == 1) monthNumStr = `0${monthNumStr}`
 
     const loadEarnings = async () => {
@@ -135,19 +129,17 @@ function MainPage () {
             <BorderDecorationsH />
             <Navigation user={user} currency={currency} />
             <p></p>
-            <h2>{user}, here are your spendings for this month</h2>
+            <h2>Spendings for {monthName(month)}</h2>
 
-            <MonthlyTable month={month} viewWeek={viewWeek} total={totalsArray} currency={currency}/>
+            <MonthlyTable month={monthArray} viewWeek={viewWeek} total={totalsArray} currency={currency}/>
             <table><tbody><tr>
                 <td className="button"><button onClick={toggleCurrency} className="currency">Change currency</button></td>
-                <td className="button"><button onClick={sendAddEntry} className="button">Add new entry</button></td>
+                <td className="button"><button className="button invisible"></button></td>
             </tr></tbody></table>
 
 
             <h3>Earnings: {currency}{earnings.toFixed(2)}</h3>
 
-
-            <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts}})}>Add New Earnings</button>
             <button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, accounts: accounts}})}>View Earnings Details</button>
 
             <p></p>
@@ -156,4 +148,4 @@ function MainPage () {
     )
 }
 
-export default MainPage
+export default SpendingsPage

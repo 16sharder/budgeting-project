@@ -40,6 +40,7 @@
 
 
 
+
 .container {
   margin:0 auto;
   padding:10px 25px;
@@ -52,6 +53,14 @@ div.top {
   top: 5px;
   border-bottom: 5px solid;
   position: absolute;
+}
+
+div.topH {
+  width: 96.5%;
+  left: 0px;
+  top: 31px;
+  border-bottom: 5px solid;
+  position: fixed;
 }
 
 div.bottom {
@@ -120,6 +129,28 @@ div.topright {
   position: absolute
 }
 
+div.topleftH {
+  width: 10px;
+  height: 25px;
+  top: -5px;
+  left: -5px;
+  color: darkgreen;
+  border-right: 5px solid;
+  border-bottom: 5px solid;
+  position: fixed
+}
+
+div.toprightH {
+  width: 10px;
+  height: 25px;
+  top: -5px;
+  right: -5px;
+  color: darkgreen;
+  border-left: 5px solid;
+  border-bottom: 5px solid;
+  position: fixed
+}
+
 div.bottomleft {
   width: 10px;
   height: 25px;
@@ -149,6 +180,66 @@ div.bottomSep {
   border-top: 5px solid;
   position: relative;
 }
+
+div.bottomFix {
+  width: 96.5%;
+  left: 0px;
+  bottom: 5px;
+  border-top: 5px solid;
+  position: fixed;
+}
+
+
+
+table.navigator {
+  position: fixed;
+  top: 0%;
+  width: 100%;
+  background-color: #5a555a;
+  color:rgb(250, 230, 205)
+}
+
+td.navigator {
+  border-width: 0px;
+  min-width: 200px;
+  font-size: medium;
+}
+
+
+
+
+.filler {
+  margin:0 auto;
+  padding:10px 25px;
+  width: 100%;
+  height: 31px;
+  top: -5px;
+  left: -5px;
+  border-right: 5px solid;
+  border-bottom: 5px solid;
+  position: fixed;
+  border-color: #F2EBE5;
+  background-color: #F2EBE5;
+}
+
+.fillerBottom {
+  margin:0 auto;
+  padding:10px 25px;
+  width: 100%;
+  height: 31px;
+  bottom: -30px;
+  left: -5px;
+  border-right: 5px solid;
+  border-top: 5px solid;
+  position: fixed;
+  border-color: #F2EBE5;
+  background-color: #F2EBE5;
+}
+
+
+
+
+
 
 
 
@@ -182,6 +273,8 @@ td {
   border-width: 1.5px;
   width: fit-content;
   height: 50px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .bold {
@@ -190,6 +283,10 @@ td {
   border-right-width: 3px;
   background-color: #d09ab1;
   text-align: center;
+}
+
+.dates {
+  min-width: 110px;
 }
 
 .totalc {
@@ -251,13 +348,7 @@ td.right {
 }
 
 .acct {
-  font-size: x-large;
-  border-style: solid;
-  background-color: #F2EBE5;
-  border-color: #F2EBE5;
-  border-radius: 0px;
-  border-width: 1.5px;
-  min-width: 250px;
+  min-width: 225px;
   padding: 0px;
 }
 
@@ -292,6 +383,19 @@ select.currency {
   width: fit-content
 }
 
+.invisBackground {
+  font-size: large;
+  border-style: solid;
+  background-color: #F2EBE5;
+  border-color: #F2EBE5;
+}
+
+.detailsButtons {
+  text-align: left;
+  position: relative;
+  right: 15px
+}
+
 .invisible {
   height: 0px;
   color:#F2EBE5;
@@ -300,9 +404,20 @@ select.currency {
   width: 75px;
 }
 
+.center {
+  left: 0%;
+  right: 0%;
+}
+
 
 .color1 {color: #9F496E;}
 .color2 {color: #2B262D;}
 .color3 {color: #c8a696;}
 .color4 {color: darkgreen;}
 .color5 {color: #405fab;}
+
+
+
+h2 {
+  margin-top: 60px;
+}

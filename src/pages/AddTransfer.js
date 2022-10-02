@@ -6,7 +6,7 @@ import { convertTodayToDate } from '../helperfuncs/DateCalculators';
 import BorderDecorations, {BorderDecorationsBottom} from '../components/BorderDecoration';
 import { updateAccount, updateMonths } from '../helperfuncs/UpdateFunctions';
 
-function AddEntry() {
+function Transfer() {
     const history = useHistory()
     const location = useLocation()
     const curUser = location.state.curUser
@@ -16,47 +16,59 @@ function AddEntry() {
     const today = convertTodayToDate()
 
     const [account, setAccount] = useState(`${accounts[0].account}`)
-    const [category, setCategory] = useState("Groceries")
-    const [currency, setCurrency] = useState("€")
+    const [account2, setAccount2] = useState(`${accounts[1].account}`)
+    const [currency, setCurrency] = useState(`${accounts[0].currency}`)
     const [amount, setAmount] = useState(0)
+    const [fee, setFee] = useState(0)
+    const [exchangeRate, setExchangeRate] = useState(1)
     const [date, setDate] = useState(today)
     const [description, setDescription] = useState("")
 
-    const addEntry = async () => {
-        // adds the entry to mongoDB
-        const newEntry = {account, category, currency, amount, date, description}
-        const response = await fetch("/entries", {
+
+    const performTransfer = async () => {
+        // retrieves the second account to get the currency
+        const account2Res = await fetch(`/accounts/${account2}`)
+        const account2Data = await account2Res.json()
+
+        const currency2 = account2Data[0].currency
+
+        // adds the transfer to mongoDB
+        const month = date.slice(5, 7)
+        const newTransfer = {account, account2, currency, currency2, amount, fee, exchangeRate, date, month, description}
+        const response = await fetch("/transfers", {
             method: "POST", 
-            body: JSON.stringify(newEntry),
+            body: JSON.stringify(newTransfer),
             headers: {"Content-type": "application/json"}
         })
-        if (response.status !== 201){
-            alert(`Create entry failed. Status code = ${response.status}`)
+        if (response.status === 201){
+            alert("Successfully performed transfer")
+        } else{
+            alert(`Transfer failed. Status code = ${response.status}`)
         }
 
-        // adds the entry to the month's records
-        updateMonths(date, account, amount, category)
-        // updates the account that was spent from
-        updateAccount(account, amount)
+
+        // adds the transfer to the month's records for both accounts
+        updateMonths(date, account, amount - fee)
+        updateMonths(date, account2, amount * exchangeRate * -1)
+        // updates both accounts
+        updateAccount(account, amount - fee)
+        updateAccount(account2, amount * exchangeRate * -1)
 
 
-        // returns the user to the main page
-        history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
 
+        history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
+        
     }
 
-
     return (
-        <>
-            <BorderDecorations />
         <div>
-
-            <h3>Create a new entry</h3>
+            <BorderDecorations />
+            <h3>Bank Transfer</h3>
             <div></div>
 
             <table><tbody>
                 <tr>
-                    <td className='button color1'>Bank Account:</td>
+                    <td className='button color1'>Transfer From:</td>
                     <td className='button'></td>
                     <td className='button'><select
                         value={account}
@@ -65,21 +77,12 @@ function AddEntry() {
                     </select></td>
                 </tr>
                 <tr>
-                    <td className='button color1'>Category:</td>
+                    <td className='button color1'>Transfer To:</td>
                     <td className='button'></td>
                     <td className='button'><select
-                        value={category}
-                        onChange={newN => setCategory(newN.target.value)} >
-                            <option value="Groceries">Groceries</option>
-                            <option value="Eating Out">Eating Out</option>
-                            <option value="Clothing">Clothing</option>
-                            <option value="House Supplies">House Supplies</option>
-                            <option value="Work Supplies">Work Supplies</option>
-                            <option value="Travel">Travel</option>
-                            <option value="Bills">Bills</option>
-                            <option value="Cash">Cash</option>
-                            <option value="Emergencies">Emergencies</option>
-                            <option value="Other">Other</option>
+                        value={account2}
+                        onChange={newN => setAccount2(newN.target.value)} >
+                            {accounts.map((account, index) => <option value={account.account} key={index}>{account.account}</option>)}
                     </select></td>
                 </tr>
                 <tr>
@@ -97,6 +100,28 @@ function AddEntry() {
                             placeholder="0.00"
                             value={amount}
                             onChange={newN => setAmount(newN.target.value)} />
+                    </td>
+                </tr>
+                <tr>
+                    <td className='button color1'>Fee:</td>
+                    <td className='right color1 button'>{currency}</td>
+                    <td className='button'>
+                        <input 
+                            type="number"
+                            placeholder="0.00"
+                            value={fee}
+                            onChange={newN => setFee(newN.target.value)} />
+                    </td>
+                </tr>
+                <tr>
+                    <td className='button color1'>Exchange Rate:</td>
+                    <td className='button'></td>
+                    <td className='button'>
+                        <input 
+                            type="number"
+                            placeholder="1"
+                            value={exchangeRate}
+                            onChange={newN => setExchangeRate(newN.target.value)} />
                     </td>
                 </tr>
                 <tr>
@@ -132,13 +157,12 @@ function AddEntry() {
 
 
             <table><tbody><tr>
-                <td className="button"><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency}})} className="currency">Back</button></td>
-                <td className="button"><button onClick={addEntry} className="button">Add</button></td>
+                <td className="button"><button onClick={() => history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})} className="currency">Back</button></td>
+                <td className="button"><button onClick={performTransfer} className="button">Transfer</button></td>
             </tr></tbody></table>
+            <BorderDecorationsBottom />
         </div>
-        <BorderDecorationsBottom />
-        </>
     )
 }
 
-export default AddEntry
+export default Transfer

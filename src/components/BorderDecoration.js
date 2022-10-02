@@ -16,6 +16,24 @@ function BorderDecorations () {
     )
 }
 
+export function BorderDecorationsH () {
+    return (
+        <>
+            <div className='filler'></div>
+
+            <div className='container topH'></div>
+            <div className='container redleft'></div>
+            <div className='container redright'></div>
+            <div className='container blueleft'></div>
+            <div className='container blueright'></div>
+            
+
+            <div className='container topleftH'></div>
+            <div className='container toprightH'></div>
+        </>
+    )
+}
+
 export function BorderDecorationsBottom () {
     return (
         <>

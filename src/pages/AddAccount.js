@@ -2,17 +2,19 @@ import React from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-function AddAccount() {
-    const [account, setName] = useState("")
-    const [user, setUser] = useState("")
-    const [user2, setUser2] = useState("")
-    const [currency, setCurrency] = useState("€")
-    const [amount, setAmount] = useState(0)
+import BorderDecorations, {BorderDecorationsBottom} from '../components/BorderDecoration';
 
+function AddAccount() {
     const history = useHistory()
     const location = useLocation()
     const curUser = location.state.curUser
     const curRency = location.state.currency
+    
+    const [account, setName] = useState("")
+    const [user, setUser] = useState(location.state.curUser)
+    const [user2, setUser2] = useState("")
+    const [currency, setCurrency] = useState("€")
+    const [amount, setAmount] = useState(0)
 
     const addAccount = async () => {
         const newAccount = {account, user, user2, currency, amount}
@@ -27,11 +29,12 @@ function AddAccount() {
             alert(`Create account failed. Status code = ${response.status}`)
         }
 
-        history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
+        history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
     }
 
     return (
         <div>
+            <BorderDecorations />
             <h3>Create a new account</h3>
             <div></div>
 
@@ -65,7 +68,7 @@ function AddAccount() {
                 </tr>
                 <tr>
                     <td className='button color1'>Current Amount:</td>
-                    <td className='button'><select
+                    <td className='right button'><select
                         className='currency'
                         value={currency}
                         onChange={newN => setCurrency(newN.target.value)} >
@@ -89,9 +92,10 @@ function AddAccount() {
             
 
             <table><tbody><tr>
-                <td className="button"><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency}})} className="currency">Back</button></td>
+                <td className="button"><button onClick={() => history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})} className="currency">Back</button></td>
                 <td className="button"><button onClick={addAccount} className="button">Add</button></td>
             </tr></tbody></table>
+            <BorderDecorationsBottom />
         </div>
     )
 }

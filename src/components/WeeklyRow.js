@@ -11,7 +11,7 @@ function Week({week, viewWeek, currency}) {
     }
     return(
         <tr className='color1'>
-            <td className='bold color2'>
+            <td className='bold color2 dates'>
                 {week[0]}
             </td>
             <td>

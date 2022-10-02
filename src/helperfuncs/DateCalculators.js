@@ -1,6 +1,6 @@
 
 // calculates all the individual dates of a week
-function calcWeekDates(week) {
+function calcWeekDates(week, days=7) {
     const dashIndex = week.indexOf("-")
     const slashIndex = week.indexOf("/")
 
@@ -21,7 +21,7 @@ function calcWeekDates(week) {
             int += 1
             incre -= 1
         }
-        while (int != 7) {
+        while (int != days) {
             weekDates.push(`${month + 1}/${date - end}`)
             date += 1
             int += 1
@@ -29,7 +29,7 @@ function calcWeekDates(week) {
     }
 
     // calculates each date in that week
-    else {while (int != 7) {
+    else {while (int != days) {
         weekDates.push(`${month}/${date}`)
         date += 1
         int += 1
@@ -120,10 +120,39 @@ function convertDate (date) {
         if (date.length === 4){
             newDate = `${year}-${date.slice(0, 2)}-0${date[3]}`
         }
-        else newDate = `${year}-${date}`
+        else newDate = `${year}-${date.slice(0, 2)}-${date.slice(3, 5)}`
     }
 
     return newDate
 }
 
-export {calcWeekDates, calcMonthEnd, createMonthDates, convertDate}
+function monthName (monthNum) {
+    let monthName = ""
+    if (monthNum == 0) monthName = "January"
+    if (monthNum == 1) monthName = "February"
+    if (monthNum == 2) monthName = "March"
+    if (monthNum == 3) monthName = "April"
+    if (monthNum == 4) monthName = "May"
+    if (monthNum == 5) monthName = "June"
+    if (monthNum == 6) monthName = "July"
+    if (monthNum == 7) monthName = "August"
+    if (monthNum == 8) monthName = "September"
+    if (monthNum == 9) monthName = "October"
+    if (monthNum == 10) monthName = "November"
+    if (monthNum == 11) monthName = "December"
+
+    return monthName
+}
+
+function convertTodayToDate () {
+    let today = new Date()
+    let month = String(today.getMonth()+1)
+    if (month.length == 1) month = `0${month}`
+    let day = String(today.getDate())
+    if (day.length == 1) day = `0${day}`
+    today = `${today.getFullYear()}-${month}-${day}`
+
+    return today
+}
+
+export {calcWeekDates, calcMonthEnd, createMonthDates, convertDate, monthName, convertTodayToDate}

@@ -37,9 +37,9 @@ async function retrieveDayEntries (day, user) {
 }
 
 
-async function retrieveWeekEntries (week, user) {
+async function retrieveWeekEntries (week, user, days=7) {
     // returns an array of all the entries for each day of that week
-    const weekDates = calcWeekDates(week)
+    const weekDates = calcWeekDates(week, days)
 
     let returnArray = []
     for (let day of weekDates){
@@ -49,6 +49,26 @@ async function retrieveWeekEntries (week, user) {
     }
 
     return returnArray
+}
+
+async function retrieveEarnings (month, user) {
+    const fetchEarnings = async () => {
+        const response = await fetch(`/entries/${month}`)
+        const data = await response.json()
+        return data
+    }
+
+    const result = await fetchEarnings()
+
+    // verifies that only earnings for the user's accounts are returned
+    const userAccounts = await retrieveUserAccountNames(user)
+    const resultCopy = result.slice()
+    for (let entry of result){
+        if (! userAccounts.includes(entry.account)) resultCopy.splice(resultCopy.indexOf(entry), 1)
+        else if (entry.category != "Earnings") resultCopy.splice(resultCopy.indexOf(entry), 1)
+    }
+
+    return resultCopy
 }
 
 async function convertToEuros (amount) {
@@ -101,4 +121,5 @@ async function organizeDaysEntries (dayEntries, currency) {
 }
 
 
-export {retrieveDayEntries, retrieveWeekEntries, organizeDaysEntries, convertToEuros, convertToDollars}
+
+export {retrieveUserAccountNames, retrieveDayEntries, retrieveWeekEntries, retrieveEarnings, organizeDaysEntries, convertToEuros, convertToDollars}

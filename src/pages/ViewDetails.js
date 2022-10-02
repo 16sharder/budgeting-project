@@ -4,6 +4,9 @@ import {useHistory, useLocation} from "react-router-dom"
 
 import {retrieveDayEntries} from "../helperfuncs/FetchFunctions"
 
+import Navigation from '../components/Navigation';
+import {BorderDecorationsH} from '../components/BorderDecoration';
+
 function ViewDetails () {
     const location = useLocation()
     const user = location.state.user
@@ -11,6 +14,7 @@ function ViewDetails () {
     const weekDates = location.state.weekDates
     const category = location.state.category
     const currency = location.state.currency
+    const month = location.state.month
     const history = useHistory()
 
     const [entries, setEntries] = useState([])
@@ -31,8 +35,23 @@ function ViewDetails () {
         loadDay()
     }, [])
 
+
+    const sendMonth = () => {
+        if (month == undefined) history.push({pathname:"/main", state: {user: user, currency: currency}})
+        else history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month}})
+    }
+
+    const sendWeek = () => {
+        if (month == undefined) history.push({pathname:"/weekly-view", state: {user: user, dates: weekDates, currency: currency}})
+        else history.push({pathname:"/weekly-view2", state: {user: user, dates: weekDates, currency: currency, month: month}})
+    }
+
     return (
         <>
+            <div className='fillerBottom'></div>
+            <BorderDecorationsH />
+            <Navigation user={user} currency={currency} />
+            <p></p>
             <h2>{category} entries for {date}</h2>
             <div>
                 {entries.map((entry, index) => 
@@ -43,10 +62,13 @@ function ViewDetails () {
                 )}
             </div>
 
-            <table><tbody><tr>
-            <td className="button"><button onClick={() => history.push({pathname:"/weekly-view", state: {user: user, dates: weekDates, currency: currency}})} className="currency">Return to weekly view</button></td>
-                <td className="button"><button onClick={() => history.push({pathname:"/main", state: {user: user, currency: currency}})} className="button">Return to monthly view</button></td>
+            <table><tbody><tr className='invisBackground'>
+                <td className='invisBackground detailsButtons'><button onClick={sendWeek} className="currency">Return to weekly view</button></td>
+                <td className='invisBackground detailsButtons'><button onClick={sendMonth} className="button">Return to monthly view</button></td>
             </tr></tbody></table>
+            
+            <p></p>
+            <div className='container bottomFix'></div>
         </>
     )
 }

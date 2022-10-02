@@ -80,7 +80,7 @@ app.post("/entries", asyncHandler(async(req, res, next) => {
 
     // if body is valid, creates a new entry
     {
-        const entry = await entries.createEntry(req.body.account, req.body.category, req.body.currency, req.body.amount, req.body.date, req.body.description)
+        const entry = await entries.createEntry(req.body.account, req.body.category, req.body.currency, req.body.amount, req.body.date, req.body.month, req.body.description)
         res.type("application/json").status(201).send(entry)
 }}))
 
@@ -95,7 +95,7 @@ app.get("/entries", asyncHandler(async(req, res, next) => {
 app.get("/entries/:date", asyncHandler(async(req, res, next) => {
     // uses findEntries function from model to return all entries of the given date
     const request = req.params.date
-    const entryes = await entries.findEntries({date: request}, (error, data)=> {return {amount: 0, date: null}})
+    const entryes = await entries.findEntries({$or: [{date: request},{month: request}]}, (error, data)=> {return {amount: 0, date: null}})
     res.type("application/json").status(200).send(entryes)
 }))
 
@@ -132,6 +132,8 @@ app.delete("/entries/:id", asyncHandler(async(req, res, next) => {
 
 
 
+
+
 app.post("/accounts", asyncHandler(async(req, res, next) => {
     // uses createAccount function from model to make a new account with given criteria
     // returns the account object
@@ -160,15 +162,7 @@ app.get("/accounts/:user", asyncHandler(async(req, res, next) => {
     res.type("application/json").status(200).send(accounts)
 }))
 
-app.get("/accounts/:account", asyncHandler(async(req, res, next) => {
-    // uses findAccount function from model to return the account of the given id
-    const request = req.params.account
-    const account = await entries.findAccount(request)
-    if (account === null){
-        res.type("application/json").status(404).send({Error: "Not found"})
-    }
-    else res.type("application/json").status(200).send(account)
-}))
+
 
 
 app.put("/accounts/:account", asyncHandler(async(req, res, next) => {
@@ -198,6 +192,92 @@ app.delete("/accounts/:id", asyncHandler(async(req, res, next) => {
 }))
 
 
+
+
+
+
+
+
+app.post("/transfers", asyncHandler(async(req, res, next) => {
+    // uses createTransfer function from model to make a new transfer with given criteria
+    // returns the transfer object
+    const transfer = await entries.createTransfer(req.body.account, req.body.account2, req.body.currency, req.body.currency2, req.body.amount, req.body.fee, req.body.exchangeRate, req.body.date, req.body.month, req.body.description)
+    res.type("application/json").status(201).send(transfer)
+}))
+
+
+
+app.get("/transfers/:month", asyncHandler(async(req, res, next) => {
+    // uses getAllTransfers function from model to return all transfers for specified account for that month
+    const month = req.params.month
+    const transfers = await entries.getAllTransfers(month)
+    res.type("application/json").status(200).send(transfers)
+}))
+
+
+// didn't really implement these next 2
+
+app.put("/transfers/:account", asyncHandler(async(req, res, next) => {
+    // uses updateTransfer function from model to update a transfer given their id and the values to update
+    // returns a count of modified transfers
+    const request = {account: req.params.account}
+    const account = await entries.updateAccount(request, req.body)
+    if (account === null) {
+        res.type("application/json").status(404).send({Error: "Not found"})
+    }
+    else res.type("application/json").status(200).send(account)
+}))
+
+app.delete("/transfers/:id", asyncHandler(async(req, res, next) => {
+    // uses deleteTransfer function from model to delete the transfer of the given id
+    // returns a count of deleted transfers
+    const request = {_id: req.params.id}
+    const count = await entries.deleteTransfer(request)
+    if (count === 0){
+        res.type("application/json").status(404).send({Error: "Not found"})
+    }
+    else res.status(204).send()
+}))
+
+
+
+
+
+app.post("/months", asyncHandler(async(req, res, next) => {
+    const month = await entries.createMonth(req.body.account, req.body.month, req.body.year, req.body.monthName, req.body.categoryTotals, req.body.monthlyTotal)
+    res.type("application/json").status(201).send(month)
+}))
+
+
+
+app.get("/months/:filter", asyncHandler(async(req, res, next) => {
+    // uses getAllMonths function from model to return all months for specified month and year
+    const filter = req.params.filter
+    const months = await entries.findMonth({$or: [{month: filter}, {id: filter}]})
+    res.type("application/json").status(200).send(months)
+}))
+
+
+
+app.put("/months/:filter", asyncHandler(async(req, res, next) => {
+    // uses updateMonth function from model to update a month given their account, month, year and the values to update
+    // returns a count of modified months
+    const request = req.params.filter
+
+    const month = await entries.updateMonth({request}, req.body)
+    res.type("application/json").status(200).send(month)
+}))
+
+app.delete("/months/:id", asyncHandler(async(req, res, next) => {
+    // uses deleteAccount function from model to delete the account of the given id
+    // returns a count of deleted accounts
+    const request = {_id: req.params.id}
+    const count = await entries.deleteMonth(request)
+    if (count === 0){
+        res.type("application/json").status(404).send({Error: "Not found"})
+    }
+    else res.status(204).send()
+}))
 
 
 

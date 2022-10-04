@@ -26,7 +26,7 @@ function AddEarning() {
         // adds the entry to mongoDB
         const month = date.slice(5, 7)
         amount *= -1
-        const newEntry = {account, category, currency, amount, date, description, month}
+        const newEntry = {account, category, currency, amount, date, month, description}
         const response = await fetch("/entries", {
             method: "POST", 
             body: JSON.stringify(newEntry),

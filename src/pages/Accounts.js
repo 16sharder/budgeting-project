@@ -37,7 +37,7 @@ function Accounts() {
 
     // retrieves the months data
     const fetchMonth = async () => {
-        const response = await fetch(`/months/${month}`)
+        const response = await fetch(`/months/${month+1}`)
         const data = await response.json()
         setMonths (data)
     }

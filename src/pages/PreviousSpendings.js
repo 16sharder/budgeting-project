@@ -4,7 +4,7 @@ import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import {createMonthDates, monthName} from "../helperfuncs/DateCalculators"
-import {organizeDaysEntries, retrieveWeekEntries, retrieveEarnings} from "../helperfuncs/FetchFunctions"
+import {organizeDaysEntries, retrieveWeekEntries, retrieveEarnings, convertToEuros, convertToDollars} from "../helperfuncs/FetchFunctions"
 import {calculateWeekTotals} from "../helperfuncs/OtherCalcs"
 
 import { BorderDecorationsH } from '../components/BorderDecoration';
@@ -110,12 +110,12 @@ function SpendingsPage () {
         for (let earning of earnings){
             let value = earning.amount
             // determines if the entry needs to be converted to a different currency for display
-            // if (currency === "€") {
-                // if (earning.currency != currency) value = await convertToEuros(earning.amount)
-            // } 
-            // else if (currency === "$") {
-                // if (earning.currency != currency) value = await convertToDollars(earning.amount)
-            // } 
+            if (currency === "€") {
+                if (earning.currency != currency) value = await convertToEuros(earning.amount)
+            } 
+            else if (currency === "$") {
+                if (earning.currency != currency) value = await convertToDollars(earning.amount)
+            } 
             totalEarnings -= value
         }
 

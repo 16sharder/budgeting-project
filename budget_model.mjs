@@ -25,7 +25,7 @@ const entrySchema = mongoose.Schema({
 // creates an Entry model class based on the precreated Schema
 const Entry = mongoose.model("Entry", entrySchema)
 
-const createEntry = async(account, category, currency, amount, date, description, month) => {
+const createEntry = async(account, category, currency, amount, date, month, description) => {
     // uses the Entry class to create a new entry object with all required parameters
     const entry = new Entry({account: account, category: category, currency: currency, amount: amount, date: date, month: month, description: description})
     return entry.save()

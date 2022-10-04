@@ -253,8 +253,13 @@ app.post("/months", asyncHandler(async(req, res, next) => {
 app.get("/months/:filter", asyncHandler(async(req, res, next) => {
     // uses getAllMonths function from model to return all months for specified month and year
     const filter = req.params.filter
-    const months = await entries.findMonth({$or: [{month: filter}, {id: filter}]})
-    res.type("application/json").status(200).send(months)
+    const monthsM = await entries.findMonth({month: Number(filter)})
+    if (monthsM.length == 0){
+        const monthsI = await entries.findMonth({_id: filter})
+        console.log(monthsI)
+        res.type("application/json").status(200).send(monthsI)
+    }
+    else res.type("application/json").status(200).send(monthsM)
 }))
 
 

@@ -12,16 +12,17 @@ This tool does not give any advice on how to budget; it does not provide recomme
 
 There is some dedication required on the part of the user in order to use this tool properly. Each expense must be manually entered, and the website does not have any access to the user's actual bank account. Manual entry of each expense also helps to reinforce the expense in the user's mind, so that they are even more aware of what they have spent.
 
-Currently the budgeting tool allows you to use euros and dollars, and also allows for several bank accounts. Users who have bank accounts with different companies will find this useful, since they can keep track of all of their expenses, without having to switch between apps to look at different accounts.
+The user is now also able to view their previous monthly spendings. See how much your budgeting has improved by comparing your spendings from two months ago to your spendings this month, for example. You can see your weekly spendings and specific entries from your previous months as well, just like you can with the current month.
+
+Currently the budgeting tool allows you to use euros and dollars, and also allows for several bank accounts. Users who have bank accounts with different companies will find this useful, since they can keep track of all of their expenses, without having to switch between apps to look at different accounts. It also allows you to indicate transfers between your own bank accounts, with a specified exchange rate when transfering between currencies.
 
 The tool also allows for up to two users to be added to one bank account, so that spouses can both keep track of their joint bank accounts. Since they are two separate users, a user can't see their spouse's personal accounts; they can only see the accounts that they share.
 
 ## Coming Soon
 
 Other features that will be added in the near future include:\
-    --Add entries for your earnings\
-    --Indicate transfers between your own bank accounts\
-    --Display a previous month's spendings\
+    --Loading Screens! To make the wait time less annoying\
+    --View your average monthly spendings, based on the last year or the last 6 months\
     --Automatically keep track of bills that stay the same each month (think rent, cell phone plan)
     
 Please comment any other suggestions you have in the enhancement issue section!

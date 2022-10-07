@@ -44,7 +44,9 @@ Once all software has been downloaded, open both the `master` and `rest` branche
 In the `.env` file of the `rest` branch, exchange `<user>` and `<password>` with your own credentials in the MongoDB connect string. 
 
 In the `src` folder of the `master` branch, open the `FetchFunctions.js` file in the `helperfuncs` folder. \
-In lines 55 and 62, replace `xxxxxxxxxxxxxxxxxxxxxxxx` with your own api key from https://www.exchangerate-api.com. 
+In lines 55 and 62, replace `xxxxxxxxxxxxxxxxxxxxxxxx` with your own api key from https://www.exchangerate-api.com.
+
+Make sure that both files have been saved to reflect these changes.
 
 **
   

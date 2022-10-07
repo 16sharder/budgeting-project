@@ -254,12 +254,7 @@ app.get("/months/:filter", asyncHandler(async(req, res, next) => {
     // uses getAllMonths function from model to return all months for specified month and year
     const filter = req.params.filter
     const monthsM = await entries.findMonth({month: Number(filter)})
-    if (monthsM.length == 0){
-        const monthsI = await entries.findMonth({_id: filter})
-        console.log(monthsI)
-        res.type("application/json").status(200).send(monthsI)
-    }
-    else res.type("application/json").status(200).send(monthsM)
+    res.type("application/json").status(200).send(monthsM)
 }))
 
 
@@ -269,7 +264,7 @@ app.put("/months/:filter", asyncHandler(async(req, res, next) => {
     // returns a count of modified months
     const request = req.params.filter
 
-    const month = await entries.updateMonth({request}, req.body)
+    const month = await entries.updateMonth({_id: request}, req.body)
     res.type("application/json").status(200).send(month)
 }))
 

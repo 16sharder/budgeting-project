@@ -92,15 +92,15 @@ function Accounts() {
         const preMonth = await fetchTransfers(today.getMonth())
     
         const accountNames = await retrieveUserAccountNames(user)
-
+    
         const transferList = []
-        for (const transfer of curMonth) {
+        for (const transfer of preMonth) {
             if (accountNames.includes(transfer.account)) {
                 transferList.push(transfer)
             }
         }
-    
-        for (const transfer of preMonth) {
+
+        for (const transfer of curMonth) {
             if (accountNames.includes(transfer.account)) {
                 transferList.push(transfer)
             }

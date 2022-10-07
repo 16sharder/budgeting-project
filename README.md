@@ -22,6 +22,7 @@ The tool also allows for up to two users to be added to one bank account, so tha
 
 Other features that will be added in the near future include:\
     --Loading Screens! To make the wait time less annoying\
+    --Allow for editing and deleting entries\
     --View your average monthly spendings, based on the last year or the last 6 months\
     --Automatically keep track of bills that stay the same each month (think rent, cell phone plan)
     

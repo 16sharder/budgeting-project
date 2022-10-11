@@ -93,19 +93,16 @@ async function retrieveEarnings (month, user, accountName="all") {
 }
 
 async function convertToEuros (amount) {
-    // xxxxxxxxxxxxxxxxxxxxxxxx
-    // const response = await fetch("https://v6.exchangerate-api.com/v6/xxxxxxxxxxxxxxxxxxxxxxxx/latest/EUR")
-    // const data = await response.json()
-    // const calculated = amount * data.conversion_rates["USD"]
-    const calculated = amount
+    const response = await fetch("https://v6.exchangerate-api.com/v6/xxxxxxxxxxxxxxxxxxxxxxxx/latest/EUR")
+    const data = await response.json()
+    const calculated = amount * data.conversion_rates["USD"]
     return calculated
 }
 
 async function convertToDollars (amount) {
-    // const response = await fetch("https://v6.exchangerate-api.com/v6/xxxxxxxxxxxxxxxxxxxxxxxx/latest/USD")
-    // const data = await response.json()
-    // const calculated = amount * data.conversion_rates["EUR"]
-    const calculated = amount
+    const response = await fetch("https://v6.exchangerate-api.com/v6/xxxxxxxxxxxxxxxxxxxxxxxx/latest/USD")
+    const data = await response.json()
+    const calculated = amount * data.conversion_rates["EUR"]
     return calculated
 }
 

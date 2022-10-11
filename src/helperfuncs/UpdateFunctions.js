@@ -6,9 +6,6 @@ async function updateAccount (account, amount) {
     const accountRes = await fetch(`/accounts/${account}`)
     const accountData = await accountRes.json()
 
-    console.log(amount)
-    console.log(accountData)
-
     // updates the amount in the account based on the amount input
     const update = {amount: accountData[0].amount - amount}
 

@@ -48,10 +48,10 @@ function Transfer() {
 
 
         // adds the transfer to the month's records for both accounts
-        updateMonths(date, account, amount + fee)
+        updateMonths(date, account, Number(amount) + Number(fee))
         updateMonths(date, account2, amount * exchangeRate * -1)
         // updates both accounts
-        updateAccount(account, amount + fee)
+        updateAccount(account, Number(amount) + Number(fee))
         updateAccount(account2, amount * exchangeRate * -1)
 
 

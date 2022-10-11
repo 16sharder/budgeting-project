@@ -98,10 +98,16 @@ function Accounts() {
             if (accountNames.includes(transfer.account)) {
                 transferList.push(transfer)
             }
+            else if (accountNames.includes(transfer.account2)) {
+                transferList.push(transfer)
+            }
         }
 
         for (const transfer of curMonth) {
             if (accountNames.includes(transfer.account)) {
+                transferList.push(transfer)
+            }
+            else if (accountNames.includes(transfer.account2)) {
                 transferList.push(transfer)
             }
         }

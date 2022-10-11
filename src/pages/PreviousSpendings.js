@@ -19,12 +19,13 @@ function SpendingsPage () {
     let currency = location.state.currency
     const month = location.state.month
     const history = useHistory()
+    const accountName = location.state.accountName
 
 
 
     // sends the user to a page displaying the desired week's information
     const viewWeek = async dates => {
-        history.push({pathname:"/weekly-view2", state: {dates: dates, user: user, accounts: accounts, currency: currency, month: month}})
+        history.push({pathname:"/weekly-view2", state: {dates: dates, user: user, accounts: accounts, currency: currency, month: month, accountName: accountName}})
     }
 
 
@@ -43,7 +44,7 @@ function SpendingsPage () {
         let monthArray = []
         for (let week of monthDatesArray) {
             // gets an array (7) of days, each day containing each entry for that day
-            const days = await retrieveWeekEntries(week, user)
+            const days = await retrieveWeekEntries(week, user, 7, accountName)
             let organizedDays = []
             for (let day of days){
                 // sums the entries for each category for the day, returning an array of category sums
@@ -64,7 +65,7 @@ function SpendingsPage () {
 
 
 
-    // gets all of the users account information
+    // gets all of the users account information, for use in passing on to next pages
     const [accounts, setAccounts] = useState([])
 
     const loadAccounts = async (user) => {
@@ -90,7 +91,7 @@ function SpendingsPage () {
         if (currency === "€") currency = "$"
         else if (currency === "$") currency = "€"
 
-        history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month}})
+        history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: accountName}})
         window.location.reload()
     }
 
@@ -104,7 +105,7 @@ function SpendingsPage () {
 
     const loadEarnings = async () => {
 
-        const earnings = await retrieveEarnings(monthNumStr, user)
+        const earnings = await retrieveEarnings(monthNumStr, user, accountName)
 
         let totalEarnings = 0
         for (let earning of earnings){

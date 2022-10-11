@@ -22,11 +22,12 @@ function WeekPage2 () {
     let currency = location.state.currency
     const month = location.state.month
     const history = useHistory()
+    const accountName = location.state.accountName
 
 
     // sends the user to a page displaying the desired entry's information
     const viewDetails = async (date, category) => {
-        history.push({pathname:"/view-details", state: {user: user, date: date, weekDates: dates, category: category, currency: currency, accounts: accounts, month: month}})
+        history.push({pathname:"/view-details", state: {user: user, date: date, weekDates: dates, category: category, currency: currency, accounts: accounts, month: month, accountName: accountName}})
     }
     
 
@@ -35,7 +36,7 @@ function WeekPage2 () {
 
     const loadWeek = async () => {
         const weekDates = calcWeekDates(dates)
-        const entries = await retrieveWeekEntries(dates, user)
+        const entries = await retrieveWeekEntries(dates, user, 7, accountName)
         let organizedDays = []
         for (let idx in weekDates){
             const day = await organizeDaysEntries(entries[idx], currency)
@@ -56,7 +57,7 @@ function WeekPage2 () {
         if (currency === "€") currency = "$"
         else if (currency === "$") currency = "€"
 
-        history.push({pathname:"/weekly-view2", state: {dates: dates, user: user, currency: currency, month: month}})
+        history.push({pathname:"/weekly-view2", state: {dates: dates, user: user, currency: currency, month: month, accountName: accountName}})
         window.location.reload()
     }
     
@@ -73,7 +74,7 @@ function WeekPage2 () {
             <WeeklyTable week={week} viewDetails={viewDetails} total={totalsArray} currency={currency}/>
             <table><tbody><tr>
                 <td className="button"><button onClick={toggleCurrency} className="currency">Change currency</button></td>
-                <td className="button"><button onClick={() => history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month}})} className='button'>Return to monthly view</button></td>
+                <td className="button"><button onClick={() => history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: accountName}})} className='button'>Return to monthly view</button></td>
             </tr></tbody></table>
 
             <p></p>

@@ -15,7 +15,7 @@ async function retrieveUserAccountNames (user) {
 }
 
 
-async function retrieveDayEntries (day, user) {
+async function retrieveDayEntries (day, user, accountName="all") {
     // retrieves all the entries for a specific day as an array
     const fetchEntries = async (day) => {
         const response = await fetch(`/entries/${day}`)
@@ -25,6 +25,16 @@ async function retrieveDayEntries (day, user) {
 
     const newDay = convertDate(day)
     const result = await fetchEntries(newDay)
+
+    // if it is only requesting a specific account, only retrieves that account's entries
+    if (accountName != "all") {
+        const resultCopy = result.slice()
+        for (let entry of result){
+            if (accountName != entry.account) resultCopy.splice(resultCopy.indexOf(entry), 1)
+        }
+    
+        return resultCopy
+    }
 
     // verifies that only entires for the user's accounts are returned
     const userAccounts = await retrieveUserAccountNames(user)
@@ -37,13 +47,13 @@ async function retrieveDayEntries (day, user) {
 }
 
 
-async function retrieveWeekEntries (week, user, days=7) {
+async function retrieveWeekEntries (week, user, days=7, accountName="all") {
     // returns an array of all the entries for each day of that week
     const weekDates = calcWeekDates(week, days)
 
     let returnArray = []
     for (let day of weekDates){
-        const result = await retrieveDayEntries(day, user)
+        const result = await retrieveDayEntries(day, user, accountName)
 
         returnArray.push(result)
     }
@@ -51,7 +61,7 @@ async function retrieveWeekEntries (week, user, days=7) {
     return returnArray
 }
 
-async function retrieveEarnings (month, user) {
+async function retrieveEarnings (month, user, accountName="all") {
     const fetchEarnings = async () => {
         const response = await fetch(`/entries/${month}`)
         const data = await response.json()
@@ -59,6 +69,17 @@ async function retrieveEarnings (month, user) {
     }
 
     const result = await fetchEarnings()
+
+    // if it is only requesting a specific account, only retrieves that account's earnings
+    if (accountName != "all") {
+        const resultCopy = result.slice()
+        for (let entry of result){
+            if (accountName != entry.account) resultCopy.splice(resultCopy.indexOf(entry), 1)
+            else if (entry.category != "Earnings") resultCopy.splice(resultCopy.indexOf(entry), 1)
+        }
+    
+        return resultCopy
+    }
 
     // verifies that only earnings for the user's accounts are returned
     const userAccounts = await retrieveUserAccountNames(user)
@@ -72,16 +93,19 @@ async function retrieveEarnings (month, user) {
 }
 
 async function convertToEuros (amount) {
-    const response = await fetch("https://v6.exchangerate-api.com/v6/xxxxxxxxxxxxxxxxxxxxxxxx/latest/EUR")
-    const data = await response.json()
-    const calculated = amount * data.conversion_rates["USD"]
+    // xxxxxxxxxxxxxxxxxxxxxxxx
+    // const response = await fetch("https://v6.exchangerate-api.com/v6/xxxxxxxxxxxxxxxxxxxxxxxx/latest/EUR")
+    // const data = await response.json()
+    // const calculated = amount * data.conversion_rates["USD"]
+    const calculated = amount
     return calculated
 }
 
 async function convertToDollars (amount) {
-    const response = await fetch("https://v6.exchangerate-api.com/v6/xxxxxxxxxxxxxxxxxxxxxxxx/latest/USD")
-    const data = await response.json()
-    const calculated = amount * data.conversion_rates["EUR"]
+    // const response = await fetch("https://v6.exchangerate-api.com/v6/xxxxxxxxxxxxxxxxxxxxxxxx/latest/USD")
+    // const data = await response.json()
+    // const calculated = amount * data.conversion_rates["EUR"]
+    const calculated = amount
     return calculated
 }
 

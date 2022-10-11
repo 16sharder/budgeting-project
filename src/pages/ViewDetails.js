@@ -16,12 +16,16 @@ function ViewDetails () {
     const currency = location.state.currency
     const month = location.state.month
     const history = useHistory()
+    const accounts = location.state.accounts
+    let accountName = location.state.accountName
+
+    if (accountName == undefined) accountName = "all"
 
     const [entries, setEntries] = useState([])
 
 
     const loadDay = async () => {
-        const result = await retrieveDayEntries(date, user)
+        const result = await retrieveDayEntries(date, user, accountName)
         let resultCopy = result.slice()
         for (let entry of result){
             if (entry.category != category) {
@@ -38,12 +42,12 @@ function ViewDetails () {
 
     const sendMonth = () => {
         if (month == undefined) history.push({pathname:"/main", state: {user: user, currency: currency}})
-        else history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month}})
+        else history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: accountName}})
     }
 
     const sendWeek = () => {
-        if (month == undefined) history.push({pathname:"/weekly-view", state: {user: user, dates: weekDates, currency: currency}})
-        else history.push({pathname:"/weekly-view2", state: {user: user, dates: weekDates, currency: currency, month: month}})
+        if (month == undefined) history.push({pathname:"/weekly-view", state: {user: user, dates: weekDates, currency: currency, accounts: accounts}})
+        else history.push({pathname:"/weekly-view2", state: {user: user, dates: weekDates, currency: currency, month: month, accountName: accountName}})
     }
 
     return (

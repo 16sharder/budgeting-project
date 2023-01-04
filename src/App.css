@@ -208,6 +208,7 @@ td.navigator {
 
 
 
+
 .filler {
   margin:0 auto;
   padding:10px 25px;
@@ -236,6 +237,18 @@ td.navigator {
   background-color: #F2EBE5;
 }
 
+
+
+
+
+.edit {
+  position: relative;
+  left: 150px;
+}
+
+.delete {
+  color: red;
+}
 
 
 

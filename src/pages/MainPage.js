@@ -148,7 +148,7 @@ function MainPage () {
 
 
             <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts}})}>Add New Earnings</button>
-            <button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, accounts: accounts}})}>View Earnings Details</button>
+            <button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: "All Accounts"}})}>View Earnings Details</button>
 
             <p></p>
             <div className='container bottomSep'></div>

@@ -7,6 +7,8 @@ import {retrieveDayEntries} from "../helperfuncs/FetchFunctions"
 import Navigation from '../components/Navigation';
 import {BorderDecorationsH} from '../components/BorderDecoration';
 
+import { FiEdit } from "react-icons/fi";
+
 function ViewDetails () {
     const location = useLocation()
     const user = location.state.user
@@ -19,7 +21,7 @@ function ViewDetails () {
     const accounts = location.state.accounts
     let accountName = location.state.accountName
 
-    if (accountName == undefined) accountName = "all"
+    if (accountName == undefined) accountName = "All Accounts"
 
     const [entries, setEntries] = useState([])
 
@@ -60,7 +62,8 @@ function ViewDetails () {
             <div>
                 {entries.map((entry, index) => 
                     <table key={index}>
-                        <thead><tr><th className='single toprow color2'>Entry {index+1}</th></tr></thead>
+                        <thead><tr><th className='single toprow color2'>Entry {index+1}
+                            <FiEdit className="edit" onClick={() => {history.push({pathname:"/edit", state: {entry: entry, curUser: user, currency: currency, accounts: accounts, dates: weekDates, month: month}})}}/></th></tr></thead>
                         <tbody><tr><td className='single color1'><div>Account: {entry.account}</div><div>Amount: {entry.currency}{entry.amount.toFixed(2)}</div><div>Description: {entry.description}</div><div></div></td></tr></tbody>
                     </table>
                 )}

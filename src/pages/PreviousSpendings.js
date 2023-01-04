@@ -129,6 +129,12 @@ function SpendingsPage () {
         setEarnings(totalEarnings)
     }
 
+    // either raises an error or sends the user to the add entry page
+    const sendAddEntry = () => {
+        if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
+        else history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts}})
+    }
+
 
 
     return (
@@ -141,13 +147,14 @@ function SpendingsPage () {
             <MonthlyTable month={monthArray} viewWeek={viewWeek} total={totalsArray} currency={currency}/>
             <table><tbody><tr>
                 <td className="button"><button onClick={toggleCurrency} className="currency">Change currency</button></td>
-                <td className="button"><button className="button invisible"></button></td>
+                <td className="button"><button onClick={sendAddEntry} className="button">Add new entry</button></td>
             </tr></tbody></table>
 
 
             <h3>Earnings: {currency}{earnings.toFixed(2)}</h3>
 
-            <button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, accounts: accounts}})}>View Earnings Details</button>
+            <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts}})}>Add New Earnings</button>
+            <button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: accountName}})}>View Earnings Details</button>
 
             <p></p>
             <div className='container bottomSep'></div>

@@ -13,13 +13,14 @@ function Earnings () {
     const user = location.state.user
     const month = location.state.month
     const currency = location.state.currency
+    const account = location.state.account
     const history = useHistory()
 
     const [entries, setEntries] = useState([])
 
 
     const loadEarnings = async () => {
-        const result = await retrieveEarnings(month, user)
+        const result = await retrieveEarnings(month, user, account)
         let resultCopy = result.slice()
 
         setEntries(resultCopy)
@@ -32,7 +33,7 @@ function Earnings () {
 
     const sendMonth = () => {
         if (month == undefined) history.push({pathname:"/main", state: {user: user, currency: currency}})
-        else history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month - 1}})
+        else history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month - 1, accountName: account}})
     }
 
     return (

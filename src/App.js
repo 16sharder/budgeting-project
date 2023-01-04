@@ -14,6 +14,7 @@ import Transfer from './pages/AddTransfer';
 import ChooseMonth from './pages/ChooseMonth';
 import SpendingsPage from './pages/PreviousSpendings';
 import WeekPage2 from './pages/WeekPage2';
+import EditEntry from './pages/EditEntry';
 
 function App() {
   return (
@@ -31,6 +32,10 @@ function App() {
           </Route>
           <Route path="/view-details" >
             <ViewDetails />
+          </Route>
+
+          <Route path="/edit" >
+            <EditEntry />
           </Route>
 
           <Route path="/add-entry" >

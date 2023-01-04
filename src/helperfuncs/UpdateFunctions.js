@@ -19,10 +19,12 @@ async function updateAccount (account, amount) {
     } else{
         alert(`Update failed. Status code = ${res.status}`)
     }
+    console.log(accountData[0].amount, amount, update)
 }
 
 async function updateMonths  (date, account, amount, category) {
     // adds the entry to the month's records
+    
     const year = Number(date.slice(0, 4))
     const month = Number(date.slice(5, 7))
 
@@ -83,6 +85,7 @@ async function updateMonths  (date, account, amount, category) {
     if (updateMonth.status !== 200){
         alert(`Create entry failed. Status code = ${updateMonth.status}`)
     }
+    console.log(amount)
 }
 
 export {updateMonths, updateAccount}

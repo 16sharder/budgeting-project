@@ -17,7 +17,7 @@ function ChooseMonth () {
         setAccounts(accounts)
     }
 
-    let [account, setAccount] = useState("all")
+    let [account, setAccount] = useState("All Accounts")
 
     const today = new Date
 

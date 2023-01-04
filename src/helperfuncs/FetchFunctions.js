@@ -15,7 +15,7 @@ async function retrieveUserAccountNames (user) {
 }
 
 
-async function retrieveDayEntries (day, user, accountName="all") {
+async function retrieveDayEntries (day, user, accountName="All Accounts") {
     // retrieves all the entries for a specific day as an array
     const fetchEntries = async (day) => {
         const response = await fetch(`/entries/${day}`)
@@ -27,7 +27,7 @@ async function retrieveDayEntries (day, user, accountName="all") {
     const result = await fetchEntries(newDay)
 
     // if it is only requesting a specific account, only retrieves that account's entries
-    if (accountName != "all") {
+    if (accountName != "All Accounts") {
         const resultCopy = result.slice()
         for (let entry of result){
             if (accountName != entry.account) resultCopy.splice(resultCopy.indexOf(entry), 1)
@@ -47,7 +47,7 @@ async function retrieveDayEntries (day, user, accountName="all") {
 }
 
 
-async function retrieveWeekEntries (week, user, days=7, accountName="all") {
+async function retrieveWeekEntries (week, user, days=7, accountName="All Accounts") {
     // returns an array of all the entries for each day of that week
     const weekDates = calcWeekDates(week, days)
 
@@ -61,7 +61,7 @@ async function retrieveWeekEntries (week, user, days=7, accountName="all") {
     return returnArray
 }
 
-async function retrieveEarnings (month, user, accountName="all") {
+async function retrieveEarnings (month, user, accountName="All Accounts") {
     const fetchEarnings = async () => {
         const response = await fetch(`/entries/${month}`)
         const data = await response.json()
@@ -71,7 +71,7 @@ async function retrieveEarnings (month, user, accountName="all") {
     const result = await fetchEarnings()
 
     // if it is only requesting a specific account, only retrieves that account's earnings
-    if (accountName != "all") {
+    if (accountName != "All Accounts") {
         const resultCopy = result.slice()
         for (let entry of result){
             if (accountName != entry.account) resultCopy.splice(resultCopy.indexOf(entry), 1)

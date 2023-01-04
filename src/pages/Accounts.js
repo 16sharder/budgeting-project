@@ -89,27 +89,37 @@ function Accounts() {
         }
     
         const curMonth = await fetchTransfers(today.getMonth()+1)
-        const preMonth = await fetchTransfers(today.getMonth())
+        let preMonth = await fetchTransfers(today.getMonth())
+        if (today.getMonth() == 0) {preMonth = await fetchTransfers(12)}
     
         const accountNames = await retrieveUserAccountNames(user)
     
         const transferList = []
         for (const transfer of preMonth) {
-            if (accountNames.includes(transfer.account)) {
+            if (Number(transfer.date.slice(0,4)) == year){
+                if (accountNames.includes(transfer.account)) {
                 transferList.push(transfer)
-            }
-            else if (accountNames.includes(transfer.account2)) {
+                }
+                else if (accountNames.includes(transfer.account2)) {
+                    transferList.push(transfer)
+                }}
+            if (today.getMonth() == 0) {if (Number(transfer.date.slice(0,4)) == year-1){
+                if (accountNames.includes(transfer.account)) {
                 transferList.push(transfer)
-            }
+                }
+                else if (accountNames.includes(transfer.account2)) {
+                    transferList.push(transfer)
+                }}}
         }
 
         for (const transfer of curMonth) {
-            if (accountNames.includes(transfer.account)) {
-                transferList.push(transfer)
-            }
-            else if (accountNames.includes(transfer.account2)) {
-                transferList.push(transfer)
-            }
+            if (Number(transfer.date.slice(0,4)) == year) {
+                if (accountNames.includes(transfer.account)) {
+                    transferList.push(transfer)
+                }
+                else if (accountNames.includes(transfer.account2)) {
+                    transferList.push(transfer)
+                }}
         }
     
         setTransfers(transferList)
@@ -149,7 +159,6 @@ function Accounts() {
         else history.push({pathname:"/transfer", state: {curUser: user, currency: currency, accounts: accounts}})
     }
 
-
     return (
         <>
             <BorderDecorationsH />
@@ -166,7 +175,7 @@ function Accounts() {
                     </tr>
                 </thead>
                 <tbody>
-                {accounts.map((account, index) => <tr key={index} className='color5'>
+                {accounts.map((account, index) => <tr key={index} className='color5' onClick={() => history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: account.account}})}>
                     <td className="color1">{account.currency}{beginnings[index]}</td>
                     <td className="bold">{account.account}</td>
                     <td className='color1'>{account.currency}{account.amount.toFixed(2)}</td></tr>)}

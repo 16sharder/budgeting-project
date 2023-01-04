@@ -251,6 +251,7 @@ table {
   max-width: 90%;
   border-width: 3px;
   background-color: rgb(250, 230, 205);
+  z-index: 3;
 }
 
 th {

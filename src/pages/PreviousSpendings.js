@@ -62,7 +62,7 @@ function SpendingsPage () {
             // adds each week's array of sums to an array for the month
             monthArray.push(organizedWeek)
         }
-        setMessage(`Spendings for ${monthName(month)}`)
+        setMessage(`${accountName} - Spendings for ${monthName(month)}`)
         setMonth(monthArray)
     }
 

@@ -21,6 +21,7 @@ function SpendingsPage () {
     const history = useHistory()
     const accountName = location.state.accountName
 
+    const [message, setMessage] = useState("Loading...")
 
 
     // sends the user to a page displaying the desired week's information
@@ -33,7 +34,11 @@ function SpendingsPage () {
 
 
     // retrieves the current date so as to know which month and weeks to display
-    const date = new Date(2022, month, 1)
+    const today = new Date
+    let year = today.getFullYear()
+    if (month > today.getMonth()) {year = year - 1}
+
+    const date = new Date(year, month, 1)
     const monthDatesArray = createMonthDates(date)
 
 
@@ -57,6 +62,7 @@ function SpendingsPage () {
             // adds each week's array of sums to an array for the month
             monthArray.push(organizedWeek)
         }
+        setMessage(`Spendings for ${monthName(month)}`)
         setMonth(monthArray)
     }
 
@@ -130,7 +136,7 @@ function SpendingsPage () {
             <BorderDecorationsH />
             <Navigation user={user} currency={currency} />
             <p></p>
-            <h2>Spendings for {monthName(month)}</h2>
+            <h2>{message}</h2>
 
             <MonthlyTable month={monthArray} viewWeek={viewWeek} total={totalsArray} currency={currency}/>
             <table><tbody><tr>

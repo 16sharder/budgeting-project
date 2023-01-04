@@ -21,6 +21,7 @@ function calcWeekDates(week, days=7) {
             int += 1
             incre -= 1
         }
+        if (month == 12) {month = 0}
         while (int != days) {
             weekDates.push(`${month + 1}/${date - end}`)
             date += 1
@@ -107,16 +108,30 @@ function createMonthDates(date) {
 // converts dates to the format used by mongoDB for find filter
 function convertDate (date) {
     const today = new Date()
-    const year = today.getFullYear()
+    let year = today.getFullYear()
 
     let newDate = ""
     const dashIndex = date.indexOf("/")
+
+    // if the month is only one digit
     if (dashIndex === 1){
+        // determines if year needs adjusting based on given month
+        let month = date[0] - 1
+        if (month > today.getMonth()) {year = year - 1}
+
+        // creates the date 
         if (date.length === 3){
             newDate = `${year}-0${date[0]}-0${date[2]}`
         }
         else newDate = `${year}-0${date[0]}-${date.slice(2, 4)}`
+
+    // if the month is two digits
     } else {
+        // determines if year needs adjusting based on given month
+        let month = date.slice(0, 2) - 1
+        if (month > today.getMonth()) {year = year - 1}
+
+        // creates the cdate
         if (date.length === 4){
             newDate = `${year}-${date.slice(0, 2)}-0${date[3]}`
         }

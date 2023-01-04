@@ -19,6 +19,7 @@ function MainPage () {
     let currency = location.state.currency
     const history = useHistory()
 
+    const [message, setMessage] = useState("Loading...")
 
 
     // sends the user to a page displaying the desired week's information
@@ -55,6 +56,7 @@ function MainPage () {
             // adds each week's array of sums to an array for the month
             monthArray.push(organizedWeek)
         }
+        setMessage(`${user}, here are your spendings for this month`)
         setMonth(monthArray)
     }
 
@@ -127,15 +129,13 @@ function MainPage () {
 
         setEarnings(totalEarnings)
     }
-
-
-
+    
     return (
         <>
             <BorderDecorationsH />
             <Navigation user={user} currency={currency} />
             <p></p>
-            <h2>{user}, here are your spendings for this month</h2>
+            <h2>{message}</h2>
 
             <MonthlyTable month={month} viewWeek={viewWeek} total={totalsArray} currency={currency}/>
             <table><tbody><tr>

@@ -24,6 +24,8 @@ function WeekPage2 () {
     const history = useHistory()
     const accountName = location.state.accountName
 
+    const [message, setMessage] = useState("Loading...")
+
 
     // sends the user to a page displaying the desired entry's information
     const viewDetails = async (date, category) => {
@@ -43,6 +45,7 @@ function WeekPage2 () {
             day[0] = weekDates[idx]
             organizedDays.push(day)
         }
+        setMessage(`Spendings for the week of ${dates}`)
         setWeek(organizedDays)
     }
 
@@ -67,7 +70,7 @@ function WeekPage2 () {
             <BorderDecorationsH />
             <Navigation user={user} currency={currency} />
             <p></p>
-            <h2>Spendings for the week of {dates}</h2>
+            <h2>{message}</h2>
             <div>Please click on an entry if you would like to see more details</div>
             <p></p>
 

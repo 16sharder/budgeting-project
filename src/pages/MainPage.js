@@ -4,11 +4,12 @@ import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import {createMonthDates} from "../helperfuncs/DateCalculators"
-import {organizeDaysEntries, retrieveWeekEntries, retrieveEarnings, convertToEuros, convertToDollars} from "../helperfuncs/FetchFunctions"
+import {organizeDaysEntries, retrieveWeekEntries, retrieveEarnings, convertToEuros, convertToDollars, retrieveMultipleMonths} from "../helperfuncs/FetchFunctions"
 import {calculateWeekTotals} from "../helperfuncs/OtherCalcs"
 
 import { BorderDecorationsH } from '../components/BorderDecoration';
 import Navigation from '../components/Navigation';
+import PreviousMonTable from '../components/PreviousMonTable';
 
 
 function MainPage () {
@@ -146,9 +147,15 @@ function MainPage () {
 
             <h3>Earnings: {currency}{earnings.toFixed(2)}</h3>
 
-
             <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts}})}>Add New Earnings</button>
             <button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: "All Accounts"}})}>View Earnings Details</button>
+
+            <p></p>
+
+
+            <h3>Monthly Spendings:</h3>
+
+            <PreviousMonTable user={user} currency={currency}/>
 
             <p></p>
             <div className='container bottomSep'></div>

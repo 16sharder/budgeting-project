@@ -31,7 +31,7 @@ function EditEntry() {
 
 
     const updateEntry = async () => {
-        // adds the entry to mongoDB
+        // edits the entry in mongoDB
         const editedEntry = {account, category, currency, amount, date, description}
         const response = await fetch(`/entries/${entry._id}`, {
             method: "PUT", 
@@ -40,7 +40,7 @@ function EditEntry() {
         })
         if (response.status !== 200){
             alert(`Edit entry failed. Status code = ${response.status}`)
-        }
+        } else {
 
         // subtracts the old entry data from the month's records
         await updateMonths(oldDate, oldAcct, -oldAmt, oldCat)
@@ -56,11 +56,25 @@ function EditEntry() {
         // returns the user to the view details page
         history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
 
-    }
+    }}
 
     const deleteEntry = async () => {
+        // adds the entry to mongoDB
+        const editedEntry = {account, category, currency, amount, date, description}
+        const response = await fetch(`/entries/${entry._id}`, {method: "DELETE"})
+        if (response.status !== 204){
+            alert(`Delete entry failed. Status code = ${response.status}`)
+        } else {
 
-    }
+        // subtracts the old entry data from the month's records
+        await updateMonths(oldDate, oldAcct, -oldAmt, oldCat)
+        // updates the original account that was spent from
+        await updateAccount(oldAcct, -oldAmt)
+
+
+        // returns the user to the view details page
+        history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
+    }}
 
 
     return (
@@ -153,6 +167,7 @@ function EditEntry() {
                 <td className="button"><button onClick={updateEntry} className="button">Confirm</button></td>
             </tr></tbody></table>
 
+        <button onClick={deleteEntry} className="delete">Delete</button>
         </div>
         <BorderDecorationsBottom />
         </>

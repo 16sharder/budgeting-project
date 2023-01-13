@@ -42,11 +42,7 @@ function Transfer() {
         })
         if (response.status === 201){
             alert("Successfully performed transfer")
-        } else{
-            alert(`Transfer failed. Status code = ${response.status}`)
-        }
-
-
+        
         // adds the transfer to the month's records for both accounts
         updateMonths(date, account, Number(amount) + Number(fee))
         updateMonths(date, account2, amount * exchangeRate * -1)
@@ -57,6 +53,10 @@ function Transfer() {
 
 
         history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
+
+        }else{
+            alert(`Transfer failed. Status code = ${response.status}`)
+        }
         
     }
 

@@ -1,4 +1,4 @@
-import {calcWeekDates, convertDate} from "../helperfuncs/DateCalculators"
+import {calcWeekDates, convertDate, monthName} from "../helperfuncs/DateCalculators"
 
 async function retrieveUserAccountNames (user) {
     // returns an array of all the names of the accounts of a specified user
@@ -92,6 +92,88 @@ async function retrieveEarnings (month, user, accountName="All Accounts") {
     return resultCopy
 }
 
+async function retrieveMonth (month, user, account="All Accounts") {
+    const fetchMonth = async () => {
+        const response = await fetch(`/months/${month}`)
+        const data = await response.json()
+        return data
+    }
+    let monGroc = 0
+    let monEat = 0
+    let monClo = 0
+    let monHous = 0
+    let monWork = 0
+    let monTrav = 0
+    let monBil = 0
+    let monCash = 0
+    let monEmr = 0
+    let monOth = 0
+
+    let allAccts = await fetchMonth()
+    let accountNames = [account]
+    if (account == "All Accounts") {accountNames = await retrieveUserAccountNames(user)}
+
+    if (allAccts.length != 0) {
+        for (let acct of allAccts) {
+            if (accountNames.includes(acct.account)) {
+                monGroc += acct.categoryTotals["Groceries"]
+                monEat += acct.categoryTotals["Eating Out"]
+                monClo += acct.categoryTotals["Clothing"]
+                monHous += acct.categoryTotals["House Supplies"]
+                monWork += acct.categoryTotals["Work Supplies"]
+                monTrav += acct.categoryTotals["Travel"]
+                monBil += acct.categoryTotals["Bills"]
+                monCash += acct.categoryTotals["Cash"]
+                monEmr += acct.categoryTotals["Emergencies"]
+                monOth += acct.categoryTotals["Other"]
+            }}
+        const monTot = monGroc+monEat+monClo+monHous+monWork+monTrav+monBil+monCash+monEmr+monOth
+        const monStats = [allAccts[0].monthName, monGroc, monEat, monClo, monHous, monWork, monTrav, monBil, monCash, monEmr, monOth, monTot, month-1]
+        return monStats
+    } else return undefined
+}
+
+async function retrieveMultipleMonths(latestMo, user, num) {
+    let groc = 0
+    let eat = 0
+    let clo = 0
+    let house = 0
+    let work = 0
+    let trav = 0
+    let bills = 0
+    let cash = 0
+    let emr = 0
+    let other = 0
+    let total = 0
+
+    let month = latestMo
+    let x = 0
+    let y = 1
+    while (y !== num) {
+        let results = await retrieveMonth(month, user)
+        if (results != undefined) {
+            x += 1
+            groc += results[1]
+            eat += results[2]
+            clo += results[3]
+            house += results[4]
+            work += results[5]
+            trav += results[6]
+            bills += results[7]
+            cash += results[8]
+            emr += results[9]
+            other += results[10]
+            total += results[11]
+        }
+
+        if (month == 0) {
+            month = 12
+        } else {month -= 1}
+        y += 1
+    }
+    return [groc, eat, clo, house, work, trav, bills, cash, emr, other, total, x]
+}
+
 async function convertToEuros (amount) {
     const response = await fetch("https://v6.exchangerate-api.com/v6/xxxxxxxxxxxxxxxxxxxxxxxx/latest/EUR")
     const data = await response.json()
@@ -143,4 +225,4 @@ async function organizeDaysEntries (dayEntries, currency) {
 
 
 
-export {retrieveUserAccountNames, retrieveDayEntries, retrieveWeekEntries, retrieveEarnings, organizeDaysEntries, convertToEuros, convertToDollars}
+export {retrieveUserAccountNames, retrieveDayEntries, retrieveWeekEntries, retrieveEarnings, retrieveMonth, retrieveMultipleMonths, organizeDaysEntries, convertToEuros, convertToDollars}

@@ -37,11 +37,11 @@ function AddAccount() {
         })
         if (response.status === 201){
             alert("Successfully created a new account")
+            history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
+
         } else{
             alert(`Create account failed. Status code = ${response.status}`)
         }
-
-        history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
     }
 
     return (

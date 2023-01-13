@@ -32,7 +32,7 @@ function AddEntry() {
         })
         if (response.status !== 201){
             alert(`Create entry failed. Status code = ${response.status}`)
-        }
+        } else {
 
         // adds the entry to the month's records
         updateMonths(date, account, amount, category)
@@ -43,7 +43,7 @@ function AddEntry() {
         // returns the user to the main page
         history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
 
-    }
+    }}
 
 
     return (

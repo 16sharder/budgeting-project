@@ -30,6 +30,11 @@ export function BorderDecorationsH () {
 
             <div className='container topleftH'></div>
             <div className='container toprightH'></div>
+
+            <div className="container topleftR"></div>
+            <div className="container toprightR"></div>
+            <div className="container topleftB"></div>
+            <div className="container toprightB"></div>
         </>
     )
 }

@@ -61,6 +61,7 @@ div.topH {
   top: 31px;
   border-bottom: 5px solid;
   position: fixed;
+  z-index: 4;
 }
 
 div.bottom {
@@ -115,7 +116,7 @@ div.topleft {
   color: darkgreen;
   border-right: 5px solid;
   border-bottom: 5px solid;
-  position: absolute
+  position: absolute;
 }
 
 div.topright {
@@ -126,7 +127,7 @@ div.topright {
   color: darkgreen;
   border-left: 5px solid;
   border-bottom: 5px solid;
-  position: absolute
+  position: absolute;
 }
 
 div.topleftH {
@@ -137,7 +138,8 @@ div.topleftH {
   color: darkgreen;
   border-right: 5px solid;
   border-bottom: 5px solid;
-  position: fixed
+  position: fixed;
+  z-index: 6;
 }
 
 div.toprightH {
@@ -148,7 +150,50 @@ div.toprightH {
   color: darkgreen;
   border-left: 5px solid;
   border-bottom: 5px solid;
-  position: fixed
+  position: fixed;
+  z-index: 6;
+}
+
+div.topleftR {
+  width: 10px;
+  height: 31px;
+  top: 0px;
+  left: 25px;
+  border-left: 5px solid;
+  position: fixed;
+  z-index: 5;
+}
+
+div.toprightR {
+  width: 10px;
+  height: 31px;
+  top: 0px;
+  right: 25px;
+  border-right: 5px solid;
+  position: fixed;
+  z-index: 5;
+}
+
+div.topleftB {
+  width: 10px;
+  height: 31px;
+  top: 0px;
+  left: 40px;
+  color: #405fab;
+  border-left: 5px solid;
+  position: fixed;
+  z-index: 5;
+}
+
+div.toprightB {
+  width: 10px;
+  height: 31px;
+  top: 0px;
+  right: 40px;
+  color: #405fab;
+  border-right: 5px solid;
+  position: fixed;
+  z-index: 5;
 }
 
 div.bottomleft {
@@ -196,7 +241,8 @@ table.navigator {
   top: 0%;
   width: 100%;
   background-color: #5a555a;
-  color:rgb(250, 230, 205)
+  color:rgb(250, 230, 205);
+  z-index: 5;
 }
 
 td.navigator {
@@ -221,6 +267,7 @@ td.navigator {
   position: fixed;
   border-color: #F2EBE5;
   background-color: #F2EBE5;
+  z-index: 4;
 }
 
 .fillerBottom {

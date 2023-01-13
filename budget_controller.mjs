@@ -105,16 +105,16 @@ app.put("/entries/:id", asyncHandler(async(req, res, next) => {
     // returns a count of modified entries
     const request = {_id: req.params.id}
 
-    if (checkValidity(req.body.account, req.body.category, req.body.currency, req.body.amount, req.body.date, req.body.description) === false){
-        res.type("application/json").status(400).send({Error: "Invalid date"})
-    }
-    else {
+    // if (checkValidity(req.body.account, req.body.category, req.body.currency, req.body.amount, req.body.date, req.body.description) === false){
+        // res.type("application/json").status(400).send({Error: "Invalid date"})
+    // }
+    // else {
         const entry = await entries.updateEntry(request, req.body)
         if (entry === null) {
             res.type("application/json").status(404).send({Error: "Not found"})
         }
         else res.type("application/json").status(200).send(entry)
-}}))
+}))
 
 app.delete("/entries/:id", asyncHandler(async(req, res, next) => {
     // uses deleteEntry function from model to delete the entry of the given id

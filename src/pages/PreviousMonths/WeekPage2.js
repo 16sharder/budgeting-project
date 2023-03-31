@@ -1,3 +1,9 @@
+// The Second Week Page:
+// Shown when the user clicks View Week button on the PreviousSpendings Page
+// Shows the user their data from a specific week for each category, as well as daily and weekly totals
+        // uses WeeklyTable component
+// Includes links to ViewDetails for a given day + category, and back to that month's Previous Spendings
+
 import React from 'react';
 import WeeklyTable from "../../components/MainPage/Week/WeeklyTable";
 import {useState, useEffect} from "react"
@@ -76,7 +82,7 @@ function WeekPage2 () {
 
             <WeeklyTable week={week} viewDetails={viewDetails} total={totalsArray} currency={currency}/>
             <table><tbody><tr>
-                <td className="button"><button onClick={toggleCurrency} className="currency">Change currency</button></td>
+                <td className="button"><button onClick={toggleCurrency} className="currency">Change Currency</button></td>
                 <td className="button"><button onClick={() => history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: accountName}})} className='button'>Return to monthly view</button></td>
             </tr></tbody></table>
 

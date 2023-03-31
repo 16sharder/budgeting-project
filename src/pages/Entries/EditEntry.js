@@ -1,3 +1,9 @@
+// The Edit Existing Entry Page:
+// Shown when the user has selected the Edit button on a specific entry from the ViewDetails page
+// Displays a form for the user to update the data for their entry, with default vals as previous vals
+        // also includes a delete button
+// Sends the user back to the MainPage
+
 import React from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"

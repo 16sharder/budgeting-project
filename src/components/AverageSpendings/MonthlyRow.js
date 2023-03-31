@@ -1,3 +1,7 @@
+// The Month Row Component:
+// Used in the AveragesTable Component
+// Creates a row that composes each individual month to be displayed in the table
+
 import React from 'react';
 
 function Month({month, viewMonth, currency}) {

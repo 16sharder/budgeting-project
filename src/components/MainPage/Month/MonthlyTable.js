@@ -1,3 +1,9 @@
+// The Month Table Component:
+// Used on the MainPage and the PreviousSpendings Page
+// Displays the table with all of the given month's spending data
+        // uses the WeeklyRow Component to display its rows
+        // includes each category in the header
+
 import React from 'react';
 import Week from "./WeeklyRow"
 

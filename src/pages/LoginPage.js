@@ -1,3 +1,8 @@
+// The Login Page:
+// Shown when the user firsts arrives at the website
+// Asks a user for their name so as to connect to any of their existing data
+// Sends the user to the MainPage
+
 import React from 'react';
 import {useState} from "react"
 import {useHistory} from "react-router-dom"

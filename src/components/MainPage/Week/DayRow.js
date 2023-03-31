@@ -1,3 +1,7 @@
+// The Day Row Component:
+// Used in the WeeklyTable Component
+// Creates a row that composes each individual day to be displayed in the table
+
 import React from 'react';
 
 function Day({day, viewDetails, currency}) {

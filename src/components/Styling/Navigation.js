@@ -1,3 +1,7 @@
+// The Navigation Bar Component:
+// Used in all pages without forms
+// Displays the navigation bar with links to important pages
+
 import React from "react";
 import { useHistory } from "react-router-dom";
 

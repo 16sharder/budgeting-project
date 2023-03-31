@@ -1,3 +1,8 @@
+// The Register New Transfer Page:
+// Shown when the user has pressed the Bank Transfer button on the Accounts page
+// Displays a form for the user to fill in all the data of their transfer
+// Sends the user back to the Accounts Page
+
 import React from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"

@@ -1,3 +1,9 @@
+// The Week Table Component:
+// Used on the WeekPage and the WeekPage2
+// Displays the table with all of the given week's spending data
+        // uses the DayRow Component to display its rows
+        // includes each category in the header
+
 import React from 'react';
 import Day from "./DayRow"
 

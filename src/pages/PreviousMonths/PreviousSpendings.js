@@ -1,3 +1,10 @@
+// The Previous Months' Spending Page:
+// Shown when the user selects a month and account from the ChooseMonth page
+// Shows the user their data for the chosen month and account for each category, as well as weekly and monthly totals
+        // uses MonthlyTable component
+// Includes a display of the user's total earnings for the month
+// Includes links to WeekPage2 for a given week, AddEntry, AddEarning, and EarningDetails
+
 import React from 'react';
 import MonthlyTable from "../../components/MainPage/Month/MonthlyTable";
 import {useState, useEffect} from "react"
@@ -152,8 +159,8 @@ function SpendingsPage () {
 
             <MonthlyTable month={monthArray} viewWeek={viewWeek} total={totalsArray} currency={currency}/>
             <table><tbody><tr>
-                <td className="button"><button onClick={toggleCurrency} className="currency">Change currency</button></td>
-                <td className="button"><button onClick={sendAddEntry} className="button">Add new entry</button></td>
+                <td className="button"><button onClick={toggleCurrency} className="currency">Change Currency</button></td>
+                <td className="button"><button onClick={sendAddEntry} className="button">Add New Entry</button></td>
             </tr></tbody></table>
 
 

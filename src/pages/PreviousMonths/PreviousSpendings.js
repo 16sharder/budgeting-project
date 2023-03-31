@@ -71,7 +71,6 @@ function SpendingsPage () {
 
     const loadTotals = async () => {
         let totals = await retrieveMonth(Number(month)+1, user)
-        console.log(totals)
         setTotals(totals)
     }
 

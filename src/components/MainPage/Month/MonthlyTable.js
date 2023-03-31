@@ -2,7 +2,6 @@ import React from 'react';
 import Week from "./WeeklyRow"
 
 function MonthlyTable({month, viewWeek, total, currency}) {
-    console.log(total)
     return(
         <table id="monthly">
             <thead>

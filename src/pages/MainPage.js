@@ -4,7 +4,7 @@ import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import {createMonthDates} from "../helperfuncs/DateCalculators"
-import {organizeDaysEntries, retrieveWeekEntries, retrieveEarnings, convertToEuros, convertToDollars, retrieveMultipleMonths, retrieveMonth} from "../helperfuncs/FetchFunctions"
+import {organizeDaysEntries, retrieveWeekEntries, retrieveEarnings, convertToEuros, convertToDollars, retrieveMonth} from "../helperfuncs/FetchFunctions"
 import {calculateWeekTotals} from "../helperfuncs/OtherCalcs"
 
 import { BorderDecorationsH } from '../components/Styling/BorderDecoration';
@@ -66,7 +66,6 @@ function MainPage () {
 
     const loadTotals = async () => {
         let totals = await retrieveMonth(today.getMonth()+1, user)
-        console.log(totals)
         setTotals(totals)
     }
 

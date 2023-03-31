@@ -6,7 +6,7 @@ import Month from './PreviousMonRow';
 function PreviousMonTable({user, currency}) {
     const history = useHistory()
     const today = new Date()
-    let month = today.getMonth()
+    let month = (today.getMonth() + 1)
 
     // retrieves each individual month's spendings
     const [results, setResults] = useState([])
@@ -16,8 +16,8 @@ function PreviousMonTable({user, currency}) {
         let y = 1
         let nums = [month]
         let next = month
-        while (y != 5) {
-            if (next == 0) {
+        while (y != 6) {
+            if (next == 1) {
                 next = 12
             } else next = next - 1
             nums.push(next)
@@ -30,7 +30,7 @@ function PreviousMonTable({user, currency}) {
                 month = 12
             } else {month -= 1}
         }
-        setResults(res.slice(1))
+        setResults(res.slice(1).reverse())
     }
 
 
@@ -49,7 +49,7 @@ function PreviousMonTable({user, currency}) {
     const [aveTot, setTot] = useState(0)
 
     const loadAve = async () => {
-        const results = await retrieveMultipleMonths(month, user, 6)
+        const results = await retrieveMultipleMonths(month-1, user, 6)
 
         setGroc(results[0] / results[11])
         setEat(results[1] / results[11])

@@ -166,7 +166,7 @@ async function retrieveMultipleMonths(latestMo, user, num) {
             total += results[11]
         }
 
-        if (month == 0) {
+        if (month == 1) {
             month = 12
         } else {month -= 1}
         y += 1

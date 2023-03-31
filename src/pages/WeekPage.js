@@ -1,3 +1,9 @@
+// The Week Page:
+// Shown when the user clicks View Week button on the MainPage
+// Shows the user their data from a specific week for each category, as well as daily and weekly totals
+        // uses WeeklyTable component
+// Includes links to ViewDetails for a given day + category, AddEntry and MainPage
+
 import React from 'react';
 import WeeklyTable from "../components/MainPage/Week/WeeklyTable";
 import {useState, useEffect} from "react"
@@ -74,8 +80,8 @@ function WeekPage () {
 
             <WeeklyTable week={week} viewDetails={viewDetails} total={totalsArray} currency={currency}/>
             <table><tbody><tr>
-                <td className="button"><button onClick={toggleCurrency} className="currency">Change currency</button></td>
-                <td className="button"><button onClick={() => history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts}})} className="button">Add new entry</button></td>
+                <td className="button"><button onClick={toggleCurrency} className="currency">Change Currency</button></td>
+                <td className="button"><button onClick={() => history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts}})} className="button">Add New Entry</button></td>
             </tr></tbody></table>
 
             <button onClick={() => history.push({pathname:"/main", state: {user: user, currency: currency}})}>Return to monthly view</button>

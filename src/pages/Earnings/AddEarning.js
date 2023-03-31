@@ -1,3 +1,8 @@
+// The Add New Earnings Page:
+// Shown when the user has pressed the Add New Earnings button on any monthly page
+// Displays a form for the user to fill in all the data for their new earnings entry
+// Sends the user back to the MainPage
+
 import React from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"

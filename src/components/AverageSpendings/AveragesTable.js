@@ -1,7 +1,13 @@
+// The Averages Table Component:
+// Used on the MainPage
+// Displays the table with the user's monthly spending data for the past 6 months
+        // uses the MonthlyRow Component to display its rows
+        // includes each category in the header
+
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { retrieveMonth, retrieveMultipleMonths } from '../../helperfuncs/FetchFunctions';
-import Month from './PreviousMonRow';
+import Month from './MonthlyRow';
 
 function PreviousMonTable({user, currency}) {
     const history = useHistory()

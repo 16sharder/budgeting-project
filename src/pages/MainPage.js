@@ -1,3 +1,12 @@
+// The Main Page:
+// Shown when the user has entered their name on the LoginPage, or when they select Home in the navigation bar
+// Shows the user their data for this month for each category, as well as weekly and monthly totals
+        // uses MonthlyTable component
+// Includes a display of the user's total earnings for the month
+// Also shows a table of the user's average spendings for the past 6 months
+        // uses PreviousMonTable component
+// Includes links to WeekPage for a given week, AddEntry, AddEarning, and EarningDetails
+
 import React from 'react';
 import MonthlyTable from "../components/MainPage/Month/MonthlyTable";
 import {useState, useEffect} from "react"
@@ -9,7 +18,7 @@ import {calculateWeekTotals} from "../helperfuncs/OtherCalcs"
 
 import { BorderDecorationsH } from '../components/Styling/BorderDecoration';
 import Navigation from '../components/Styling/Navigation';
-import PreviousMonTable from '../components/AverageSpendings/PreviousMonTable';
+import PreviousMonTable from '../components/AverageSpendings/AveragesTable';
 
 
 function MainPage () {
@@ -146,8 +155,8 @@ function MainPage () {
 
             <MonthlyTable month={month} viewWeek={viewWeek} total={totalsArray} currency={currency}/>
             <table><tbody><tr>
-                <td className="button"><button onClick={toggleCurrency} className="currency">Change currency</button></td>
-                <td className="button"><button onClick={sendAddEntry} className="button">Add new entry</button></td>
+                <td className="button"><button onClick={toggleCurrency} className="currency">Change Currency</button></td>
+                <td className="button"><button onClick={sendAddEntry} className="button">Add New Entry</button></td>
             </tr></tbody></table>
 
 

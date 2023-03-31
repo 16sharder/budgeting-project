@@ -1,3 +1,8 @@
+// The Add New Account Page:
+// Shown when the user has pressed the Add New Account button on the Accounts Page
+// Displays a form for the user to fill in all the data for their new account
+// Sends the user back to the Accounts Page
+
 import React from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"

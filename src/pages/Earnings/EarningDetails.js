@@ -1,3 +1,8 @@
+// The View Earning Details Page:
+// Shown when the user has pressed the View Earnings Details button on any monthly page
+// Shows a list of earnings for that month and all of their details
+// Sends the user back to the monthly page it came from
+
 import React from 'react';
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"

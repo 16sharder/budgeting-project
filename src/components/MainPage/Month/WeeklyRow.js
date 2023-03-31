@@ -1,3 +1,7 @@
+// The Week Row Component:
+// Used in the MonthlyTable Component
+// Creates a row that composes each individual week to be displayed in the table
+
 import React from 'react';
 
 function Week({week, viewWeek, currency}) {

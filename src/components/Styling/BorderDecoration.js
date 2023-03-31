@@ -1,3 +1,7 @@
+// The Border Decoration Component:
+// Used in all pages
+// Displays the decorations on the borders, created with css styling
+
 import React from "react";
 
 function BorderDecorations () {

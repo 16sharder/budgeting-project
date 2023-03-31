@@ -1,3 +1,8 @@
+// The Choose Month Page:
+// Shown when the user clicks Previous Spendings in the navigation bar
+// Asks the user for a month and bank account to be displayed
+// Sends the user to the PreviousSpendings Page
+
 import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"

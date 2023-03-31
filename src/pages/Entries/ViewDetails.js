@@ -1,3 +1,8 @@
+// The View Entry Details Page:
+// Shown when the user selects a specific day and category on the WeekPage or WeekPage2
+// Shows a list of entries and all of their details with an edit button
+// Includes links to the weekly page it came from, or the monthly page for that date
+
 import React from 'react';
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"

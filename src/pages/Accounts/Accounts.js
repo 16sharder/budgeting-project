@@ -1,3 +1,10 @@
+// The Accounts Overview Page:
+// Shown when the user selects Accounts Overview in the navigation bar
+// Shows the user the amount in each of their bank accounts at the beginning of the month and at that moment
+// Includes a display of the user's total net worth at that moment
+// Also shows a table of the user's transfers between their own accounts for the past 2 months
+// Includes buttons to create a new transfer and add a new account
+
 import React from 'react';
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
@@ -185,7 +192,7 @@ function Accounts() {
             
             <table><tbody><tr>
                 <td className="button"><button onClick={sendTransfer} className="currency">Bank Transfer</button></td>
-                <td className="button"><button onClick={() => history.push({pathname:"/add-account", state: {curUser: user, currency: currency}})} className="button">Add new account</button></td>
+                <td className="button"><button onClick={() => history.push({pathname:"/add-account", state: {curUser: user, currency: currency}})} className="button">Add New Account</button></td>
             </tr></tbody></table>
             
             <h3>Total Net Worth</h3>

@@ -1,5 +1,5 @@
 import React from 'react';
-import WeeklyTable from "../components/WeeklyTable";
+import WeeklyTable from "../components/MainPage/Week/WeeklyTable";
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
@@ -7,8 +7,8 @@ import {calcWeekDates} from "../helperfuncs/DateCalculators"
 import {organizeDaysEntries, retrieveWeekEntries} from "../helperfuncs/FetchFunctions"
 import {calculateWeekTotals} from "../helperfuncs/OtherCalcs"
 
-import Navigation from '../components/Navigation';
-import { BorderDecorationsH } from '../components/BorderDecoration';
+import Navigation from '../components/Styling/Navigation';
+import { BorderDecorationsH } from '../components/Styling/BorderDecoration';
 
 
 

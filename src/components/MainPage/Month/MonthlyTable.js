@@ -35,7 +35,7 @@ function MonthlyTable({month, viewWeek, total, currency}) {
                     <td className='totalr'>{currency}{total[8].toFixed(2)}</td>
                     <td className='totalr'>{currency}{total[9].toFixed(2)}</td>
                     <td className='totalr'>{currency}{total[10].toFixed(2)}</td>
-                    <td className='totalc totalr'>{currency}{total.slice(1).reduce((a, b) => a + b, 0).toFixed(2)}</td>
+                    <td className='totalc totalr'>{currency}{total[11].toFixed(2)}</td>
                     <td className='corner totalc totalr bold'></td>
                 </tr>
             </tbody>

@@ -2,47 +2,78 @@ import React from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import { convertTodayToDate } from '../helperfuncs/DateCalculators';
-import BorderDecorations, {BorderDecorationsBottom} from '../components/BorderDecoration';
-import { updateAccount, updateMonths } from '../helperfuncs/UpdateFunctions';
+import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
+import { updateAccount, updateMonths } from '../../helperfuncs/UpdateFunctions';
 
-function AddEntry() {
+function EditEntry() {
     const history = useHistory()
     const location = useLocation()
+    const entry = location.state.entry
     const curUser = location.state.curUser
     const curRency = location.state.currency
+
     const accounts = location.state.accounts
+    const dates = location.state.dates
+    const month = location.state.month
 
-    const today = convertTodayToDate()
+    const [account, setAccount] = useState(entry.account)
+    const [category, setCategory] = useState(entry.category)
+    const [currency, setCurrency] = useState(entry.currency)
+    const [amount, setAmount] = useState(entry.amount)
+    const [date, setDate] = useState(entry.date)
+    const [description, setDescription] = useState(entry.description)
 
-    const [account, setAccount] = useState(`${accounts[0].account}`)
-    const [category, setCategory] = useState("Groceries")
-    const [currency, setCurrency] = useState("€")
-    const [amount, setAmount] = useState(0)
-    const [date, setDate] = useState(today)
-    const [description, setDescription] = useState("")
+    // stores old values
+    const oldAcct = entry.account
+    const oldCat = entry.category
+    const oldAmt = entry.amount
+    const oldDate = entry.date
 
-    const addEntry = async () => {
-        // adds the entry to mongoDB
-        const newEntry = {account, category, currency, amount, date, description}
-        const response = await fetch("/entries", {
-            method: "POST", 
-            body: JSON.stringify(newEntry),
+
+    const updateEntry = async () => {
+        // edits the entry in mongoDB
+        const editedEntry = {account, category, currency, amount, date, description}
+        const response = await fetch(`/entries/${entry._id}`, {
+            method: "PUT", 
+            body: JSON.stringify(editedEntry),
             headers: {"Content-type": "application/json"}
         })
-        if (response.status !== 201){
-            alert(`Create entry failed. Status code = ${response.status}`)
+        if (response.status !== 200){
+            alert(`Edit entry failed. Status code = ${response.status}`)
         } else {
 
-        // adds the entry to the month's records
-        updateMonths(date, account, amount, category)
-        // updates the account that was spent from
-        updateAccount(account, amount)
+        // subtracts the old entry data from the month's records
+        await updateMonths(oldDate, oldAcct, -oldAmt, oldCat)
+        // adds the new entry data to the month's records
+        await updateMonths(date, account, amount, category)
+
+        // updates the original account that was spent from
+        await updateAccount(oldAcct, -oldAmt)
+        // updates the actual account that was spent from
+        await updateAccount(account, amount)
 
 
-        // returns the user to the main page
+        // returns the user to the view details page
         history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
 
+    }}
+
+    const deleteEntry = async () => {
+        // adds the entry to mongoDB
+        const editedEntry = {account, category, currency, amount, date, description}
+        const response = await fetch(`/entries/${entry._id}`, {method: "DELETE"})
+        if (response.status !== 204){
+            alert(`Delete entry failed. Status code = ${response.status}`)
+        } else {
+
+        // subtracts the old entry data from the month's records
+        await updateMonths(oldDate, oldAcct, -oldAmt, oldCat)
+        // updates the original account that was spent from
+        await updateAccount(oldAcct, -oldAmt)
+
+
+        // returns the user to the view details page
+        history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
     }}
 
 
@@ -51,7 +82,7 @@ function AddEntry() {
             <BorderDecorations />
         <div>
 
-            <h3>Create a new entry</h3>
+            <h3>Edit entry</h3>
             <div></div>
 
             <table><tbody>
@@ -133,12 +164,14 @@ function AddEntry() {
 
             <table><tbody><tr>
                 <td className="button"><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency}})} className="currency">Back</button></td>
-                <td className="button"><button onClick={addEntry} className="button">Add</button></td>
+                <td className="button"><button onClick={updateEntry} className="button">Confirm</button></td>
             </tr></tbody></table>
+
+        <button onClick={deleteEntry} className="delete">Delete</button>
         </div>
         <BorderDecorationsBottom />
         </>
     )
 }
 
-export default AddEntry
+export default EditEntry

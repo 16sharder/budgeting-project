@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { retrieveMonth, retrieveMultipleMonths } from '../helperfuncs/FetchFunctions';
+import { retrieveMonth, retrieveMultipleMonths } from '../../helperfuncs/FetchFunctions';
 import Month from './PreviousMonRow';
 
 function PreviousMonTable({user, currency}) {

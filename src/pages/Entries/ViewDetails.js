@@ -2,10 +2,10 @@ import React from 'react';
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import {retrieveDayEntries} from "../helperfuncs/FetchFunctions"
+import {retrieveDayEntries} from "../../helperfuncs/FetchFunctions"
 
-import Navigation from '../components/Navigation';
-import {BorderDecorationsH} from '../components/BorderDecoration';
+import Navigation from '../../components/Styling/Navigation';
+import {BorderDecorationsH} from '../../components/Styling/BorderDecoration';
 
 import { FiEdit } from "react-icons/fi";
 

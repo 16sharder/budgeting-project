@@ -2,9 +2,9 @@ import React from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import { convertTodayToDate } from '../helperfuncs/DateCalculators';
-import BorderDecorations, {BorderDecorationsBottom} from '../components/BorderDecoration';
-import { updateAccount, updateMonths } from '../helperfuncs/UpdateFunctions';
+import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
+import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
+import { updateAccount, updateMonths } from '../../helperfuncs/UpdateFunctions';
 
 function Transfer() {
     const history = useHistory()

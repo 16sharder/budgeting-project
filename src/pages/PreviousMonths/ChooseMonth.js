@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import BorderDecorations, {BorderDecorationsBottom} from '../components/BorderDecoration';
-import { retrieveUserAccountNames } from '../helperfuncs/FetchFunctions';
-import { monthName } from '../helperfuncs/DateCalculators';
+import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
+import { retrieveUserAccountNames } from '../../helperfuncs/FetchFunctions';
+import { monthName } from '../../helperfuncs/DateCalculators';
 
 function ChooseMonth () {
     const location = useLocation()

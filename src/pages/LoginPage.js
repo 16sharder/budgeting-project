@@ -2,7 +2,7 @@ import React from 'react';
 import {useState} from "react"
 import {useHistory} from "react-router-dom"
 
-import BorderDecorations, {BorderDecorationsBottom} from '../components/BorderDecoration';
+import BorderDecorations, {BorderDecorationsBottom} from '../components/Styling/BorderDecoration';
 
 function LoginPage () {
     const [name, setName] = useState("")

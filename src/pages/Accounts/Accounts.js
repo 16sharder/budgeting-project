@@ -2,12 +2,12 @@ import React from 'react';
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import { retrieveUserAccountNames, retrieveWeekEntries } from '../helperfuncs/FetchFunctions';
-import {calcMonthEnd, monthName} from "../helperfuncs/DateCalculators"
-import {calculateNetWorth} from "../helperfuncs/OtherCalcs"
+import { retrieveUserAccountNames, retrieveWeekEntries } from '../../helperfuncs/FetchFunctions';
+import {calcMonthEnd, monthName} from "../../helperfuncs/DateCalculators"
+import {calculateNetWorth} from "../../helperfuncs/OtherCalcs"
 
-import Navigation from '../components/Navigation';
-import { BorderDecorationsH } from '../components/BorderDecoration';
+import Navigation from '../../components/Styling/Navigation';
+import { BorderDecorationsH } from '../../components/Styling/BorderDecoration';
 
 function Accounts() {
     const location = useLocation()

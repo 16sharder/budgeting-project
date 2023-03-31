@@ -1,15 +1,15 @@
 import React from 'react';
-import MonthlyTable from "../components/MonthlyTable";
+import MonthlyTable from "../components/MainPage/Month/MonthlyTable";
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import {createMonthDates} from "../helperfuncs/DateCalculators"
-import {organizeDaysEntries, retrieveWeekEntries, retrieveEarnings, convertToEuros, convertToDollars, retrieveMultipleMonths} from "../helperfuncs/FetchFunctions"
+import {organizeDaysEntries, retrieveWeekEntries, retrieveEarnings, convertToEuros, convertToDollars, retrieveMultipleMonths, retrieveMonth} from "../helperfuncs/FetchFunctions"
 import {calculateWeekTotals} from "../helperfuncs/OtherCalcs"
 
-import { BorderDecorationsH } from '../components/BorderDecoration';
-import Navigation from '../components/Navigation';
-import PreviousMonTable from '../components/PreviousMonTable';
+import { BorderDecorationsH } from '../components/Styling/BorderDecoration';
+import Navigation from '../components/Styling/Navigation';
+import PreviousMonTable from '../components/AverageSpendings/PreviousMonTable';
 
 
 function MainPage () {
@@ -62,7 +62,13 @@ function MainPage () {
     }
 
     // sums the entries for the month for each category
-    let totalsArray = calculateWeekTotals(month)
+    const [totalsArray, setTotals] = useState(calculateWeekTotals(month))
+
+    const loadTotals = async () => {
+        let totals = await retrieveMonth(today.getMonth()+1, user)
+        console.log(totals)
+        setTotals(totals)
+    }
 
 
 
@@ -81,6 +87,7 @@ function MainPage () {
         loadMonth()
         loadAccounts(user)
         loadEarnings()
+        loadTotals()
     }, [])
 
 

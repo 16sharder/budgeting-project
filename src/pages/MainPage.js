@@ -75,7 +75,7 @@ function MainPage () {
 
     const loadTotals = async () => {
         let totals = await retrieveMonth(today.getMonth()+1, user)
-        setTotals(totals)
+        if (totals != undefined) setTotals(totals)
     }
 
 

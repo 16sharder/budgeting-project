@@ -164,10 +164,16 @@ function SpendingsPage () {
             </tr></tbody></table>
 
 
-            <h3>Earnings: {currency}{earnings.toFixed(2)}</h3>
+            <table className='netTable'><tbody><tr>
+                <td><h2>Earnings: {currency}{earnings.toFixed(2)}</h2>
+                    <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts}})}>Add New Earnings</button>
+                <br></br><button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: accountName}})}>View Earnings Details</button>
+                </td>
+                <td></td>
+                <td><h2>Net Gain/Loss: {currency}{(earnings-totalsArray[11]).toFixed(2)}</h2><br></br><br></br><br></br><br></br><br></br>
+                </td>
 
-            <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts}})}>Add New Earnings</button>
-            <button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: accountName}})}>View Earnings Details</button>
+            </tr></tbody></table>
 
             <p></p>
             <div className='container bottomSep'></div>

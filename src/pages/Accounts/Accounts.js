@@ -175,24 +175,25 @@ function Accounts() {
 
             <table>
                 <thead>
-                    <tr>
-                        <th className="toprow color2 acct"><div>Accounts on</div> {monthName(today.getMonth())} First</th>
-                        <th className="toprow acct"></th>
-                        <th className="toprow color2 acct">Accounts Now</th>
+                    <tr className='toprow acct horizontalB'>
+                        <th><div>Accounts on</div> {monthName(today.getMonth())} First</th>
+                        <th className='verticalB'></th>
+                        <th>Accounts Now</th>
                     </tr>
                 </thead>
                 <tbody>
                 {accounts.map((account, index) => <tr key={index} className='color5' onClick={() => history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: account.account}})}>
                     <td className="color1">{account.currency}{beginnings[index]}</td>
-                    <td className="bold">{account.account}</td>
+                    <td className="bold verticalB">{account.account}</td>
                     <td className='color1'>{account.currency}{account.amount.toFixed(2)}</td></tr>)}
                 </tbody>
             </table>
 
             
-            <table><tbody><tr>
-                <td className="button"><button onClick={sendTransfer} className="currency">Bank Transfer</button></td>
-                <td className="button"><button onClick={() => history.push({pathname:"/add-account", state: {curUser: user, currency: currency}})} className="button">Add New Account</button></td>
+            <table className='twoButtons'><tbody><tr>
+                <td><button onClick={sendTransfer}>Bank Transfer</button></td>
+                <td></td>
+                <td><button onClick={() => history.push({pathname:"/add-account", state: {curUser: user, currency: currency}})}>Add New Account</button></td>
             </tr></tbody></table>
             
             <h3>Total Net Worth</h3>
@@ -205,13 +206,13 @@ function Accounts() {
 
             <table>
                 <thead>
-                    <tr>
-                        <th className="toprow color2">From</th>
-                        <th className="toprow color2">To</th>
-                        <th className="toprow color2">Amount Given</th>
-                        <th className="toprow color2">Amount Received</th>
-                        <th className="toprow color2">Date</th>
-                        <th className="toprow color2">Description</th>
+                    <tr className='toprow horizontalB'>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Amount Given</th>
+                        <th>Amount Received</th>
+                        <th>Date</th>
+                        <th>Description</th>
                     </tr>
                 </thead>
                 <tbody>

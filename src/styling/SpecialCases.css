@@ -1,0 +1,50 @@
+input#input {
+    min-width: 15%;
+}
+
+
+.dates {
+    min-width: 110px;
+}
+
+
+.acct th{
+    min-width: 225px;
+    padding: 0px;
+}
+
+
+
+
+
+.netTable {
+    border: 0px;
+    background-color: #F2EBE5;
+    margin: auto;
+    width: 90%;
+}
+  
+.netTable td {
+    border: 0px;
+    width: 30%;
+}
+
+
+
+
+
+.singleColumn {
+    width: 455px;
+}
+
+.singleColumn th, .singleColumn td{
+    height: 20px;
+    padding: 15px;
+    border-top-width: 1.5px;
+}
+
+
+.edit {
+    position: relative;
+    left: 150px;
+}

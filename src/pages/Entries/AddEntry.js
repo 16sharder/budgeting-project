@@ -54,25 +54,25 @@ function AddEntry() {
     return (
         <>
             <BorderDecorations />
-        <div>
+        <div  className='holder'>
 
             <h3>Create a new entry</h3>
             <div></div>
 
-            <table><tbody>
+            <table className='form'><tbody>
                 <tr>
-                    <td className='button color1'>Bank Account:</td>
-                    <td className='button'></td>
-                    <td className='button'><select
+                    <td>Bank Account:</td>
+                    <td></td>
+                    <td><select
                         value={account}
                         onChange={newN => setAccount(newN.target.value)} >
                             {accounts.map((account, index) => <option value={account.account} key={index}>{account.account}</option>)}
                     </select></td>
                 </tr>
                 <tr>
-                    <td className='button color1'>Category:</td>
-                    <td className='button'></td>
-                    <td className='button'><select
+                    <td>Category:</td>
+                    <td></td>
+                    <td><select
                         value={category}
                         onChange={newN => setCategory(newN.target.value)} >
                             <option value="Groceries">Groceries</option>
@@ -88,15 +88,15 @@ function AddEntry() {
                     </select></td>
                 </tr>
                 <tr>
-                    <td className='button color1'>Amount:</td>
-                    <td className='right button'><select
+                    <td>Amount:</td>
+                    <td className='right'><select
                         className='currency'
                         value={currency}
                         onChange={newN => setCurrency(newN.target.value)} >
                             <option value="€">€</option>
                             <option value="$">$</option>
                         </select></td>
-                    <td className='button'>
+                    <td>
                         <input 
                             type="number"
                             placeholder="0.00"
@@ -105,9 +105,9 @@ function AddEntry() {
                     </td>
                 </tr>
                 <tr>
-                    <td className='button color1'>Date:</td>
-                    <td className='button'></td>
-                    <td className='button'>
+                    <td>Date:</td>
+                    <td></td>
+                    <td>
                         <input 
                             type="date"
                             placeholder="mm/dd"
@@ -116,29 +116,23 @@ function AddEntry() {
                     </td>
                 </tr>
                 <tr>
-                    <td className='button color1'> Descripton:</td>
-                    <td className='button'></td>
-                    <td className='button'>
-                        <input 
-                            className='invisible'
-                            type="text" />
+                    <td>Descripton:</td>
+                    <td></td>
+                    <td>
                         <input 
                             type="text"
                             placeholder="Description"
                             value={description}
                             onChange={newN => setDescription(newN.target.value)} />
-                        <input 
-                            className='invisible'
-                            type="text" />
                     </td>
                 </tr>
             </tbody></table>
 
 
 
-            <table><tbody><tr>
-                <td className="button"><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency}})} className="currency">Back</button></td>
-                <td className="button"><button onClick={addEntry} className="button">Add</button></td>
+            <table className="twoButtons"><tbody><tr>
+                <td><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency}})}>Back</button></td>
+                <td><button onClick={addEntry}>Add</button></td>
             </tr></tbody></table>
         </div>
         <BorderDecorationsBottom />

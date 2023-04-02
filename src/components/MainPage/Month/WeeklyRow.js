@@ -14,45 +14,20 @@ function Week({week, viewWeek, currency}) {
         else copyWeek[idx] = `${currency}${week[idx].toFixed(2)}`
     }
     return(
-        <tr className='color1'>
-            <td className='bold color2 dates'>
-                {week[0]}
-            </td>
-            <td>
-                {copyWeek[1]}
-            </td>
-            <td>
-                {copyWeek[2]}
-            </td>
-            <td>
-                {copyWeek[3]}
-            </td>
-            <td>
-                {copyWeek[4]}
-            </td>
-            <td>
-                {copyWeek[5]}
-            </td>
-            <td>
-                {copyWeek[6]}
-            </td>
-            <td>
-                {copyWeek[7]}
-            </td>
-            <td>
-                {copyWeek[8]}
-            </td>
-            <td>
-                {copyWeek[9]}
-            </td>
-            <td>
-                {copyWeek[10]}
-            </td>
-            <td className='totalc color4'>
+        <tr className='color1' onClick={ () => viewWeek(week[0])}>
+            <td className='verticalB bold color2 dates'>{week[0]}</td>
+            <td>{copyWeek[1]}</td>
+            <td>{copyWeek[2]}</td>
+            <td>{copyWeek[3]}</td>
+            <td>{copyWeek[4]}</td>
+            <td>{copyWeek[5]}</td>
+            <td>{copyWeek[6]}</td>
+            <td>{copyWeek[7]}</td>
+            <td>{copyWeek[8]}</td>
+            <td>{copyWeek[9]}</td>
+            <td>{copyWeek[10]}</td>
+            <td className='verticalB color4'>
                 {currency}{week.slice(1).reduce((a, b) => a + b, 0).toFixed(2)}
-            </td>
-            <td onClick={ () => viewWeek(week[0])} className="bold small color2">
-                View Week
             </td>
         </tr>
     )

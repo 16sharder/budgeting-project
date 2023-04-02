@@ -7,7 +7,7 @@ import React from 'react';
 function Month({month, viewMonth, currency}) {
     return(
         <tr className='color1'>
-            <td className='bold color2 dates' onClick={ () => viewMonth(month[0])}>
+            <td className='verticalB bold color2 dates' onClick={ () => viewMonth(month[0])}>
                 {month[0]}
             </td>
             <td onClick={ () => viewMonth(month[12])}>
@@ -40,7 +40,7 @@ function Month({month, viewMonth, currency}) {
             <td onClick={ () => viewMonth(month[12])}>
                 {currency}{month[10].toFixed(2)}
             </td>
-            <td className='totalc color4' onClick={ () => viewMonth(month[12])}>
+            <td className='verticalB color4' onClick={ () => viewMonth(month[12])}>
                 {currency}{month[11].toFixed(2)}
             </td>
         </tr>

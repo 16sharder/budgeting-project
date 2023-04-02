@@ -4,7 +4,7 @@
         // uses MonthlyTable component
 // Includes a display of the user's total earnings for the month
 // Also shows a table of the user's average spendings for the past 6 months
-        // uses PreviousMonTable component
+        // uses AveragesTable component
 // Includes links to WeekPage for a given week, AddEntry, AddEarning, and EarningDetails
 
 import React from 'react';
@@ -154,9 +154,10 @@ function MainPage () {
             <h2>{message}</h2>
 
             <MonthlyTable month={month} viewWeek={viewWeek} total={totalsArray} currency={currency}/>
-            <table><tbody><tr>
-                <td className="button"><button onClick={toggleCurrency} className="currency">Change Currency</button></td>
-                <td className="button"><button onClick={sendAddEntry} className="button">Add New Entry</button></td>
+            <table className="twoButtons"><tbody><tr>
+                <td><button onClick={toggleCurrency}>Change Currency</button></td>
+                <td></td>
+                <td><button onClick={sendAddEntry}>Add New Entry</button></td>
             </tr></tbody></table>
 
 

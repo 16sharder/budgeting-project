@@ -83,35 +83,35 @@ function AveragesTable({user, currency}) {
     return(
         <table>
             <thead>
-                <tr className='color2'>
-                    <th className='bold totalr'>Month</th>
-                    <th className='bold totalr'>Groceries</th>
-                    <th className='bold totalr'>Eating Out</th>
-                    <th className='bold totalr'>Clothing</th>
-                    <th className='bold totalr'>House Supplies</th>
-                    <th className='bold totalr'>Work Supplies</th>
-                    <th className='bold totalr'>Travel</th>
-                    <th className='bold totalr'>Bills</th>
-                    <th className='bold totalr'>Cash</th>
-                    <th className='bold totalr'>Emergency</th>
-                    <th className='bold totalr'>Other</th>
-                    <th className="bold totalr">Total</th>
+                <tr className='bold horizontalB color2'>
+                    <th className='corner verticalB'>Month</th>
+                    <th>Groceries</th>
+                    <th>Eating Out</th>
+                    <th>Clothing</th>
+                    <th>House Supplies</th>
+                    <th>Work Supplies</th>
+                    <th>Travel</th>
+                    <th>Bills</th>
+                    <th>Cash</th>
+                    <th>Emergency</th>
+                    <th>Other</th>
+                    <th className="bold verticalB">Total</th>
                 </tr></thead>
             <tbody>
             {results.map((month, index) => <Month month={month} viewMonth={viewMonth} currency={currency} key={index}/>)}
-                <tr>
-                    <th className='bold color2 dates totalr'>Average</th>
-                    <th className='totalr'>{currency}{aveGroc.toFixed(2)}</th>
-                    <th className='totalr'>{currency}{aveEat.toFixed(2)}</th>
-                    <th className='totalr'>{currency}{aveClo.toFixed(2)}</th>
-                    <th className='totalr'>{currency}{aveHous.toFixed(2)}</th>
-                    <th className='totalr'>{currency}{aveWork.toFixed(2)}</th>
-                    <th className='totalr'>{currency}{aveTrav.toFixed(2)}</th>
-                    <th className='totalr'>{currency}{aveBil.toFixed(2)}</th>
-                    <th className='totalr'>{currency}{aveCash.toFixed(2)}</th>
-                    <th className='totalr'>{currency}{aveEmr.toFixed(2)}</th>
-                    <th className='totalr'>{currency}{aveOth.toFixed(2)}</th>
-                    <th className='totalr totalc'>{currency}{aveTot.toFixed(2)}</th>
+                <tr className='horizontalB'>
+                    <th className='corner verticalB'>Average</th>
+                    <th>{currency}{aveGroc.toFixed(2)}</th>
+                    <th>{currency}{aveEat.toFixed(2)}</th>
+                    <th>{currency}{aveClo.toFixed(2)}</th>
+                    <th>{currency}{aveHous.toFixed(2)}</th>
+                    <th>{currency}{aveWork.toFixed(2)}</th>
+                    <th>{currency}{aveTrav.toFixed(2)}</th>
+                    <th>{currency}{aveBil.toFixed(2)}</th>
+                    <th>{currency}{aveCash.toFixed(2)}</th>
+                    <th>{currency}{aveEmr.toFixed(2)}</th>
+                    <th>{currency}{aveOth.toFixed(2)}</th>
+                    <th className='verticalB'>{currency}{aveTot.toFixed(2)}</th>
                 </tr>
             </tbody>
         </table>

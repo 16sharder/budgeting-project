@@ -1,4 +1,8 @@
-import './App.css';
+import './styling/App.css';
+import './styling/Decorations.css';
+import './styling/Buttons.css';
+import './styling/Forms.css';
+import './styling/SpecialCases.css';
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';

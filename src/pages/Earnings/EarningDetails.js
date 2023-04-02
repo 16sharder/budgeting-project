@@ -50,14 +50,16 @@ function Earnings () {
             <h2>Earnings in {monthName(Number(month) -1)}</h2>
             <div>
                 {entries.map((entry, index) => 
-                    <table key={index}>
-                        <thead><tr><th className='single toprow color2'>Entry {index+1}</th></tr></thead>
-                        <tbody><tr><td className='single color1'><div>Account: {entry.account}</div><div>Amount: {entry.currency}{(entry.amount*-1).toFixed(2)}</div><div>Description: {entry.description}</div><div></div></td></tr></tbody>
+                    <table key={index} className='singleColumn'>
+                        <thead><tr className='toprow'><th>Entry {index+1}</th></tr></thead>
+                        <tbody><tr><td className='color1'><div>Account: {entry.account}</div><div>Amount: {entry.currency}{(entry.amount*-1).toFixed(2)}</div><div>Description: {entry.description}</div><div></div></td></tr></tbody>
                     </table>
                 )}
             </div>
 
-            <button onClick={sendMonth} className="button">Return to monthly view</button>
+            <br></br>
+
+            <button onClick={sendMonth}>Return to monthly view</button>
             
             <p></p>
             <div className='container bottomFix'></div>

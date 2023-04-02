@@ -81,9 +81,10 @@ function WeekPage2 () {
             <p></p>
 
             <WeeklyTable week={week} viewDetails={viewDetails} total={totalsArray} currency={currency}/>
-            <table><tbody><tr>
-                <td className="button"><button onClick={toggleCurrency} className="currency">Change Currency</button></td>
-                <td className="button"><button onClick={() => history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: accountName}})} className='button'>Return to monthly view</button></td>
+            <table className="twoButtons"><tbody><tr>
+                <td><button onClick={toggleCurrency}>Change Currency</button></td>
+                <td></td>
+                <td><button onClick={() => history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: accountName}})}>Return to monthly view</button></td>
             </tr></tbody></table>
 
             <p></p>

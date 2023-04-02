@@ -28,6 +28,11 @@ function SpendingsPage () {
     const history = useHistory()
     const accountName = location.state.accountName
 
+    console.log(accountName)
+
+    let monthNumStr = String(Number(month) + 1)
+    if (monthNumStr.length == 1) monthNumStr = `0${monthNumStr}`
+
     const [message, setMessage] = useState("Loading...")
 
 
@@ -74,11 +79,12 @@ function SpendingsPage () {
     }
 
     // sums the entries for the month for each category
-    const [totalsArray, setTotals] = useState(calculateWeekTotals(month))
+    const [totalsArray, setTotals] = useState(calculateWeekTotals(monthNumStr))
+    console.log(totalsArray)
 
     const loadTotals = async () => {
         let totals = await retrieveMonth(Number(month)+1, user)
-        setTotals(totals)
+        if (totals != undefined) setTotals(totals)
     }
 
 
@@ -119,9 +125,6 @@ function SpendingsPage () {
     // retrieves the persons earnings for the month
     const [earnings, setEarnings] = useState(0)
 
-    let monthNumStr = String(Number(month) + 1)
-    if (monthNumStr.length == 1) monthNumStr = `0${monthNumStr}`
-
     const loadEarnings = async () => {
 
         const earnings = await retrieveEarnings(monthNumStr, user, accountName)
@@ -158,9 +161,10 @@ function SpendingsPage () {
             <h2>{message}</h2>
 
             <MonthlyTable month={monthArray} viewWeek={viewWeek} total={totalsArray} currency={currency}/>
-            <table><tbody><tr>
-                <td className="button"><button onClick={toggleCurrency} className="currency">Change Currency</button></td>
-                <td className="button"><button onClick={sendAddEntry} className="button">Add New Entry</button></td>
+            <table className="twoButtons"><tbody><tr>
+                <td><button onClick={toggleCurrency}>Change Currency</button></td>
+                <td></td>
+                <td><button onClick={sendAddEntry}>Add New Entry</button></td>
             </tr></tbody></table>
 
 

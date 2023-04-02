@@ -50,16 +50,17 @@ function AddAccount() {
     }
 
     return (
-        <div>
+        <>
             <BorderDecorations />
+            <div className='holder'>
             <h3>Create a new account</h3>
             <div></div>
 
-            <table><tbody>
+            <table className='form'><tbody>
                 <tr>
-                    <td className='button color1'>Account Name:</td>
-                    <td className='button'></td>
-                    <td className='button'>
+                    <td>Account Name:</td>
+                    <td></td>
+                    <td>
                         <input 
                             type="text"
                             placeholder="Name"
@@ -68,9 +69,9 @@ function AddAccount() {
                     </td>
                 </tr>
                 <tr>
-                    <td className='button color1'>User(s):</td>
-                    <td className='button'></td>
-                    <td className='button'>
+                    <td>User(s):</td>
+                    <td></td>
+                    <td>
                         <input 
                             type="text"
                             placeholder="User 1"
@@ -84,15 +85,15 @@ function AddAccount() {
                     </td>
                 </tr>
                 <tr>
-                    <td className='button color1'>Current Amount:</td>
-                    <td className='right button'><select
+                    <td>Current Amount:</td>
+                    <td className='right'><select
                         className='currency'
                         value={currency}
                         onChange={newN => setCurrency(newN.target.value)} >
                             <option value="€">€</option>
                             <option value="$">$</option>
                     </select></td>
-                    <td className='button'>
+                    <td>
                         <input 
                             type="number"
                             placeholder="0.00"
@@ -100,20 +101,18 @@ function AddAccount() {
                             onChange={newN => setAmount(newN.target.value)} />
                     </td>
                 </tr>
-                <tr>
-                    <td className='button color1'></td>
-                    <td className='button'></td>
-                    <td className='button'></td>
-                </tr>
             </tbody></table>
             
+            
 
-            <table><tbody><tr>
-                <td className="button"><button onClick={() => history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})} className="currency">Back</button></td>
-                <td className="button"><button onClick={addAccount} className="button">Add</button></td>
+            <table className='twoButtons'><tbody><tr>
+                <td><button onClick={() => history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})}>Back</button></td>
+                <td></td>
+                <td><button onClick={addAccount}>Add</button></td>
             </tr></tbody></table>
+            </div>
             <BorderDecorationsBottom />
-        </div>
+        </>
     )
 }
 

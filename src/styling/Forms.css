@@ -1,0 +1,70 @@
+.form {
+    border: 0px;
+    min-width: 125%;
+    position: relative;
+    right: 10%;
+}
+
+.holder {
+    width: 30%;
+}
+
+.form td, .form th {
+    font-size: large;
+    background-color: #F2EBE5;
+    border: 0px;
+    border-radius: 0px;
+    width: 78.5%;
+    text-align: left;
+}
+
+
+
+input{
+    font-size: small;
+    min-width: 96%;
+}
+
+select {
+    font-size: medium;
+    width: 170px;
+    min-width: 96%;
+}
+  
+
+
+select.currency {
+    width: 10%;
+}
+
+td.right {
+    text-align: right;
+}
+
+
+
+.form tr td:nth-child(1){
+    color: #9F496E
+}
+
+
+
+.form + .twoButtons{
+    min-width: 120%;
+    position:relative;
+    right: 7.5%
+}
+
+.form + .twoButtons td:first-child{
+    padding: 0px;
+    text-align: left;
+}
+
+.form + .twoButtons td:last-child{
+    padding: 0px;
+    text-align: right;
+}
+
+
+
+  

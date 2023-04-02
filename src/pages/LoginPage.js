@@ -47,7 +47,8 @@ function LoginPage () {
                 value={name}
                 onChange={newN => {setName(newN.target.value)}} />
             <p></p>
-            <button className="button" onClick={() => send(name)}>Continue</button>
+            <button className="rightButton" onClick={() => send(name)}>Continue</button>
+            
             <BorderDecorationsBottom />
         </>
     )

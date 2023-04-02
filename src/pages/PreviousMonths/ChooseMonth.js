@@ -30,8 +30,17 @@ function ChooseMonth () {
 
     const history = useHistory()
 
-    const send = () => {
-        history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: account}})
+    // event listener for when user presses Enter
+    const input = document.getElementById("input")
+    if (input != undefined) {
+        input.addEventListener("keypress", ({key}) => {
+            if (key == "Enter") {
+                send(input.children[0].children[0].value, input.children[2].children[0].value)}
+        })
+    }
+
+    const send = (accountName, monthVal) => {
+        history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: monthVal, accountName: accountName}})
     }
 
     // loads everything
@@ -84,15 +93,15 @@ function ChooseMonth () {
             <h3>Please choose an account and a month to view</h3>
 
 
-            <table><tbody><tr>
-            <td className='invisBackground'><select
+            <table className='invisBackground'><tbody><tr id='input'>
+            <td><select
                 value={account}
                 onChange={newN => setAccount(newN.target.value)} >
-                    <option value="all">All accounts</option>
+                    <option value="All Accounts">All accounts</option>
                     {accounts.map((account, index) => <option value={account} key={index}>{account}</option>)}
             </select></td>
-            <td className='invisBackground'></td>
-            <td className='invisBackground'><select
+            <td></td>
+            <td><select
                 value={month}
                 onChange={newN => {setMonth(newN.target.value)}}>
                     <option value={month0}>{monthName(month0)}</option>
@@ -111,7 +120,7 @@ function ChooseMonth () {
             </tr></tbody></table>
 
             <p></p>
-            <button className="button" onClick={send}>Continue</button>
+            <button className="rightButton" onClick={() => send(account, month)}>Continue</button>
             <BorderDecorationsBottom />
         </>
     )

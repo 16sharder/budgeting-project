@@ -13,7 +13,7 @@ function Day({day, viewDetails, currency}) {
     }
     return(
         <tr className='color1'>
-            <td className='bold color2'>
+            <td className='bold color2 verticalB'>
                 {day[0]}
             </td>
             <td onClick={ () => viewDetails(day[0], "Groceries")}>
@@ -46,7 +46,7 @@ function Day({day, viewDetails, currency}) {
             <td onClick={ () => viewDetails(day[0], "Other")}>
                 {copyDay[10]}
             </td>
-            <td className='totalc color4'>
+            <td className='verticalB color4'>
                 {currency}{day.slice(1).reduce((a, b) => a + b, 0).toFixed(2)}
             </td>
         </tr>

@@ -66,18 +66,19 @@ function ViewDetails () {
             <h2>{category} entries for {date}</h2>
             <div>
                 {entries.map((entry, index) => 
-                    <table key={index}>
-                        <thead><tr><th className='single toprow color2'>Entry {index+1}
+                    <table key={index} className='singleColumn'>
+                        <thead><tr className='toprow'><th>Entry {index+1}
                             <FiEdit className="edit" onClick={() => {history.push({pathname:"/edit", state: {entry: entry, curUser: user, currency: currency, accounts: accounts, dates: weekDates, month: month}})}}/></th></tr></thead>
-                        <tbody><tr><td className='single color1'><div>Account: {entry.account}</div><div>Amount: {entry.currency}{entry.amount.toFixed(2)}</div><div>Description: {entry.description}</div><div></div></td></tr></tbody>
+                        <tbody><tr><td className='color1'><div>Account: {entry.account}</div><div>Amount: {entry.currency}{entry.amount.toFixed(2)}</div><div>Description: {entry.description}</div><div></div></td></tr></tbody>
                     </table>
                 )}
-            </div>
 
-            <table><tbody><tr className='invisBackground'>
-                <td className='invisBackground detailsButtons'><button onClick={sendWeek} className="currency">Return to weekly view</button></td>
-                <td className='invisBackground detailsButtons'><button onClick={sendMonth} className="button">Return to monthly view</button></td>
+            <table className='twoButtons'><tbody><tr>
+                <td><button onClick={sendWeek}>Return to weekly view</button></td>
+                <td><button onClick={sendMonth}>Return to monthly view</button></td>
             </tr></tbody></table>
+
+            </div>
             
             <p></p>
             <div className='container bottomFix'></div>

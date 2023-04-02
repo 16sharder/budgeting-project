@@ -79,9 +79,10 @@ function WeekPage () {
             <p></p>
 
             <WeeklyTable week={week} viewDetails={viewDetails} total={totalsArray} currency={currency}/>
-            <table><tbody><tr>
-                <td className="button"><button onClick={toggleCurrency} className="currency">Change Currency</button></td>
-                <td className="button"><button onClick={() => history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts}})} className="button">Add New Entry</button></td>
+            <table className="twoButtons"><tbody><tr>
+                <td><button onClick={toggleCurrency}>Change Currency</button></td>
+                <td></td>
+                <td><button onClick={() => history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts}})}>Add New Entry</button></td>
             </tr></tbody></table>
 
             <button onClick={() => history.push({pathname:"/main", state: {user: user, currency: currency}})}>Return to monthly view</button>

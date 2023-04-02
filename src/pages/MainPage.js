@@ -18,7 +18,7 @@ import {calculateWeekTotals} from "../helperfuncs/OtherCalcs"
 
 import { BorderDecorationsH } from '../components/Styling/BorderDecoration';
 import Navigation from '../components/Styling/Navigation';
-import PreviousMonTable from '../components/AverageSpendings/AveragesTable';
+import AveragesTable from '../components/AverageSpendings/AveragesTable';
 
 
 function MainPage () {
@@ -75,7 +75,7 @@ function MainPage () {
 
     const loadTotals = async () => {
         let totals = await retrieveMonth(today.getMonth()+1, user)
-        setTotals(totals)
+        if (totals != undefined) setTotals(totals)
     }
 
 
@@ -160,17 +160,23 @@ function MainPage () {
             </tr></tbody></table>
 
 
-            <h3>Earnings: {currency}{earnings.toFixed(2)}</h3>
 
-            <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts}})}>Add New Earnings</button>
-            <button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: "All Accounts"}})}>View Earnings Details</button>
+            <table className='netTable'><tbody><tr>
+                <td><h2>Earnings: {currency}{earnings.toFixed(2)}</h2>
+                    <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts}})}>Add New Earnings</button>
+                    <br></br><button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: "All Accounts"}})}>View Earnings Details</button>
+                </td>
+                <td></td>
+                <td><h2>Net Gain/Loss: {currency}{(earnings-totalsArray[11]).toFixed(2)}</h2><br></br><br></br><br></br><br></br><br></br>
+                </td>
 
-            <p></p>
+            </tr></tbody></table>
 
+            <br></br>
 
             <h3>Monthly Spendings:</h3>
 
-            <PreviousMonTable user={user} currency={currency}/>
+            <AveragesTable user={user} currency={currency}/>
 
             <p></p>
             <div className='container bottomSep'></div>

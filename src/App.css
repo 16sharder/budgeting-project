@@ -482,3 +482,17 @@ select.currency {
 h2 {
   margin-top: 60px;
 }
+
+
+
+
+table.netTable {
+  background-color: #F2EBE5;
+  margin: auto;
+  width: 90%;
+}
+
+table.netTable td {
+  border: 0px;
+  width: 30%;
+}

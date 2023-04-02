@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { retrieveMonth, retrieveMultipleMonths } from '../../helperfuncs/FetchFunctions';
 import Month from './MonthlyRow';
 
-function PreviousMonTable({user, currency}) {
+function AveragesTable({user, currency}) {
     const history = useHistory()
     const today = new Date()
     let month = (today.getMonth() + 1)
@@ -22,7 +22,7 @@ function PreviousMonTable({user, currency}) {
         let y = 1
         let nums = [month]
         let next = month
-        while (y != 6) {
+        while (y != 7) {
             if (next == 1) {
                 next = 12
             } else next = next - 1
@@ -55,7 +55,7 @@ function PreviousMonTable({user, currency}) {
     const [aveTot, setTot] = useState(0)
 
     const loadAve = async () => {
-        const results = await retrieveMultipleMonths(month-1, user, 6)
+        const results = await retrieveMultipleMonths(month-1, user, 7)
 
         setGroc(results[0] / results[11])
         setEat(results[1] / results[11])
@@ -118,4 +118,4 @@ function PreviousMonTable({user, currency}) {
     )
 }
 
-export default PreviousMonTable
+export default AveragesTable

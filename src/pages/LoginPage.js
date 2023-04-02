@@ -14,8 +14,17 @@ function LoginPage () {
 
     const history = useHistory()
 
-    const send = () => {
-        history.push({pathname:"/main", state: {user: name, currency: "€"}})
+    // event listener for when user presses Enter
+    const input = document.getElementById("input")
+    if (input != undefined) {
+        input.addEventListener("keypress", ({key}) => {
+            if (key == "Enter") {
+                send(input.value)}
+        })
+    }
+
+    const send = (nameVal) => {
+        history.push({pathname:"/main", state: {user: nameVal, currency: "€"}})
     }
 
     return (
@@ -31,13 +40,14 @@ function LoginPage () {
             <div></div>
 
             <h4>Please enter your name to continue:</h4>
-            <input className=""
+            <input id="input"
+                className=""
                 type="text"
                 placeholder="Name"
                 value={name}
                 onChange={newN => {setName(newN.target.value)}} />
             <p></p>
-            <button className="button" onClick={send}>Continue</button>
+            <button className="button" onClick={() => send(name)}>Continue</button>
             <BorderDecorationsBottom />
         </>
     )

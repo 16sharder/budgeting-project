@@ -13,7 +13,7 @@ import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import {createMonthDates} from "../helperfuncs/DateCalculators"
-import {organizeDaysEntries, retrieveWeekEntries, retrieveEarnings, convertToEuros, convertToDollars, retrieveMonth} from "../helperfuncs/FetchFunctions"
+import {organizeDaysEntries, retrieveWeekEntries, retrieveEarnings, convertToEuros, convertToDollars, retrieveMonth, retrieveNetSpendings} from "../helperfuncs/FetchFunctions"
 import {calculateWeekTotals} from "../helperfuncs/OtherCalcs"
 
 import { BorderDecorationsH } from '../components/Styling/BorderDecoration';
@@ -80,14 +80,28 @@ function MainPage () {
 
 
 
-    // gets all of the users account information
+    // gets all of the user's account information
     const [accounts, setAccounts] = useState([])
+    const [netGain, setNetGain] = useState(0)
 
     const loadAccounts = async (user) => {
+        // retrieves a list of the user's accounts
         const response = await fetch(`/accounts/${user}`)
-        const data = await response.json()
-        setAccounts(data)
+        const accts = await response.json()
+        setAccounts(accts)
+
+        // also loads account info for the beginning of the month
+        const beginnings = await retrieveNetSpendings(today.getMonth(), today.getFullYear(), accts)
+
+        // uses info to calculate overall net gain/loss
+        let result = 0
+        for (let idx in accts) {
+            result += accts[idx].amount
+            result -= Number(beginnings[idx])
+        }
+        setNetGain(result.toFixed(2))
     }
+
 
 
     // loads everything
@@ -120,7 +134,7 @@ function MainPage () {
 
 
 
-    // retrieves the persons earnings for the month
+    // retrieves the user's earnings for the month
     const [earnings, setEarnings] = useState(0)
 
     let monthNumStr = String(today.getMonth() + 1)
@@ -145,6 +159,8 @@ function MainPage () {
 
         setEarnings(totalEarnings)
     }
+
+
     
     return (
         <>
@@ -168,7 +184,7 @@ function MainPage () {
                     <br></br><button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: "All Accounts"}})}>View Earnings Details</button>
                 </td>
                 <td></td>
-                <td><h2>Net Gain/Loss: {currency}{(earnings-totalsArray[11]).toFixed(2)}</h2><br></br><br></br><br></br><br></br><br></br>
+                <td><h2>Net Gain/Loss: {currency}{netGain}</h2><br></br><br></br><br></br><br></br><br></br>
                 </td>
 
             </tr></tbody></table>

@@ -92,6 +92,41 @@ async function retrieveEarnings (month, user, accountName="All Accounts") {
     return resultCopy
 }
 
+// Takes a month, year, and a list of accounts to calculate the net earnings for those accounts in that month
+async function retrieveNetSpendings (month, year, accounts) {
+
+    // retrieves the months data
+    const fetchMonth = async () => {
+        const response = await fetch(`/months/${month+1}`)
+        const data = await response.json()
+        return data
+    }
+
+    const months = await fetchMonth()
+
+    const beginnings = []
+
+    // makes sure that only the month for the right year and right account is added, for each account
+    for (const account of accounts) {
+        let thisMonth = undefined
+        for (const mo of months){
+            console.log(mo)
+            if (mo.year == year) {
+                if (mo.account == account.account){
+                    thisMonth = mo
+                }
+            }
+        }
+
+        // adds the amount spent to the current amount in bank, to get amount at beginning of month
+        let spent = 0
+        if (thisMonth != undefined) {spent = thisMonth.monthlyTotal}
+        beginnings.push((account.amount + spent).toFixed(2))
+    }
+
+    return beginnings
+}
+
 async function retrieveMonth (month, user, account="All Accounts") {
     const fetchMonth = async () => {
         const response = await fetch(`/months/${month}`)
@@ -225,4 +260,4 @@ async function organizeDaysEntries (dayEntries, currency) {
 
 
 
-export {retrieveUserAccountNames, retrieveDayEntries, retrieveWeekEntries, retrieveEarnings, retrieveMonth, retrieveMultipleMonths, organizeDaysEntries, convertToEuros, convertToDollars}
+export {retrieveUserAccountNames, retrieveDayEntries, retrieveWeekEntries, retrieveEarnings, retrieveNetSpendings, retrieveMonth, retrieveMultipleMonths, organizeDaysEntries, convertToEuros, convertToDollars}

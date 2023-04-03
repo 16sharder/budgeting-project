@@ -9,7 +9,7 @@ import React from 'react';
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import { retrieveUserAccountNames, retrieveWeekEntries } from '../../helperfuncs/FetchFunctions';
+import { retrieveNetSpendings, retrieveUserAccountNames, retrieveWeekEntries } from '../../helperfuncs/FetchFunctions';
 import {calcMonthEnd, monthName} from "../../helperfuncs/DateCalculators"
 import {calculateNetWorth} from "../../helperfuncs/OtherCalcs"
 
@@ -20,58 +20,27 @@ function Accounts() {
     const location = useLocation()
     const user = location.state.user
     let currency = location.state.currency
-    
-    // gets all of the users account information
-    const [accounts, setAccounts] = useState([])
-
-    const loadAccounts = async (user) => {
-        const response = await fetch(`/accounts/${user}`)
-        const data = await response.json()
-        setAccounts(data)
-    }
-
 
     const history = useHistory()
 
     const today = new Date()
-
-
-    // code to display accounts at beginning of month
     const month = today.getMonth()
     const year = today.getFullYear()
+    
+    // gets all of the user's account information
+    const [accounts, setAccounts] = useState([])
+    const [beginnings, setBeginnings] = useState([])
 
-    const [months, setMonths] = useState([])
-
-    // retrieves the months data
-    const fetchMonth = async () => {
-        const response = await fetch(`/months/${month+1}`)
+    const loadAccounts = async (user) => {
+        // retrieves a list of the user's accounts
+        const response = await fetch(`/accounts/${user}`)
         const data = await response.json()
-        setMonths (data)
+        setAccounts(data)
+
+        // also loads account info for the beginning of the month
+        const result = await retrieveNetSpendings(month, year, data)
+        setBeginnings(result)
     }
-
-    const beginnings = []
-
-    // makes sure that only the month for the right year and right account is added, for each account
-    for (const account of accounts) {
-        let thisMonth = undefined
-        for (const mo of months){
-            if (mo.year == year) {
-                if (mo.account == account.account){
-                    thisMonth = mo
-                }
-            }
-        }
-
-        // adds the amount spent to the current amount in bank, to get amount at beginning of month
-        let spent = 0
-        if (thisMonth != undefined) {spent = thisMonth.monthlyTotal}
-        beginnings.push((account.amount + spent).toFixed(2))
-    }
-
-
-
-
-
 
 
     // retrieves user's net worth 
@@ -155,7 +124,6 @@ function Accounts() {
         loadNetWorth()
         loadAccounts(user)
         loadTransfers()
-        fetchMonth()
     }, [])
 
 

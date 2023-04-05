@@ -23,13 +23,15 @@ function AddAccount() {
 
     const addAccount = async () => {
         const resp = await fetch(`/accounts/`)
-        const data = await resp.json()
-        const accountNames = data.map((acct) => {return acct.account})
-
-        for (const name of accountNames) {
-            if (name == account){
-                alert("That account name is already in use. Please use a different name")
-                return
+        if (resp.status == 200){
+            const data = await resp.json()
+            const accountNames = data.map((acct) => {return acct.account})
+    
+            for (const name of accountNames) {
+                if (name == account){
+                    alert("That account name is already in use. Please use a different name")
+                    return
+                }
             }
         }
         

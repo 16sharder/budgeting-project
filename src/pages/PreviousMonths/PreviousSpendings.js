@@ -80,7 +80,7 @@ function SpendingsPage () {
     const [totalsArray, setTotals] = useState(calculateWeekTotals(monthNumStr))
 
     const loadTotals = async () => {
-        let totals = await retrieveMonth(Number(month)+1, user)
+        let totals = await retrieveMonth(Number(month)+1, user, accountName)
         if (totals != undefined) setTotals(totals)
     }
 

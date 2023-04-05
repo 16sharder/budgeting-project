@@ -54,6 +54,10 @@ function MainPage () {
         for (let week of monthDatesArray) {
             // gets an array (7) of days, each day containing each entry for that day
             const days = await retrieveWeekEntries(week, user)
+            if (days == undefined){
+                setMessage("There was an error loading your data")
+                return
+            }
             let organizedDays = []
             for (let day of days){
                 // sums the entries for each category for the day, returning an array of category sums

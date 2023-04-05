@@ -19,6 +19,9 @@ async function retrieveDayEntries (day, user, accountName="All Accounts") {
     // retrieves all the entries for a specific day as an array
     const fetchEntries = async (day) => {
         const response = await fetch(`/entries/${day}`)
+        if (response.status !== 200) {
+            return undefined
+        }
         const data = await response.json()
         return data
     }
@@ -54,6 +57,9 @@ async function retrieveWeekEntries (week, user, days=7, accountName="All Account
     let returnArray = []
     for (let day of weekDates){
         const result = await retrieveDayEntries(day, user, accountName)
+        if (result == undefined){
+            return undefined
+        }
 
         returnArray.push(result)
     }

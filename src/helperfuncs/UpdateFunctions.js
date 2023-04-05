@@ -16,6 +16,7 @@ async function updateAccount (account, amount) {
     })
     if (res.status === 200){
         alert("Successfully updated accounts")
+        window.location.reload()
     } else{
         alert(`Update failed. Status code = ${res.status}`)
     }

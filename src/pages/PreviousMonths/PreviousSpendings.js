@@ -28,8 +28,6 @@ function SpendingsPage () {
     const history = useHistory()
     const accountName = location.state.accountName
 
-    console.log(accountName)
-
     let monthNumStr = String(Number(month) + 1)
     if (monthNumStr.length == 1) monthNumStr = `0${monthNumStr}`
 
@@ -80,7 +78,6 @@ function SpendingsPage () {
 
     // sums the entries for the month for each category
     const [totalsArray, setTotals] = useState(calculateWeekTotals(monthNumStr))
-    console.log(totalsArray)
 
     const loadTotals = async () => {
         let totals = await retrieveMonth(Number(month)+1, user)

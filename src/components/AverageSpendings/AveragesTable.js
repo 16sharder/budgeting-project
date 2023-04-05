@@ -12,7 +12,7 @@ import Month from './MonthlyRow';
 function AveragesTable({user, currency}) {
     const history = useHistory()
     const today = new Date()
-    let month = (today.getMonth() + 1)
+    let month = (today.getMonth())
 
     // retrieves each individual month's spendings
     const [results, setResults] = useState([])
@@ -22,7 +22,7 @@ function AveragesTable({user, currency}) {
         let y = 1
         let nums = [month]
         let next = month
-        while (y != 7) {
+        while (y != 6) {
             if (next == 1) {
                 next = 12
             } else next = next - 1
@@ -31,12 +31,13 @@ function AveragesTable({user, currency}) {
         }
         for (let month of nums) {
             let mo = await retrieveMonth(month, user)
-            res.push(mo)
+            if (mo[11] != 0) res.push(mo)
             if (month == 0) {
                 month = 12
             } else {month -= 1}
         }
-        setResults(res.slice(1).reverse())
+        setResults(res.reverse())
+        return res
     }
 
 
@@ -55,19 +56,22 @@ function AveragesTable({user, currency}) {
     const [aveTot, setTot] = useState(0)
 
     const loadAve = async () => {
-        const results = await retrieveMultipleMonths(month-1, user, 7)
+        const months = await loadMonths()
+        const res = await retrieveMultipleMonths(months, user)
+        if (res[11] == 0) res[11] = 1
+        console.log(res)
 
-        setGroc(results[0] / results[11])
-        setEat(results[1] / results[11])
-        setClo(results[2] / results[11])
-        setHous(results[3] / results[11])
-        setWork(results[4] / results[11])
-        setTrav(results[5] / results[11])
-        setBil(results[6] / results[11])
-        setCash(results[7] / results[11])
-        setEmr(results[8] / results[11])
-        setOth(results[9] / results[11])
-        setTot(results[10] / results[11])
+        setGroc(res[0] / res[11])
+        setEat(res[1] / res[11])
+        setClo(res[2] / res[11])
+        setHous(res[3] / res[11])
+        setWork(res[4] / res[11])
+        setTrav(res[5] / res[11])
+        setBil(res[6] / res[11])
+        setCash(res[7] / res[11])
+        setEmr(res[8] / res[11])
+        setOth(res[9] / res[11])
+        setTot(res[10] / res[11])
     }
 
     useEffect(() => {

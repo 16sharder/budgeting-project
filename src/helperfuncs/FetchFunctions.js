@@ -19,6 +19,9 @@ async function retrieveDayEntries (day, user, accountName="All Accounts") {
     // retrieves all the entries for a specific day as an array
     const fetchEntries = async (day) => {
         const response = await fetch(`/entries/${day}`)
+        if (response.status !== 200) {
+            return undefined
+        }
         const data = await response.json()
         return data
     }
@@ -54,6 +57,9 @@ async function retrieveWeekEntries (week, user, days=7, accountName="All Account
     let returnArray = []
     for (let day of weekDates){
         const result = await retrieveDayEntries(day, user, accountName)
+        if (result == undefined){
+            return undefined
+        }
 
         returnArray.push(result)
     }
@@ -110,7 +116,6 @@ async function retrieveNetSpendings (month, year, accounts) {
     for (const account of accounts) {
         let thisMonth = undefined
         for (const mo of months){
-            console.log(mo)
             if (mo.year == year) {
                 if (mo.account == account.account){
                     thisMonth = mo
@@ -168,7 +173,7 @@ async function retrieveMonth (month, user, account="All Accounts") {
     } else return undefined
 }
 
-async function retrieveMultipleMonths(latestMo, user, num) {
+async function retrieveMultipleMonths(months) {
     let groc = 0
     let eat = 0
     let clo = 0
@@ -181,30 +186,21 @@ async function retrieveMultipleMonths(latestMo, user, num) {
     let other = 0
     let total = 0
 
-    let month = latestMo
     let x = 0
-    let y = 1
-    while (y !== num) {
-        let results = await retrieveMonth(month, user)
-        if (results != undefined) {
-            x += 1
-            groc += results[1]
-            eat += results[2]
-            clo += results[3]
-            house += results[4]
-            work += results[5]
-            trav += results[6]
-            bills += results[7]
-            cash += results[8]
-            emr += results[9]
-            other += results[10]
-            total += results[11]
-        }
+    for (let month of months) {
+        x += 1
+        groc += month[1]
+        eat += month[2]
+        clo += month[3]
+        house += month[4]
+        work += month[5]
+        trav += month[6]
+        bills += month[7]
+        cash += month[8]
+        emr += month[9]
+        other += month[10]
+        total += month[11]
 
-        if (month == 1) {
-            month = 12
-        } else {month -= 1}
-        y += 1
     }
     return [groc, eat, clo, house, work, trav, bills, cash, emr, other, total, x]
 }

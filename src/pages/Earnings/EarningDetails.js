@@ -12,6 +12,7 @@ import { monthName } from '../../helperfuncs/DateCalculators';
 
 import Navigation from '../../components/Styling/Navigation';
 import {BorderDecorationsH} from '../../components/Styling/BorderDecoration';
+import { FiEdit } from 'react-icons/fi';
 
 function Earnings () {
     const location = useLocation()
@@ -20,6 +21,7 @@ function Earnings () {
     const currency = location.state.currency
     const account = location.state.account
     const history = useHistory()
+    const accounts = location.state.accounts
 
     const [entries, setEntries] = useState([])
 
@@ -51,8 +53,9 @@ function Earnings () {
             <div>
                 {entries.map((entry, index) => 
                     <table key={index} className='singleColumn'>
-                        <thead><tr className='toprow'><th>Entry {index+1}</th></tr></thead>
-                        <tbody><tr><td className='color1'><div>Account: {entry.account}</div><div>Amount: {entry.currency}{(entry.amount*-1).toFixed(2)}</div><div>Description: {entry.description}</div><div></div></td></tr></tbody>
+                        <thead><tr className='toprow'><th>Entry {index+1}
+                            <FiEdit className="edit" onClick={() => {history.push({pathname:"/edit-earning", state: {entry: entry, curUser: user, currency: currency, accounts: accounts, month: month}})}}/></th></tr></thead>
+                        <tbody><tr><td className='color1'><div>Account: {entry.account}</div><div>Amount: {(entry.amount*-1).toLocaleString('en', {style: "currency", currency: entry.currency})}</div><div>Description: {entry.description}</div><div></div></td></tr></tbody>
                     </table>
                 )}
             </div>

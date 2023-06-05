@@ -30,17 +30,8 @@ function MonthlyTable({month, viewWeek, total, currency}) {
                 {month.map((week, index) => <Week week={week} viewWeek={viewWeek} currency={currency} key={index}/>)}
                 <tr className='horizontalB'>
                     <td className='corner verticalB'>Total</td>
-                    <td>{currency}{total[1].toFixed(2)}</td>
-                    <td>{currency}{total[2].toFixed(2)}</td>
-                    <td>{currency}{total[3].toFixed(2)}</td>
-                    <td>{currency}{total[4].toFixed(2)}</td>
-                    <td>{currency}{total[5].toFixed(2)}</td>
-                    <td>{currency}{total[6].toFixed(2)}</td>
-                    <td>{currency}{total[7].toFixed(2)}</td>
-                    <td>{currency}{total[8].toFixed(2)}</td>
-                    <td>{currency}{total[9].toFixed(2)}</td>
-                    <td>{currency}{total[10].toFixed(2)}</td>
-                    <td className='verticalB'>{currency}{total[11].toFixed(2)}</td>
+                    {total.slice(1, 11).map((cat, index) => <td key={index}>{cat.toLocaleString('en', {style: "currency", currency: currency})}</td>)}
+                    <td className='verticalB'>{total[11].toLocaleString('en', {style: "currency", currency: currency})}</td>
                 </tr>
             </tbody>
         </table>

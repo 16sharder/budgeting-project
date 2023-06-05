@@ -9,12 +9,13 @@ import React from 'react';
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import { retrieveNetSpendings, retrieveUserAccountNames, retrieveWeekEntries } from '../../helperfuncs/FetchFunctions';
-import {calcMonthEnd, monthName} from "../../helperfuncs/DateCalculators"
+import { retrieveNetSpendings, retrieveUserAccountNames } from '../../helperfuncs/FetchFunctions';
+import {monthName} from "../../helperfuncs/DateCalculators"
 import {calculateNetWorth} from "../../helperfuncs/OtherCalcs"
 
 import Navigation from '../../components/Styling/Navigation';
 import { BorderDecorationsH } from '../../components/Styling/BorderDecoration';
+import { FiEdit } from 'react-icons/fi';
 
 function Accounts() {
     const location = useLocation()
@@ -151,9 +152,9 @@ function Accounts() {
                 </thead>
                 <tbody>
                 {accounts.map((account, index) => <tr key={index} className='color5' onClick={() => history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: account.account}})}>
-                    <td className="color1">{account.currency}{beginnings[index]}</td>
+                    <td className="color1">{Number(beginnings[index]).toLocaleString('en', {style: "currency", currency: account.currency})}</td>
                     <td className="bold verticalB">{account.account}</td>
-                    <td className='color1'>{account.currency}{account.amount.toFixed(2)}</td></tr>)}
+                    <td className='color1'>{account.amount.toLocaleString('en', {style: "currency", currency: account.currency})}</td></tr>)}
                 </tbody>
             </table>
 
@@ -165,7 +166,7 @@ function Accounts() {
             </tr></tbody></table>
             
             <h3>Total Net Worth</h3>
-            <div className='color5'>{currency}{netWorth}</div>
+            <div className='color5'>{Number(netWorth).toLocaleString('en', {style: "currency", currency: currency})}</div>
 
 
 
@@ -181,16 +182,18 @@ function Accounts() {
                         <th>Amount Received</th>
                         <th>Date</th>
                         <th>Description</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {transfers.map((transfer, index) => <tr key={index}>
                         <td className="bold color5">{transfer.account}</td>
                         <td className='bold color5'>{transfer.account2}</td>
-                        <td className="color1">{transfer.currency}{transfer.amount}</td>
-                        <td className='color1'>{transfer.currency2}{transfer.amount * transfer.exchangeRate}</td>
+                        <td className="color1">{transfer.amount.toLocaleString('en', {style: "currency", currency: transfer.currency})}</td>
+                        <td className='color1'>{(transfer.amount * transfer.exchangeRate).toLocaleString('en', {style: "currency", currency: transfer.currency2})}</td>
                         <td>{changeDate(transfer.date)}</td>
                         <td>{transfer.description}</td>
+                        <td className='color1'><FiEdit onClick={() => {history.push({pathname:"/edit-transfer", state: {entry: transfer, curUser: user, currency: currency, accounts: accounts, month: month}})}}/></td>
                     </tr>)}
                 </tbody>
             </table>

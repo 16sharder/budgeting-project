@@ -43,35 +43,15 @@ function AveragesTable({user, currency}) {
 
 
     // retrieves the persons average spendings for the past 6 months
-    const [aveGroc, setGroc] = useState(0)
-    const [aveEat, setEat] = useState(0)
-    const [aveClo, setClo] = useState(0)
-    const [aveHous, setHous] = useState(0)
-    const [aveWork, setWork] = useState(0)
-    const [aveTrav, setTrav] = useState(0)
-    const [aveBil, setBil] = useState(0)
-    const [aveCash, setCash] = useState(0)
-    const [aveEmr, setEmr] = useState(0)
-    const [aveOth, setOth] = useState(0)
-    const [aveTot, setTot] = useState(0)
+    const [averages, setAverages] = useState(new Array(11).fill(0))
 
     const loadAve = async () => {
         const months = await loadMonths()
         const res = await retrieveMultipleMonths(months, user)
         if (res[11] == 0) res[11] = 1
-        console.log(res)
 
-        setGroc(res[0] / res[11])
-        setEat(res[1] / res[11])
-        setClo(res[2] / res[11])
-        setHous(res[3] / res[11])
-        setWork(res[4] / res[11])
-        setTrav(res[5] / res[11])
-        setBil(res[6] / res[11])
-        setCash(res[7] / res[11])
-        setEmr(res[8] / res[11])
-        setOth(res[9] / res[11])
-        setTot(res[10] / res[11])
+        const avgs = res.slice(0, 11).map((cat) => cat / res[11])
+        setAverages(avgs)
     }
 
     useEffect(() => {
@@ -105,17 +85,8 @@ function AveragesTable({user, currency}) {
             {results.map((month, index) => <Month month={month} viewMonth={viewMonth} currency={currency} key={index}/>)}
                 <tr className='horizontalB'>
                     <th className='corner verticalB'>Average</th>
-                    <th>{currency}{aveGroc.toFixed(2)}</th>
-                    <th>{currency}{aveEat.toFixed(2)}</th>
-                    <th>{currency}{aveClo.toFixed(2)}</th>
-                    <th>{currency}{aveHous.toFixed(2)}</th>
-                    <th>{currency}{aveWork.toFixed(2)}</th>
-                    <th>{currency}{aveTrav.toFixed(2)}</th>
-                    <th>{currency}{aveBil.toFixed(2)}</th>
-                    <th>{currency}{aveCash.toFixed(2)}</th>
-                    <th>{currency}{aveEmr.toFixed(2)}</th>
-                    <th>{currency}{aveOth.toFixed(2)}</th>
-                    <th className='verticalB'>{currency}{aveTot.toFixed(2)}</th>
+                    {averages.slice(0, 10).map((cat, index) => <th key={index}>{cat.toLocaleString('en', {style: "currency", currency: currency})}</th>)}
+                    <th className='verticalB'>{averages[10].toLocaleString('en', {style: "currency", currency: currency})}</th>
                 </tr>
             </tbody>
         </table>

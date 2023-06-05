@@ -63,8 +63,8 @@ function WeekPage2 () {
 
 
     const toggleCurrency = () => {
-        if (currency === "€") currency = "$"
-        else if (currency === "$") currency = "€"
+        if (currency === "EUR") currency = "USD"
+        else if (currency === "USD") currency = "EUR"
 
         history.push({pathname:"/weekly-view2", state: {dates: dates, user: user, currency: currency, month: month, accountName: accountName}})
         window.location.reload()

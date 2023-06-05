@@ -1,4 +1,4 @@
-import {calcWeekDates, convertDate, monthName} from "../helperfuncs/DateCalculators"
+import {calcWeekDates, convertDate} from "../helperfuncs/DateCalculators"
 
 async function retrieveUserAccountNames (user) {
     // returns an array of all the names of the accounts of a specified user
@@ -206,16 +206,18 @@ async function retrieveMultipleMonths(months) {
 }
 
 async function convertToEuros (amount) {
-    const response = await fetch("https://v6.exchangerate-api.com/v6/xxxxxxxxxxxxxxxxxxxxxxxx/latest/EUR")
-    const data = await response.json()
-    const calculated = amount * data.conversion_rates["USD"]
+    // const response = await fetch("https://v6.exchangerate-api.com/v6/xxxxxxxxxxxxxxxxxxxxxxxx/latest/EUR")
+    // const data = await response.json()
+    // const calculated = amount * data.conversion_rates["USD"]
+    const calculated = amount
     return calculated
 }
 
 async function convertToDollars (amount) {
-    const response = await fetch("https://v6.exchangerate-api.com/v6/xxxxxxxxxxxxxxxxxxxxxxxx/latest/USD")
-    const data = await response.json()
-    const calculated = amount * data.conversion_rates["EUR"]
+    // const response = await fetch("https://v6.exchangerate-api.com/v6/xxxxxxxxxxxxxxxxxxxxxxxx/latest/USD")
+    // const data = await response.json()
+    // const calculated = amount * data.conversion_rates["EUR"]
+    const calculated = amount
     return calculated
 }
 
@@ -231,10 +233,10 @@ async function organizeDaysEntries (dayEntries, currency) {
         let value = entry.amount
 
         // determines if the entry needs to be converted to a different currency for display
-        if (currency === "€") {
+        if (currency === "EUR") {
             if (entry.currency != currency) value = await convertToEuros(entry.amount)
         } 
-        else if (currency === "$") {
+        else if (currency === "USD") {
             if (entry.currency != currency) value = await convertToDollars(entry.amount)
         } 
 

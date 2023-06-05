@@ -10,38 +10,13 @@ function Month({month, viewMonth, currency}) {
             <td className='verticalB bold color2 dates' onClick={ () => viewMonth(month[0])}>
                 {month[0]}
             </td>
-            <td onClick={ () => viewMonth(month[12])}>
-                {currency}{month[1].toFixed(2)}
-            </td>
-            <td onClick={ () => viewMonth(month[12])}>
-                {currency}{month[2].toFixed(2)}
-            </td>
-            <td onClick={ () => viewMonth(month[12])}>
-                {currency}{month[3].toFixed(2)}
-            </td>
-            <td onClick={ () => viewMonth(month[12])}>
-                {currency}{month[4].toFixed(2)}
-            </td>
-            <td onClick={ () => viewMonth(month[12])}>
-                {currency}{month[5].toFixed(2)}
-            </td>
-            <td onClick={ () => viewMonth(month[12])}>
-                {currency}{month[6].toFixed(2)}
-            </td>
-            <td onClick={ () => viewMonth(month[12])}>
-                {currency}{month[7].toFixed(2)}
-            </td>
-            <td onClick={ () => viewMonth(month[12])}>
-                {currency}{month[8].toFixed(2)}
-            </td>
-            <td onClick={ () => viewMonth(month[12])}>
-                {currency}{month[9].toFixed(2)}
-            </td>
-            <td onClick={ () => viewMonth(month[12])}>
-                {currency}{month[10].toFixed(2)}
-            </td>
+
+            {month.slice(1, 11).map((cat, index) => <td onClick={ () => viewMonth(month[12])} key={index}> 
+                {cat.toLocaleString('en', {style: "currency", currency: currency})}
+            </td>)}
+            
             <td className='verticalB color4' onClick={ () => viewMonth(month[12])}>
-                {currency}{month[11].toFixed(2)}
+                {month[11].toLocaleString('en', {style: "currency", currency: currency})}
             </td>
         </tr>
     )

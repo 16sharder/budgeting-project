@@ -28,6 +28,9 @@ function SpendingsPage () {
     const history = useHistory()
     const accountName = location.state.accountName
 
+    // gets all of the users account information, for use in passing on to next pages
+    const [accounts, setAccounts] = useState([])
+
     let monthNumStr = String(Number(month) + 1)
     if (monthNumStr.length == 1) monthNumStr = `0${monthNumStr}`
 
@@ -85,10 +88,6 @@ function SpendingsPage () {
     }
 
 
-
-    // gets all of the users account information, for use in passing on to next pages
-    const [accounts, setAccounts] = useState([])
-
     const loadAccounts = async (user) => {
         const response = await fetch(`/accounts/${user}`)
         const data = await response.json()
@@ -110,8 +109,8 @@ function SpendingsPage () {
 
     // updates the currency when button is hit
     const toggleCurrency = () => {
-        if (currency === "€") currency = "$"
-        else if (currency === "$") currency = "€"
+        if (currency === "EUR") currency = "USD"
+        else if (currency === "USD") currency = "EUR"
 
         history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: accountName}})
         window.location.reload()
@@ -130,10 +129,10 @@ function SpendingsPage () {
         for (let earning of earnings){
             let value = earning.amount
             // determines if the entry needs to be converted to a different currency for display
-            if (currency === "€") {
+            if (currency === "EUR") {
                 if (earning.currency != currency) value = await convertToEuros(earning.amount)
             } 
-            else if (currency === "$") {
+            else if (currency === "USD") {
                 if (earning.currency != currency) value = await convertToDollars(earning.amount)
             } 
             totalEarnings -= value
@@ -156,6 +155,8 @@ function SpendingsPage () {
             <Navigation user={user} currency={currency} />
             <p></p>
             <h2>{message}</h2>
+            <div>Please click on a week if you would like to see entries by day</div>
+            <p></p>
 
             <MonthlyTable month={monthArray} viewWeek={viewWeek} total={totalsArray} currency={currency}/>
             <table className="twoButtons"><tbody><tr>
@@ -166,12 +167,12 @@ function SpendingsPage () {
 
 
             <table className='netTable'><tbody><tr>
-                <td><h2>Earnings: {currency}{earnings.toFixed(2)}</h2>
+                <td><h2>Earnings: {earnings.toLocaleString('en', {style: "currency", currency: currency})}</h2>
                     <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts}})}>Add New Earnings</button>
-                <br></br><button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: accountName}})}>View Earnings Details</button>
+                <br></br><button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: accountName, accounts: accounts}})}>View Earnings Details</button>
                 </td>
                 <td></td>
-                <td><h2>Net Gain/Loss: {currency}{(earnings-totalsArray[11]).toFixed(2)}</h2><br></br><br></br><br></br><br></br><br></br>
+                <td><h2>Net Gain/Loss: {(earnings-totalsArray[11]).toLocaleString('en', {style: "currency", currency: currency})}</h2><br></br><br></br><br></br><br></br><br></br>
                 </td>
 
             </tr></tbody></table>

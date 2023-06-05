@@ -16,9 +16,9 @@ function AddAccount() {
     const curRency = location.state.currency
     
     const [account, setName] = useState("")
-    const [user, setUser] = useState(location.state.curUser)
+    const [user, setUser] = useState(curUser)
     const [user2, setUser2] = useState("")
-    const [currency, setCurrency] = useState("€")
+    const [currency, setCurrency] = useState(curRency)
     const [amount, setAmount] = useState(0)
 
     const addAccount = async () => {
@@ -92,8 +92,8 @@ function AddAccount() {
                         className='currency'
                         value={currency}
                         onChange={newN => setCurrency(newN.target.value)} >
-                            <option value="€">€</option>
-                            <option value="$">$</option>
+                            <option value="EUR">€</option>
+                            <option value="USD">$</option>
                     </select></td>
                     <td>
                         <input 

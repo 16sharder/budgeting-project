@@ -19,6 +19,7 @@ import {calculateWeekTotals} from "../helperfuncs/OtherCalcs"
 import { BorderDecorationsH } from '../components/Styling/BorderDecoration';
 import Navigation from '../components/Styling/Navigation';
 import AveragesTable from '../components/AverageSpendings/AveragesTable';
+import changeCurrency from '../helperfuncs/changeCurrency';
 
 
 function MainPage () {
@@ -110,6 +111,7 @@ function MainPage () {
         loadAccounts(user)
         loadEarnings()
         loadTotals()
+        changeCurrency()
     }, [])
 
 
@@ -118,8 +120,8 @@ function MainPage () {
 
     // updates the currency when button is hit
     const toggleCurrency = () => {
-        if (currency === "€") currency = "$"
-        else if (currency === "$") currency = "€"
+        if (currency === "EUR") currency = "USD"
+        else if (currency === "USD") currency = "EUR"
 
         history.push({pathname:"/main", state: {user: user, currency: currency}})
         window.location.reload()
@@ -148,10 +150,10 @@ function MainPage () {
         for (let earning of earnings){
             let value = earning.amount
             // determines if the entry needs to be converted to a different currency for display
-            if (currency === "€") {
+            if (currency === "EUR") {
                 if (earning.currency != currency) value = await convertToEuros(earning.amount)
             } 
-            else if (currency === "$") {
+            else if (currency === "USD") {
                 if (earning.currency != currency) value = await convertToDollars(earning.amount)
             } 
             totalEarnings -= value
@@ -168,6 +170,8 @@ function MainPage () {
             <Navigation user={user} currency={currency} />
             <p></p>
             <h2>{message}</h2>
+            <div>Please click on a week if you would like to see entries by day</div>
+            <p></p>
 
             <MonthlyTable month={month} viewWeek={viewWeek} total={totalsArray} currency={currency}/>
             <table className="twoButtons"><tbody><tr>
@@ -179,12 +183,12 @@ function MainPage () {
 
 
             <table className='netTable'><tbody><tr>
-                <td><h2>Earnings: {currency}{earnings.toFixed(2)}</h2>
+                <td><h2>Earnings: {earnings.toLocaleString('en', {style: "currency", currency: currency})}</h2>
                     <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts}})}>Add New Earnings</button>
-                    <br></br><button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: "All Accounts"}})}>View Earnings Details</button>
+                    <br></br><button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: "All Accounts", accounts: accounts}})}>View Earnings Details</button>
                 </td>
                 <td></td>
-                <td><h2>Net Gain/Loss: {currency}{netGain}</h2><br></br><br></br><br></br><br></br><br></br>
+                <td><h2>Net Gain/Loss: {Number(netGain).toLocaleString('en', {style: "currency", currency: currency})}</h2><br></br><br></br><br></br><br></br><br></br>
                 </td>
 
             </tr></tbody></table>

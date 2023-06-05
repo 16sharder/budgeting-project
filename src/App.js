@@ -19,6 +19,8 @@ import ChooseMonth from './pages/PreviousMonths/ChooseMonth';
 import SpendingsPage from './pages/PreviousMonths/PreviousSpendings';
 import WeekPage2 from './pages/PreviousMonths/WeekPage2';
 import EditEntry from './pages/Entries/EditEntry';
+import EditEarning from './pages/Earnings/EditEarning';
+import EditTransfer from './pages/Accounts/EditTransfer';
 
 function App() {
   return (
@@ -40,6 +42,9 @@ function App() {
 
           <Route path="/edit" >
             <EditEntry />
+          </Route>
+          <Route path="/edit-earning" >
+            <EditEarning />
           </Route>
 
           <Route path="/add-entry" >
@@ -63,6 +68,9 @@ function App() {
 
           <Route path="/transfer" >
             <Transfer />
+          </Route>
+          <Route path="/edit-transfer" >
+            <EditTransfer />
           </Route>
 
 

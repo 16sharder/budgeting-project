@@ -65,8 +65,7 @@ function EditEntry() {
     }}
 
     const deleteEntry = async () => {
-        // adds the entry to mongoDB
-        const editedEntry = {account, category, currency, amount, date, description}
+        // deletes the entry from mongoDB
         const response = await fetch(`/entries/${entry._id}`, {method: "DELETE"})
         if (response.status !== 204){
             alert(`Delete entry failed. Status code = ${response.status}`)
@@ -125,8 +124,8 @@ function EditEntry() {
                         className='currency'
                         value={currency}
                         onChange={newN => setCurrency(newN.target.value)} >
-                            <option value="€">€</option>
-                            <option value="$">$</option>
+                            <option value="EUR">€</option>
+                            <option value="USD">$</option>
                         </select></td>
                     <td>
                         <input 

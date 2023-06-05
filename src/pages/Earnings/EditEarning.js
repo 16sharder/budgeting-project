@@ -1,62 +1,91 @@
-// The Add New Entry Page:
-// Shown when the user has pressed the Add New Entry button on any monthly or weekly page
-// Displays a form for the user to fill in all the data for their new entry
+// The Edit Existing Earning Page:
+// Shown when the user has selected the Edit button on a specific earning from the ViewDetails page
+// Displays a form for the user to update the data for their earning entry, with default vals as previous vals
+        // also includes a delete button
 // Sends the user back to the MainPage
 
 import React from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
 import { updateAccount, updateMonths } from '../../helperfuncs/UpdateFunctions';
 
-function AddEntry() {
+function EditEarning() {
     const history = useHistory()
     const location = useLocation()
+    const entry = location.state.entry
     const curUser = location.state.curUser
     const curRency = location.state.currency
+
     const accounts = location.state.accounts
+    const month = location.state.month
 
-    const today = convertTodayToDate()
+    const [account, setAccount] = useState(entry.account)
+    const [currency, setCurrency] = useState(entry.currency)
+    const [amount, setAmount] = useState(-entry.amount)
+    const [date, setDate] = useState(entry.date)
+    const [description, setDescription] = useState(entry.description)
 
-    const [account, setAccount] = useState(`${accounts[0].account}`)
-    const [category, setCategory] = useState("Groceries")
-    const [currency, setCurrency] = useState(`${accounts[0].currency}`)
-    const [amount, setAmount] = useState(0)
-    const [date, setDate] = useState(today)
-    const [description, setDescription] = useState("")
+    // stores old values
+    const oldAcct = entry.account
+    const oldAmt = entry.amount
+    const oldDate = entry.date
 
-    const addEntry = async () => {
-        // adds the entry to mongoDB
-        const newEntry = {account, category, currency, amount, date, description}
-        const response = await fetch("/entries", {
-            method: "POST", 
-            body: JSON.stringify(newEntry),
+
+    const updateEntry = async (amount) => {
+        amount *= -1
+        // edits the entry in mongoDB
+        const editedEntry = {account, category: "Earnings", currency, amount, date, description}
+        const response = await fetch(`/entries/${entry._id}`, {
+            method: "PUT", 
+            body: JSON.stringify(editedEntry),
             headers: {"Content-type": "application/json"}
         })
-        if (response.status !== 201){
-            alert(`Create entry failed. Status code = ${response.status}`)
+        if (response.status !== 200){
+            alert(`Edit entry failed. Status code = ${response.status}`)
         } else {
 
-        // adds the entry to the month's records
-        updateMonths(date, account, amount, category)
-        // updates the account that was spent from
-        updateAccount(account, amount)
+        // subtracts the old entry data from the month's records
+        await updateMonths(oldDate, oldAcct, -oldAmt, "Earnings")
+        // adds the new entry data to the month's records
+        await updateMonths(date, account, amount, "Earnings")
+
+        // updates the original account that was spent from
+        await updateAccount(oldAcct, -oldAmt)
+        // updates the actual account that was spent from
+        await updateAccount(account, amount)
 
 
-        // returns the user to the main page
+        // returns the user to the view details page
         history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
 
+    }}
+
+    const deleteEntry = async () => {
+        // deletes the entry from mongoDB
+        const response = await fetch(`/entries/${entry._id}`, {method: "DELETE"})
+        if (response.status !== 204){
+            alert(`Delete entry failed. Status code = ${response.status}`)
+        } else {
+
+        // subtracts the old entry data from the month's records
+        await updateMonths(oldDate, oldAcct, -oldAmt, "Earnings")
+        // updates the original account that was spent from
+        await updateAccount(oldAcct, -oldAmt)
+
+
+        // returns the user to the view details page
+        history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
     }}
 
 
     return (
         <>
             <BorderDecorations />
-        <div  className='holder'>
+        <div className='holder'>
 
-            <h3>Create a new entry</h3>
+            <h3>Edit entry</h3>
             <div></div>
 
             <table className='form'><tbody>
@@ -67,24 +96,6 @@ function AddEntry() {
                         value={account}
                         onChange={newN => setAccount(newN.target.value)} >
                             {accounts.map((account, index) => <option value={account.account} key={index}>{account.account}</option>)}
-                    </select></td>
-                </tr>
-                <tr>
-                    <td>Category:</td>
-                    <td></td>
-                    <td><select
-                        value={category}
-                        onChange={newN => setCategory(newN.target.value)} >
-                            <option value="Groceries">Groceries</option>
-                            <option value="Eating Out">Eating Out</option>
-                            <option value="Clothing">Clothing</option>
-                            <option value="House Supplies">House Supplies</option>
-                            <option value="Work Supplies">Work Supplies</option>
-                            <option value="Travel">Travel</option>
-                            <option value="Bills">Bills</option>
-                            <option value="Cash">Cash</option>
-                            <option value="Emergencies">Emergencies</option>
-                            <option value="Other">Other</option>
                     </select></td>
                 </tr>
                 <tr>
@@ -116,7 +127,7 @@ function AddEntry() {
                     </td>
                 </tr>
                 <tr>
-                    <td>Descripton:</td>
+                    <td> Descripton:</td>
                     <td></td>
                     <td>
                         <input 
@@ -132,12 +143,16 @@ function AddEntry() {
 
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency}})}>Back</button></td>
-                <td><button onClick={addEntry}>Add</button></td>
+                <td><button onClick={() => updateEntry(amount)}>Confirm</button></td>
             </tr></tbody></table>
-        </div>
+    
+            <br></br>
+
+            <button onClick={deleteEntry} className="delete">Delete</button>
+            </div>
         <BorderDecorationsBottom />
         </>
     )
 }
 
-export default AddEntry
+export default EditEarning

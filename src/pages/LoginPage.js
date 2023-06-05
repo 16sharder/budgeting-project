@@ -24,7 +24,7 @@ function LoginPage () {
     }
 
     const send = (nameVal) => {
-        history.push({pathname:"/main", state: {user: nameVal, currency: "€"}})
+        history.push({pathname:"/main", state: {user: nameVal, currency: "EUR"}})
     }
 
     return (

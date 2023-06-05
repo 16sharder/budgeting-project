@@ -1,13 +1,13 @@
-// The Register New Transfer Page:
-// Shown when the user has pressed the Bank Transfer button on the Accounts page
-// Displays a form for the user to fill in all the data of their transfer
+// The Edit Existing Transfer Page:
+// Shown when the user has selected the Edit button on a specific transfer from the Accounts page
+// Displays a form for the user to update the data for their transfer, with default vals as previous vals
+        // also includes a delete button
 // Sends the user back to the Accounts Page
 
 import React from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
 import { updateAccount, updateMonths } from '../../helperfuncs/UpdateFunctions';
 
@@ -16,71 +16,107 @@ function getFeeCurrency(currency){
     else if (currency == "EUR") return "€"
 }
 
-function Transfer() {
+function EditTransfer() {
     const history = useHistory()
     const location = useLocation()
+    const entry = location.state.entry
     const curUser = location.state.curUser
     const curRency = location.state.currency
+
     const accounts = location.state.accounts
+    const month = location.state.month
 
-    const today = convertTodayToDate()
+    const [account, setAccount] = useState(entry.account)
+    const [account2, setAccount2] = useState(entry.account2)
+    const [currency, setCurrency] = useState(entry.currency)
+    const [amount, setAmount] = useState(entry.amount)
+    const [fee, setFee] = useState(entry.fee)
+    const [fee_currency, setFeeCurr] = useState(getFeeCurrency(entry.currency))
+    const [exchangeRate, setExchangeRate] = useState(entry.exchangeRate)
+    const [date, setDate] = useState(entry.date)
+    const [description, setDescription] = useState(entry.description)
 
-    const [account, setAccount] = useState(accounts[0].account)
-    const [account2, setAccount2] = useState(accounts[1].account)
-    const [currency, setCurrency] = useState(accounts[0].currency)
-    const [amount, setAmount] = useState(0)
-    const [fee_currency, setFeeCurr] = useState(getFeeCurrency(accounts[0].currency))
-    const [fee, setFee] = useState(0)
-    const [exchangeRate, setExchangeRate] = useState(1)
-    const [date, setDate] = useState(today)
-    const [description, setDescription] = useState("")
+    // stores old values
+    const oldAcct = entry.account
+    const oldAcct2 = entry.account2
+    const oldAmt = entry.amount
+    const oldDate = entry.date
+    const oldFee = entry.fee
+    const oldRate = entry.exchangeRate
 
 
-    const performTransfer = async () => {
+    const updateEntry = async (amount) => {
         // retrieves the second account to get the currency
         const account2Res = await fetch(`/accounts/${account2}`)
         const account2Data = await account2Res.json()
 
         const currency2 = account2Data[0].currency
 
-        // adds the transfer to mongoDB
+        // edits the entry in mongoDB
         const month = date.slice(5, 7)
-        const newTransfer = {account, account2, currency, currency2, amount, fee, exchangeRate, date, month, description}
-        const response = await fetch("/transfers", {
-            method: "POST", 
-            body: JSON.stringify(newTransfer),
+        const editedEntry = {account, account2, currency, currency2, amount, fee, exchangeRate, date, month, description}
+        const response = await fetch(`/transfers/${entry._id}`, {
+            method: "PUT", 
+            body: JSON.stringify(editedEntry),
             headers: {"Content-type": "application/json"}
         })
-        if (response.status === 201){
-            alert("Successfully performed transfer")
-        
-        // adds the transfer to the month's records for both accounts
+        if (response.status !== 200){
+            alert(`Edit entry failed. Status code = ${response.status}`)
+        } else {
+
+        // removes the transfer from the month's records for both old accounts
+        await updateMonths(oldDate, oldAcct, (oldAmt + oldFee) * -1)
+        await updateMonths(oldDate, oldAcct2, oldAmt * oldRate)
+
+        // adds the transfer to the month's records for both new accounts
         await updateMonths(date, account, Number(amount) + Number(fee))
         await updateMonths(date, account2, amount * exchangeRate * -1)
-        // updates both accounts
+
+        // updates both old accounts
+        await updateAccount(oldAcct, (oldAmt + oldFee) * -1)
+        await updateAccount(oldAcct2, oldAmt * oldRate)
+
+        // updates both new accounts
         await updateAccount(account, Number(amount) + Number(fee))
         await updateAccount(account2, amount * exchangeRate * -1)
 
-
-
+        // returns the user to the view details page
         history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
 
-        }else{
-            alert(`Transfer failed. Status code = ${response.status}`)
-        }
-        
-    }
+    }}
+
+    const deleteEntry = async () => {
+        // deletes the entry from mongoDB
+        const response = await fetch(`/transfers/${entry._id}`, {method: "DELETE"})
+        if (response.status !== 204){
+            alert(`Delete entry failed. Status code = ${response.status}`)
+        } else {
+
+        // removes the transfer from the month's records for both old accounts
+        await updateMonths(oldDate, oldAcct, (oldAmt + oldFee) * -1)
+        await updateMonths(oldDate, oldAcct2, oldAmt * oldRate)
+
+        // updates both old accounts
+        await updateAccount(oldAcct, (oldAmt + oldFee) * -1)
+        await updateAccount(oldAcct2, oldAmt * oldRate)
+
+
+        // returns the user to the view details page
+        history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
+    }}
 
     const setCurrencies = (currency) => {
         setCurrency(currency)
         setFeeCurr(getFeeCurrency(currency))
     }
 
+
     return (
         <>
             <BorderDecorations />
             <div className='holder'>
-            <h3>Bank Transfer</h3>
+
+            <h3>Edit transfer</h3>
             <div></div>
 
             <table className='form'><tbody>
@@ -167,14 +203,19 @@ function Transfer() {
 
 
 
-            <table className='twoButtons'><tbody><tr>
+            <table className="twoButtons"><tbody><tr>
                 <td><button onClick={() => history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})}>Back</button></td>
-                <td><button onClick={performTransfer}>Transfer</button></td>
+                <td><button onClick={() => updateEntry(amount)}>Confirm</button></td>
             </tr></tbody></table>
+    
+            <br></br>
+
+            <button onClick={deleteEntry} className="delete">Delete</button>
             </div>
-            <BorderDecorationsBottom />
+        <BorderDecorationsBottom />
         </>
     )
 }
 
-export default Transfer
+export default EditTransfer
+

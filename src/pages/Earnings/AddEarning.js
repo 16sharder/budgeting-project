@@ -22,7 +22,7 @@ function AddEarning() {
 
     const [account, setAccount] = useState(`${accounts[0].account}`)
     const category = "Earnings"
-    const [currency, setCurrency] = useState("€")
+    const [currency, setCurrency] = useState(`${accounts[0].currency}`)
     const [amount, setAmount] = useState(0)
     const [date, setDate] = useState(today)
     const [description, setDescription] = useState("")
@@ -77,8 +77,8 @@ function AddEarning() {
                         className='currency'
                         value={currency}
                         onChange={newN => setCurrency(newN.target.value)} >
-                            <option value="€">€</option>
-                            <option value="$">$</option>
+                            <option value="EUR">€</option>
+                            <option value="USD">$</option>
                         </select></td>
                     <td>
                         <input 

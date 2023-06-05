@@ -31,10 +31,10 @@ async function calculateNetWorth (user, currency){
     let sum = 0
     for (let account of accounts){
         let value = account.amount
-        if (currency === "€") {
+        if (currency === "EUR") {
             if (account.currency != currency) value = await convertToEuros(account.amount)
         } 
-        else if (currency === "$") {
+        else if (currency === "USD") {
             if (account.currency != currency) value = await convertToDollars(account.amount)
         }
         sum += value

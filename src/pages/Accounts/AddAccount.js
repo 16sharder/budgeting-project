@@ -3,7 +3,7 @@
 // Displays a form for the user to fill in all the data for their new account
 // Sends the user back to the Accounts Page
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
@@ -16,27 +16,37 @@ function AddAccount() {
     const curRency = location.state.currency
     
     const [account, setName] = useState("")
+    const [bank, setBank] = useState("")
     const [user, setUser] = useState(curUser)
     const [user2, setUser2] = useState("")
     const [currency, setCurrency] = useState(curRency)
     const [amount, setAmount] = useState(0)
 
-    const addAccount = async () => {
-        const resp = await fetch(`/accounts/`)
+    const [accountNames, setNames] = useState([])
+    const [banks, setBanks] = useState([])
+
+    const getAccounts = async () => {
+        const resp = await fetch(`/accounts`)
         if (resp.status == 200){
             const data = await resp.json()
-            const accountNames = data.map((acct) => {return acct.account})
-    
-            for (const name of accountNames) {
-                if (name == account){
-                    alert("That account name is already in use. Please use a different name")
-                    return
-                }
+            setNames(data.map((acct) => acct.account))
+
+            const bnks = (data.map((acct) => acct.bank))
+            const bankSet = new Set(bnks)
+            setBanks(Array.from(bankSet))
+        }
+    }
+
+    const addAccount = async () => {
+        for (const name of accountNames) {
+            if (name == account){
+                alert("That account name is already in use. Please use a different name")
+                return
             }
         }
         
 
-        const newAccount = {account, user, user2, currency, amount}
+        const newAccount = {account, bank, user, user2, currency, amount}
         const response = await fetch("/accounts", {
             method: "POST", 
             body: JSON.stringify(newAccount),
@@ -50,6 +60,10 @@ function AddAccount() {
             alert(`Create account failed. Status code = ${response.status}`)
         }
     }
+
+    useEffect(() => {
+        getAccounts()
+    }, [])
 
     return (
         <>
@@ -68,6 +82,24 @@ function AddAccount() {
                             placeholder="Name"
                             value={account}
                             onChange={newN => setName(newN.target.value)} />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Bank:<br/><br/></td>
+                    <td></td>
+                    <td>
+                        <input 
+                            type="text"
+                            placeholder="New Bank"
+                            value={bank}
+                            onChange={newN => setBank(newN.target.value)} />
+                        <select
+                            value={bank}
+                            onChange={newN => setBank(newN.target.value)} >
+                                <option value={""}>-New Bank-</option>
+                                {banks.map((bank, index) => <option value={bank} key={index}>{bank}</option>)}
+                        </select>
+                        <br/><br/>
                     </td>
                 </tr>
                 <tr>

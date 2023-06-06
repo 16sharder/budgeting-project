@@ -70,27 +70,34 @@ const deleteEntry = async(filter) => {
 const accountSchema = mongoose.Schema({
     // creates a Schema that is used as a basis for all account objects created
     account: { type: String, required: true },
+    bank: {type: String, required: true},
     user: { type: String, required: true },
     user2: { type: String, required: false },
     currency: { type: String, required: true },
-    amount: {type: Number, required: true},
+    amount: {type: Number, required: true}
 })
 
 // creates an Account model class based on the precreated Schema
 const Account = mongoose.model("Account", accountSchema)
 
-const createAccount = async(account, user, currency, amount, user2) => {
+const createAccount = async(account, bank, user, currency, amount, user2) => {
     // uses the Account class to create a new account object with all required parameters
-    const acct = new Account({account: account, user: user, currency: currency, amount: amount, user2: user2})
+    const acct = new Account({account: account, bank: bank, user: user, currency: currency, amount: amount, user2: user2})
     return acct.save()
 }
-
-
 
 const getAllAccounts = async(user) => {
     // retrieves all the accounts for the user in existence in the database
     // substitute: make sure both user and user 2 are being searched -- solution found, needs testing
-    const query = Account.find({ $or: [{user: user}, {user2: user}, {account: user}]})
+    const query = Account.find({})
+    return query.exec()
+}
+
+
+const getAllUserAccounts = async(user) => {
+    // retrieves all the accounts for the user in existence in the database
+    // substitute: make sure both user and user 2 are being searched -- solution found, needs testing
+    const query = Account.find({ $or: [{user: user}, {user2: user}, {account: user}]}).sort({bank: -1, amount: 1})
     return query.exec()
 }
 
@@ -150,7 +157,7 @@ const createTransfer = async(account, account2, currency, currency2, amount, fee
 const getAllTransfers = async(month) => {
     // retrieves all the transfers for the account in existence in the database
     // substitute: make sure both user and user 2 are being searched -- solution found, needs testing
-    const query = Transfer.find({month})
+    const query = Transfer.find({month}).sort({date: 1})
     return query.exec()
 }
 
@@ -158,6 +165,8 @@ const getAllTransfers = async(month) => {
 const updateTransfer = async(filter, update) => {
     // finds the transfer of a certain id, then updates the provided criteria for that account
     await Transfer.updateOne(filter, update)
+    const query = Transfer.find(filter)
+    return query.exec()
 }
 
 
@@ -225,4 +234,4 @@ db.once("open", () => {
     console.log("Successfully connected to MongoDB using Mongoose!");
 });
 
-export {createEntry, getAllEntries, findEntries, updateEntry, deleteEntry, createAccount, getAllAccounts, findAccount, updateAccount, deleteAccount, createTransfer, getAllTransfers, updateTransfer, deleteTransfer, createMonth, findMonth, updateMonth, deleteMonth}
+export {createEntry, getAllEntries, findEntries, updateEntry, deleteEntry, createAccount, getAllAccounts, getAllUserAccounts, findAccount, updateAccount, deleteAccount, createTransfer, getAllTransfers, updateTransfer, deleteTransfer, createMonth, findMonth, updateMonth, deleteMonth}

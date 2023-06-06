@@ -12,67 +12,6 @@ app.use(express.json());
 
 
 
-function isMonthValid(date) {
-    // checks that the month does not make the date an impossible date
-
-    // month can't be greater than 12, so first digit can't be greater than 1
-    if (parseInt(date[0]) > 1) return false
-
-    // if first digit is 1, second digit can't be higher than 2
-    if (parseInt(date[0]) == 1){
-        if (parseInt(date[1]) > 2) return false
-    }
-
-    // if first digit is not 1, it must be 0, and the second digit can't also be 0
-    else if (parseInt(date[1]) == 0) return false
-
-    // otherwise return True
-    return true
-}
-
-function isDayValid(date) {
-    // checks that the month does not make the date an impossible date
-
-    // day can't be greater than 31, so first digit can't be greater than 3
-    if (parseInt(date[3]) > 3) return false
-
-    // if the month is february, the date can't be higher than 29
-    if (parseInt(date[0] == 0) && parseInt(date[1] == 2)){
-        if (parseInt(date[3] > 2)) return false
-    }
-
-    // if first digit is 3, second digit can't be higher than 1 or 0, depending on month
-    if (parseInt(date[3]) == 3){
-
-        if (parseInt(date[4]) > 1) return false
-
-        if (parseInt(date[0] == 1) && parseInt(date[1] == 1)){
-            if (parseInt(date[4]) > 0) return false 
-        }
-
-        if (parseInt(date[1]) == 4 || parseInt(date[1]) == 6 || parseInt(date[1]) == 9){
-            if (parseInt(date[4]) > 0) return false
-        }
-    }
-
-    // if first digit is 0, second digit can't also be 0
-    if (parseInt(date[3]) == 0){
-        if (parseInt(date[4]) == 0) return false
-    }
-
-    // otherwise return True
-    return true
-}
-
-function checkValidity(account, category, currency, amount, date, description) {
-    // checks the validity of a body object
-
-    if (! isMonthValid(date)) return false
-    if (! isDayValid(date)) return false
-    else return true
-}
-
-
 app.post("/entries", asyncHandler(async(req, res, next) => {
     // uses createEntry function from model to make a new entry with given criteria
     // returns the entry object
@@ -145,20 +84,26 @@ app.post("/accounts", asyncHandler(async(req, res, next) => {
 
     // if body is valid, creates a new account, testing if there is a secondary user or not
     if (req.body.user2 == "None" || req.body.user2 == "none" || req.body.user2 === "") {
-        const account = await entries.createAccount(req.body.account, req.body.user, req.body.currency, req.body.amount)
+        const account = await entries.createAccount(req.body.account, req.body.bank, req.body.user, req.body.currency, req.body.amount)
         res.type("application/json").status(201).send(account)}
 
     else {
-        const account = await entries.createAccount(req.body.account, req.body.user, req.body.currency, req.body.amount, req.body.user2)
+        const account = await entries.createAccount(req.body.account, req.body.bank, req.body.user, req.body.currency, req.body.amount, req.body.user2)
         res.type("application/json").status(201).send(account)
 }}))
 
+
+app.get("/accounts", asyncHandler(async(req, res, next) => {
+    // uses getAllAccounts function from model to return all accounts for specified user
+    const accounts = await entries.getAllAccounts()
+    res.type("application/json").status(200).send(accounts)
+}))
 
 
 app.get("/accounts/:user", asyncHandler(async(req, res, next) => {
     // uses getAllAccounts function from model to return all accounts for specified user
     const user = req.params.user
-    const accounts = await entries.getAllAccounts(user)
+    const accounts = await entries.getAllUserAccounts(user)
     res.type("application/json").status(200).send(accounts)
 }))
 
@@ -205,8 +150,6 @@ app.post("/transfers", asyncHandler(async(req, res, next) => {
     res.type("application/json").status(201).send(transfer)
 }))
 
-
-
 app.get("/transfers/:month", asyncHandler(async(req, res, next) => {
     // uses getAllTransfers function from model to return all transfers for specified account for that month
     const month = req.params.month
@@ -215,17 +158,15 @@ app.get("/transfers/:month", asyncHandler(async(req, res, next) => {
 }))
 
 
-// didn't really implement these next 2
-
-app.put("/transfers/:account", asyncHandler(async(req, res, next) => {
+app.put("/transfers/:id", asyncHandler(async(req, res, next) => {
     // uses updateTransfer function from model to update a transfer given their id and the values to update
     // returns a count of modified transfers
-    const request = {account: req.params.account}
-    const account = await entries.updateAccount(request, req.body)
-    if (account === null) {
+    const request = {_id: req.params.id}
+    const transfer = await entries.updateTransfer(request, req.body)
+    if (transfer === null) {
         res.type("application/json").status(404).send({Error: "Not found"})
     }
-    else res.type("application/json").status(200).send(account)
+    else res.type("application/json").status(200).send(transfer)
 }))
 
 app.delete("/transfers/:id", asyncHandler(async(req, res, next) => {

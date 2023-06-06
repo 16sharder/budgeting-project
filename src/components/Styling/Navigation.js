@@ -5,7 +5,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-function Navigation ({user, currency}) {
+function Navigation ({user, currency, lastUsed}) {
     const history = useHistory()
     
     return (
@@ -13,9 +13,9 @@ function Navigation ({user, currency}) {
             <table className="navigator">
                 <thead>
                     <tr>
-                        <td className="navigator" onClick={() => history.push({pathname:"/main", state: {user: user, currency: currency}})}>Home</td>
+                        <td className="navigator" onClick={() => history.push({pathname:"/main", state: {user: user, currency: currency, lastUsed: lastUsed}})}>Home</td>
                         <td className="navigator" onClick={() => history.push({pathname:"/accounts-view", state: {user: user, currency: currency}})}>Accounts Overview</td>
-                        <td className="navigator" onClick={() => history.push({pathname:"/choose-month", state: {user: user, currency: currency}})}>Previous Spendings</td>
+                        <td className="navigator" onClick={() => history.push({pathname:"/choose-month", state: {user: user, currency: currency, lastUsed: lastUsed}})}>Previous Spendings</td>
                         <td className="navigator" onClick={() => history.push("/")}>Log Out</td>
                     </tr>
                 </thead>

@@ -14,6 +14,7 @@ import { monthName } from '../../helperfuncs/DateCalculators';
 function ChooseMonth () {
     const location = useLocation()
     const user = location.state.user
+    let lastUsed = location.state.lastUsed
     let currency = location.state.currency
 
     const [accounts, setAccounts] = useState([])
@@ -40,7 +41,8 @@ function ChooseMonth () {
     }
 
     const send = (accountName, monthVal) => {
-        history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: monthVal, accountName: accountName}})
+        if (accountName != "All Accounts") lastUsed = accountName
+        history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: monthVal, accountName: accountName, lastUsed: lastUsed}})
     }
 
     // loads everything

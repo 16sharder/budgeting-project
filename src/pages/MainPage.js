@@ -28,6 +28,8 @@ function MainPage () {
     const location = useLocation()
     const user = location.state.user
     let currency = location.state.currency
+    let lastUsed = location.state.lastUsed
+
     const history = useHistory()
 
     const [message, setMessage] = useState("Loading...")
@@ -35,7 +37,7 @@ function MainPage () {
 
     // sends the user to a page displaying the desired week's information
     const viewWeek = async dates => {
-        history.push({pathname:"/weekly-view", state: {dates: dates, user: user, accounts: accounts, currency: currency}})
+        history.push({pathname:"/weekly-view", state: {dates: dates, user: user, accounts: accounts, currency: currency, lastUsed: lastUsed}})
     }
 
 
@@ -120,10 +122,10 @@ function MainPage () {
 
     // updates the currency when button is hit
     const toggleCurrency = () => {
-        if (currency === "EUR") currency = "USD"
-        else if (currency === "USD") currency = "EUR"
+        if (currency === "EUR") location.state.currency = "USD"
+        else if (currency === "USD") location.state.currency = "EUR"
 
-        history.push({pathname:"/main", state: {user: user, currency: currency}})
+        history.push({pathname:"/main", state: location.state})
         window.location.reload()
     }
 
@@ -131,7 +133,7 @@ function MainPage () {
     // either raises an error or sends the user to the add entry page
     const sendAddEntry = () => {
         if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
-        else history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts}})
+        else history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts, lastUsed: lastUsed}})
     }
 
 
@@ -167,7 +169,7 @@ function MainPage () {
     return (
         <>
             <BorderDecorationsH />
-            <Navigation user={user} currency={currency} />
+            <Navigation user={user} currency={currency} lastUsed={lastUsed}/>
             <p></p>
             <h2>{message}</h2>
             <div>Please click on a week if you would like to see entries by day</div>
@@ -184,7 +186,7 @@ function MainPage () {
 
             <table className='netTable'><tbody><tr>
                 <td><h2>Earnings: {earnings.toLocaleString('en', {style: "currency", currency: currency})}</h2>
-                    <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts}})}>Add New Earnings</button>
+                    <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts, lastUsed: lastUsed}})}>Add New Earnings</button>
                     <br></br><button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: "All Accounts", accounts: accounts}})}>View Earnings Details</button>
                 </td>
                 <td></td>

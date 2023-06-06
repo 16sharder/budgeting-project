@@ -4,7 +4,7 @@
         // also includes a delete button
 // Sends the user back to the MainPage
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
@@ -25,6 +25,7 @@ function EditEntry() {
     const [account, setAccount] = useState(entry.account)
     const [category, setCategory] = useState(entry.category)
     const [currency, setCurrency] = useState(entry.currency)
+    const [currencySymbol, setSymbol] = useState(accounts[0].currency)
     const [amount, setAmount] = useState(entry.amount)
     const [date, setDate] = useState(entry.date)
     const [description, setDescription] = useState(entry.description)
@@ -82,6 +83,24 @@ function EditEntry() {
     }}
 
 
+    useEffect(() => {
+        let curr;
+        for (const acct of accounts){
+            if (acct.account == account) {
+                curr = acct.currency
+                break
+            }
+        }
+        setCurrency(curr)
+        
+        const ext = Number(0).toLocaleString("en", {style: "currency", currency: curr})
+        setSymbol(ext[0])
+    }, [account])
+
+    const catsArray = ["Groceries", "Eating Out", "Clothing", "House Supplies", "Work Supplies", "Travel", "Bills", "Cash", "Emergencies", "Other"]
+
+
+
     return (
         <>
             <BorderDecorations />
@@ -106,27 +125,13 @@ function EditEntry() {
                     <td><select
                         value={category}
                         onChange={newN => setCategory(newN.target.value)} >
-                            <option value="Groceries">Groceries</option>
-                            <option value="Eating Out">Eating Out</option>
-                            <option value="Clothing">Clothing</option>
-                            <option value="House Supplies">House Supplies</option>
-                            <option value="Work Supplies">Work Supplies</option>
-                            <option value="Travel">Travel</option>
-                            <option value="Bills">Bills</option>
-                            <option value="Cash">Cash</option>
-                            <option value="Emergencies">Emergencies</option>
-                            <option value="Other">Other</option>
+                            {catsArray.map((cat, index) => 
+                            <option value={cat} key={index}>{cat}</option>)}
                     </select></td>
                 </tr>
                 <tr>
                     <td>Amount:</td>
-                    <td className='right'><select
-                        className='currency'
-                        value={currency}
-                        onChange={newN => setCurrency(newN.target.value)} >
-                            <option value="EUR">€</option>
-                            <option value="USD">$</option>
-                        </select></td>
+                    <td className='right color1'>{currencySymbol}</td>
                     <td>
                         <input 
                             type="number"

@@ -4,7 +4,7 @@
         // also includes a delete button
 // Sends the user back to the MainPage
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
@@ -23,6 +23,7 @@ function EditEarning() {
 
     const [account, setAccount] = useState(entry.account)
     const [currency, setCurrency] = useState(entry.currency)
+    const [currencySymbol, setSymbol] = useState(accounts[0].currency)
     const [amount, setAmount] = useState(-entry.amount)
     const [date, setDate] = useState(entry.date)
     const [description, setDescription] = useState(entry.description)
@@ -79,6 +80,20 @@ function EditEarning() {
         history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
     }}
 
+    useEffect(() => {
+        let curr;
+        for (const acct of accounts){
+            if (acct.account == account) {
+                curr = acct.currency
+                break
+            }
+        }
+        setCurrency(curr)
+        
+        const ext = Number(0).toLocaleString("en", {style: "currency", currency: curr})
+        setSymbol(ext[0])
+    }, [account])
+
 
     return (
         <>
@@ -100,13 +115,7 @@ function EditEarning() {
                 </tr>
                 <tr>
                     <td>Amount:</td>
-                    <td className='right'><select
-                        className='currency'
-                        value={currency}
-                        onChange={newN => setCurrency(newN.target.value)} >
-                            <option value="EUR">€</option>
-                            <option value="USD">$</option>
-                        </select></td>
+                    <td className='right color1'>{currencySymbol}</td>
                     <td>
                         <input 
                             type="number"

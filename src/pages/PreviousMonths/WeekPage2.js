@@ -29,6 +29,7 @@ function WeekPage2 () {
     const month = location.state.month
     const history = useHistory()
     const accountName = location.state.accountName
+    const lastUsed = location.state.lastUsed
 
     const [message, setMessage] = useState("Loading...")
 
@@ -63,10 +64,10 @@ function WeekPage2 () {
 
 
     const toggleCurrency = () => {
-        if (currency === "EUR") currency = "USD"
-        else if (currency === "USD") currency = "EUR"
+        if (currency === "EUR") location.state.currency = "USD"
+        else if (currency === "USD") location.state.currency = "EUR"
 
-        history.push({pathname:"/weekly-view2", state: {dates: dates, user: user, currency: currency, month: month, accountName: accountName}})
+        history.push({pathname:"/weekly-view2", state: location.state})
         window.location.reload()
     }
     
@@ -74,7 +75,7 @@ function WeekPage2 () {
     return (
         <>
             <BorderDecorationsH />
-            <Navigation user={user} currency={currency} />
+            <Navigation user={user} currency={currency} lastUsed={lastUsed}/>
             <p></p>
             <h2>{message}</h2>
             <div>Please click on an entry if you would like to see more details</div>
@@ -84,7 +85,7 @@ function WeekPage2 () {
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={toggleCurrency}>Change Currency</button></td>
                 <td></td>
-                <td><button onClick={() => history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: accountName}})}>Return to monthly view</button></td>
+                <td><button onClick={() => history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: accountName, lastUsed: lastUsed}})}>Return to monthly view</button></td>
             </tr></tbody></table>
 
             <p></p>

@@ -3,18 +3,13 @@
 // Displays a form for the user to fill in all the data of their transfer
 // Sends the user back to the Accounts Page
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
 import { updateAccount, updateMonths } from '../../helperfuncs/UpdateFunctions';
-
-function getFeeCurrency(currency){
-    if (currency == "USD") return "$"
-    else if (currency == "EUR") return "€"
-}
 
 function Transfer() {
     const history = useHistory()
@@ -29,7 +24,7 @@ function Transfer() {
     const [account2, setAccount2] = useState(accounts[1].account)
     const [currency, setCurrency] = useState(accounts[0].currency)
     const [amount, setAmount] = useState(0)
-    const [fee_currency, setFeeCurr] = useState(getFeeCurrency(accounts[0].currency))
+    const [currrencySymbol, setSymbol] = useState(accounts[0].currency)
     const [fee, setFee] = useState(0)
     const [exchangeRate, setExchangeRate] = useState(1)
     const [date, setDate] = useState(today)
@@ -71,10 +66,19 @@ function Transfer() {
         
     }
 
-    const setCurrencies = (currency) => {
-        setCurrency(currency)
-        setFeeCurr(getFeeCurrency(currency))
-    }
+    useEffect(() => {
+        let curr;
+        for (const acct of accounts){
+            if (acct.account == account) {
+                curr = acct.currency
+                break
+            }
+        }
+        setCurrency(curr)
+        
+        const ext = Number(0).toLocaleString("en", {style: "currency", currency: curr})
+        setSymbol(ext[0])
+    }, [account])
 
     return (
         <>
@@ -90,7 +94,8 @@ function Transfer() {
                     <td><select
                         value={account}
                         onChange={newN => setAccount(newN.target.value)} >
-                            {accounts.map((account, index) => <option value={account.account} key={index}>{account.account}</option>)}
+                            {accounts.map((account, index) => <option value={account.account} key={index}>
+                                {account.account} ({account.amount.toLocaleString('en', {style: "currency", currency: account.currency})})</option>)}
                     </select></td>
                 </tr>
                 <tr>
@@ -99,18 +104,13 @@ function Transfer() {
                     <td><select
                         value={account2}
                         onChange={newN => setAccount2(newN.target.value)} >
-                            {accounts.map((account, index) => <option value={account.account} key={index}>{account.account}</option>)}
+                            {accounts.map((account, index) => <option value={account.account} key={index}>
+                                {account.account} ({account.amount.toLocaleString('en', {style: "currency", currency: account.currency})})</option>)}
                     </select></td>
                 </tr>
                 <tr>
                     <td>Amount:</td>
-                    <td className='right'><select
-                        className='currency'
-                        value={currency}
-                        onChange={newN => setCurrencies(newN.target.value)} >
-                            <option value="EUR">€</option>
-                            <option value="USD">$</option>
-                        </select></td>
+                    <td className='right color1'>{currrencySymbol}</td>
                     <td>
                         <input 
                             type="number"
@@ -121,7 +121,7 @@ function Transfer() {
                 </tr>
                 <tr>
                     <td>Fee:</td>
-                    <td className='right color1'>{fee_currency}</td>
+                    <td className='right color1'>{currrencySymbol}</td>
                     <td>
                         <input 
                             type="number"

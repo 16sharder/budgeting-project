@@ -118,9 +118,6 @@ function Accounts() {
 
 
 
-
-
-
     useEffect(() => {
         loadNetWorth()
         loadAccounts(user)
@@ -133,6 +130,16 @@ function Accounts() {
     const sendTransfer = () => {
         if (accounts.length < 2) alert ("You must have at least two bank accounts before you can perform a transfer")
         else history.push({pathname:"/transfer", state: {curUser: user, currency: currency, accounts: accounts}})
+    }
+
+    const editTransfer = (transfer) => {
+        let bool = 0;
+        for (const acct of accounts){
+            if (transfer.account == acct.account) bool += 1
+            if (transfer.account2 == acct.account) bool += 1
+        }
+        if (bool == 2) history.push({pathname:"/edit-transfer", state: {entry: transfer, curUser: user, currency: currency, accounts: accounts, month: month}})
+        else alert("You do not have permission to edit this transfer because you are not a user on one of the accounts involved")
     }
 
     return (
@@ -193,7 +200,7 @@ function Accounts() {
                         <td className='color1'>{(transfer.amount * transfer.exchangeRate).toLocaleString('en', {style: "currency", currency: transfer.currency2})}</td>
                         <td>{changeDate(transfer.date)}</td>
                         <td>{transfer.description}</td>
-                        <td className='color1'><FiEdit onClick={() => {history.push({pathname:"/edit-transfer", state: {entry: transfer, curUser: user, currency: currency, accounts: accounts, month: month}})}}/></td>
+                        <td className='color1'><FiEdit onClick={() => editTransfer(transfer)}/></td>
                     </tr>)}
                 </tbody>
             </table>

@@ -4,17 +4,12 @@
         // also includes a delete button
 // Sends the user back to the Accounts Page
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
 import { updateAccount, updateMonths } from '../../helperfuncs/UpdateFunctions';
-
-function getFeeCurrency(currency){
-    if (currency == "USD") return "$"
-    else if (currency == "EUR") return "€"
-}
 
 function EditTransfer() {
     const history = useHistory()
@@ -31,7 +26,7 @@ function EditTransfer() {
     const [currency, setCurrency] = useState(entry.currency)
     const [amount, setAmount] = useState(entry.amount)
     const [fee, setFee] = useState(entry.fee)
-    const [fee_currency, setFeeCurr] = useState(getFeeCurrency(entry.currency))
+    const [currrencySymbol, setSymbol] = useState(entry.currency)
     const [exchangeRate, setExchangeRate] = useState(entry.exchangeRate)
     const [date, setDate] = useState(entry.date)
     const [description, setDescription] = useState(entry.description)
@@ -105,10 +100,19 @@ function EditTransfer() {
         history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
     }}
 
-    const setCurrencies = (currency) => {
-        setCurrency(currency)
-        setFeeCurr(getFeeCurrency(currency))
-    }
+    useEffect(() => {
+        let curr;
+        for (const acct of accounts){
+            if (acct.account == account) {
+                curr = acct.currency
+                break
+            }
+        }
+        setCurrency(curr)
+        
+        const ext = Number(0).toLocaleString("en", {style: "currency", currency: curr})
+        setSymbol(ext[0])
+    }, [account])
 
 
     return (
@@ -126,7 +130,8 @@ function EditTransfer() {
                     <td><select
                         value={account}
                         onChange={newN => setAccount(newN.target.value)} >
-                            {accounts.map((account, index) => <option value={account.account} key={index}>{account.account}</option>)}
+                            {accounts.map((account, index) => <option value={account.account} key={index}>
+                                {account.account} ({account.amount.toLocaleString('en', {style: "currency", currency: account.currency})})</option>)}
                     </select></td>
                 </tr>
                 <tr>
@@ -135,18 +140,13 @@ function EditTransfer() {
                     <td><select
                         value={account2}
                         onChange={newN => setAccount2(newN.target.value)} >
-                            {accounts.map((account, index) => <option value={account.account} key={index}>{account.account}</option>)}
+                            {accounts.map((account, index) => <option value={account.account} key={index}>
+                                {account.account} ({account.amount.toLocaleString('en', {style: "currency", currency: account.currency})})</option>)}
                     </select></td>
                 </tr>
                 <tr>
                     <td>Amount:</td>
-                    <td className='right'><select
-                        className='currency'
-                        value={currency}
-                        onChange={newN => setCurrencies(newN.target.value)} >
-                            <option value="EUR">€</option>
-                            <option value="USD">$</option>
-                        </select></td>
+                    <td className='right color1'>{currrencySymbol}</td>
                     <td>
                         <input 
                             type="number"
@@ -157,7 +157,7 @@ function EditTransfer() {
                 </tr>
                 <tr>
                     <td>Fee:</td>
-                    <td className='right color1'>{fee_currency}</td>
+                    <td className='right color1'>{currrencySymbol}</td>
                     <td>
                         <input 
                             type="number"

@@ -19,7 +19,8 @@ function AddAccount() {
     const [bank, setBank] = useState("")
     const [user, setUser] = useState(curUser)
     const [user2, setUser2] = useState("")
-    const [currency, setCurrency] = useState(curRency)
+    const [currency, setCurrency] = useState("EUR")
+    const [currencySymbol, setSymbol] = useState("")
     const [amount, setAmount] = useState(0)
 
     const [accountNames, setNames] = useState([])
@@ -64,6 +65,16 @@ function AddAccount() {
     useEffect(() => {
         getAccounts()
     }, [])
+
+    useEffect(() => {
+        let ext;
+        try {
+            ext = Number(0).toLocaleString("en", {style: "currency", currency: currency})
+        } catch (error) {
+            ext = " "
+        }
+        setSymbol(ext[0])
+    }, [currency])
 
     return (
         <>
@@ -119,14 +130,20 @@ function AddAccount() {
                     </td>
                 </tr>
                 <tr>
+                    <td>Currency:</td>
+                    <td></td>
+                    <td>
+                        <input 
+                            type="text"
+                            placeholder="Currency Code (3 letters)"
+                            maxLength={3}
+                            value={currency}
+                            onChange={newN => setCurrency(newN.target.value)} />
+                    </td>
+                </tr>
+                <tr>
                     <td>Current Amount:</td>
-                    <td className='right'><select
-                        className='currency'
-                        value={currency}
-                        onChange={newN => setCurrency(newN.target.value)} >
-                            <option value="EUR">€</option>
-                            <option value="USD">$</option>
-                    </select></td>
+                    <td className='right color1'>{currencySymbol}</td>
                     <td>
                         <input 
                             type="number"

@@ -27,6 +27,7 @@ function SpendingsPage () {
     const month = location.state.month
     const history = useHistory()
     const accountName = location.state.accountName
+    const lastUsed = location.state.lastUsed
 
     // gets all of the users account information, for use in passing on to next pages
     const [accounts, setAccounts] = useState([])
@@ -39,7 +40,7 @@ function SpendingsPage () {
 
     // sends the user to a page displaying the desired week's information
     const viewWeek = async dates => {
-        history.push({pathname:"/weekly-view2", state: {dates: dates, user: user, accounts: accounts, currency: currency, month: month, accountName: accountName}})
+        history.push({pathname:"/weekly-view2", state: {dates: dates, user: user, accounts: accounts, currency: currency, month: month, accountName: accountName, lastUsed: lastUsed}})
     }
 
 
@@ -109,10 +110,10 @@ function SpendingsPage () {
 
     // updates the currency when button is hit
     const toggleCurrency = () => {
-        if (currency === "EUR") currency = "USD"
-        else if (currency === "USD") currency = "EUR"
+        if (currency === "EUR") location.state.currency = "USD"
+        else if (currency === "USD") location.state.currency = "EUR"
 
-        history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: accountName}})
+        history.push({pathname:"/previous-spendings", state: location.state})
         window.location.reload()
     }
 
@@ -144,7 +145,7 @@ function SpendingsPage () {
     // either raises an error or sends the user to the add entry page
     const sendAddEntry = () => {
         if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
-        else history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts}})
+        else history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts, lastUsed: lastUsed}})
     }
 
 
@@ -152,7 +153,7 @@ function SpendingsPage () {
     return (
         <>
             <BorderDecorationsH />
-            <Navigation user={user} currency={currency} />
+            <Navigation user={user} currency={currency} lastUsed={lastUsed}/>
             <p></p>
             <h2>{message}</h2>
             <div>Please click on a week if you would like to see entries by day</div>
@@ -168,7 +169,7 @@ function SpendingsPage () {
 
             <table className='netTable'><tbody><tr>
                 <td><h2>Earnings: {earnings.toLocaleString('en', {style: "currency", currency: currency})}</h2>
-                    <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts}})}>Add New Earnings</button>
+                    <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts, lastUsed: lastUsed}})}>Add New Earnings</button>
                 <br></br><button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: accountName, accounts: accounts}})}>View Earnings Details</button>
                 </td>
                 <td></td>

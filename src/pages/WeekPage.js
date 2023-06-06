@@ -26,6 +26,7 @@ function WeekPage () {
     const accounts = location.state.accounts
     const dates = location.state.dates
     let currency = location.state.currency
+    const lastUsed = location.state.lastUsed
     const history = useHistory()
 
     const [message, setMessage] = useState("Loading...")
@@ -61,10 +62,10 @@ function WeekPage () {
 
 
     const toggleCurrency = () => {
-        if (currency === "EUR") currency = "USD"
-        else if (currency === "USD") currency = "EUR"
+        if (currency === "EUR") location.state.currency = "USD"
+        else if (currency === "USD") location.state.currency = "EUR"
 
-        history.push({pathname:"/weekly-view", state: {dates: dates, user: user, currency: currency}})
+        history.push({pathname:"/weekly-view", state: location.state})
         window.location.reload()
     }
     
@@ -72,7 +73,7 @@ function WeekPage () {
     return (
         <>
             <BorderDecorationsH />
-            <Navigation user={user} currency={currency} />
+            <Navigation user={user} currency={currency} lastUsed={lastUsed}/>
             <p></p>
             <h2>{message}</h2>
             <div>Please click on an entry if you would like to see more details</div>
@@ -82,10 +83,10 @@ function WeekPage () {
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={toggleCurrency}>Change Currency</button></td>
                 <td></td>
-                <td><button onClick={() => history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts}})}>Add New Entry</button></td>
+                <td><button onClick={() => history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts, lastUsed: lastUsed}})}>Add New Entry</button></td>
             </tr></tbody></table>
 
-            <button onClick={() => history.push({pathname:"/main", state: {user: user, currency: currency}})}>Return to monthly view</button>
+            <button onClick={() => history.push({pathname:"/main", state: {user: user, currency: currency, lastUsed: lastUsed}})}>Return to monthly view</button>
             <p></p>
             <div className='container bottomSep'></div>
         </>

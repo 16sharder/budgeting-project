@@ -3,7 +3,7 @@
 // Displays a form for the user to fill in all the data for their new entry
 // Sends the user back to the MainPage
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
@@ -17,12 +17,16 @@ function AddEntry() {
     const curUser = location.state.curUser
     const curRency = location.state.currency
     const accounts = location.state.accounts
+    
+    let lastUsed = location.state.lastUsed
+    if (lastUsed == undefined) lastUsed = accounts[0].account
 
     const today = convertTodayToDate()
 
-    const [account, setAccount] = useState(`${accounts[0].account}`)
+    const [account, setAccount] = useState(lastUsed)
     const [category, setCategory] = useState("Groceries")
-    const [currency, setCurrency] = useState(`${accounts[0].currency}`)
+    const [currency, setCurrency] = useState(accounts[0].currency)
+    const [currencySymbol, setSymbol] = useState(accounts[0].currency)
     const [amount, setAmount] = useState(0)
     const [date, setDate] = useState(today)
     const [description, setDescription] = useState("")
@@ -46,9 +50,26 @@ function AddEntry() {
 
 
         // returns the user to the main page
-        history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
+        history.push({pathname:"/main", state: {user: curUser, currency: curRency, lastUsed: account}})
 
     }}
+
+    useEffect(() => {
+        let curr;
+        for (const acct of accounts){
+            if (acct.account == account) {
+                curr = acct.currency
+                break
+            }
+        }
+        setCurrency(curr)
+
+        const ext = Number(0).toLocaleString("en", {style: "currency", currency: curr})
+        setSymbol(ext[0])
+    }, [account])
+
+
+    const catsArray = ["Groceries", "Eating Out", "Clothing", "House Supplies", "Work Supplies", "Travel", "Bills", "Cash", "Emergencies", "Other"]
 
 
     return (
@@ -75,27 +96,13 @@ function AddEntry() {
                     <td><select
                         value={category}
                         onChange={newN => setCategory(newN.target.value)} >
-                            <option value="Groceries">Groceries</option>
-                            <option value="Eating Out">Eating Out</option>
-                            <option value="Clothing">Clothing</option>
-                            <option value="House Supplies">House Supplies</option>
-                            <option value="Work Supplies">Work Supplies</option>
-                            <option value="Travel">Travel</option>
-                            <option value="Bills">Bills</option>
-                            <option value="Cash">Cash</option>
-                            <option value="Emergencies">Emergencies</option>
-                            <option value="Other">Other</option>
+                            {catsArray.map((cat, index) => 
+                            <option value={cat} key={index}>{cat}</option>)}
                     </select></td>
                 </tr>
                 <tr>
                     <td>Amount:</td>
-                    <td className='right'><select
-                        className='currency'
-                        value={currency}
-                        onChange={newN => setCurrency(newN.target.value)} >
-                            <option value="EUR">€</option>
-                            <option value="USD">$</option>
-                        </select></td>
+                    <td className='right color1'>{currencySymbol}</td>
                     <td>
                         <input 
                             type="number"
@@ -131,7 +138,7 @@ function AddEntry() {
 
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency}})}>Back</button></td>
+                <td><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency, lastUsed: lastUsed}})}>Back</button></td>
                 <td><button onClick={addEntry}>Add</button></td>
             </tr></tbody></table>
         </div>

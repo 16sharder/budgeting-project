@@ -39,7 +39,13 @@ function Accounts() {
         setAccounts(data)
 
         // also loads account info for the beginning of the month
-        const result = await retrieveNetSpendings(month, year, data)
+        const names = data.map((acct) => acct.account)
+        const spent = await retrieveNetSpendings(month, year, names)
+
+        const result = []
+        for (const idx in data){
+            result.push(data[idx].amount - spent[idx])
+        }
         setBeginnings(result)
     }
 

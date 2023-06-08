@@ -19,7 +19,6 @@ import {calculateWeekTotals} from "../helperfuncs/OtherCalcs"
 import { BorderDecorationsH } from '../components/Styling/BorderDecoration';
 import Navigation from '../components/Styling/Navigation';
 import AveragesTable from '../components/AverageSpendings/AveragesTable';
-import changeCurrency from '../helperfuncs/changeCurrency';
 
 
 function MainPage () {
@@ -93,16 +92,14 @@ function MainPage () {
         const accts = await response.json()
         setAccounts(accts)
 
-        // also loads account info for the beginning of the month
-        const beginnings = await retrieveNetSpendings(today.getMonth(), today.getFullYear(), accts)
+        const names = accts.map((acct) => acct.account)
 
-        // uses info to calculate overall net gain/loss
         let result = 0
-        for (let idx in accts) {
-            result += accts[idx].amount
-            result -= Number(beginnings[idx])
+        const allSpent = await retrieveNetSpendings(today.getMonth(), today.getFullYear(), names)
+        for (const spent of allSpent){
+            result += spent
         }
-        setNetGain(result.toFixed(2))
+        setNetGain(result)
     }
 
 
@@ -113,7 +110,6 @@ function MainPage () {
         loadAccounts(user)
         loadEarnings()
         loadTotals()
-        changeCurrency()
     }, [])
 
 
@@ -186,8 +182,7 @@ function MainPage () {
 
             <table className='netTable'><tbody><tr>
                 <td><h2>Earnings: {earnings.toLocaleString('en', {style: "currency", currency: currency})}</h2>
-                    <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts, lastUsed: lastUsed}})}>Add New Earnings</button>
-                    <br></br><button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: "All Accounts", accounts: accounts}})}>View Earnings Details</button>
+                    <button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: "All Accounts", accounts: accounts, lastUsed: lastUsed}})}>View Earnings Details</button>
                 </td>
                 <td></td>
                 <td><h2>Net Gain/Loss: {Number(netGain).toLocaleString('en', {style: "currency", currency: currency})}</h2><br></br><br></br><br></br><br></br><br></br>

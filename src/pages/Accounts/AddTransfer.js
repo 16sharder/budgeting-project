@@ -10,6 +10,7 @@ import {useHistory, useLocation} from "react-router-dom"
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
 import { updateAccount, updateMonths } from '../../helperfuncs/UpdateFunctions';
+import { AccountSelector, AmountEntry, RateEntry, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 
 function Transfer() {
     const history = useHistory()
@@ -24,7 +25,7 @@ function Transfer() {
     const [account2, setAccount2] = useState(accounts[1].account)
     const [currency, setCurrency] = useState(accounts[0].currency)
     const [amount, setAmount] = useState(0)
-    const [currrencySymbol, setSymbol] = useState(accounts[0].currency)
+    const [currencySymbol, setSymbol] = useState(accounts[0].currency)
     const [fee, setFee] = useState(0)
     const [exchangeRate, setExchangeRate] = useState(1)
     const [date, setDate] = useState(today)
@@ -88,81 +89,13 @@ function Transfer() {
             <div></div>
 
             <table className='form'><tbody>
-                <tr>
-                    <td>Transfer From:</td>
-                    <td></td>
-                    <td><select
-                        value={account}
-                        onChange={newN => setAccount(newN.target.value)} >
-                            {accounts.map((account, index) => <option value={account.account} key={index}>
-                                {account.account} ({account.amount.toLocaleString('en', {style: "currency", currency: account.currency})})</option>)}
-                    </select></td>
-                </tr>
-                <tr>
-                    <td>Transfer To:</td>
-                    <td></td>
-                    <td><select
-                        value={account2}
-                        onChange={newN => setAccount2(newN.target.value)} >
-                            {accounts.map((account, index) => <option value={account.account} key={index}>
-                                {account.account} ({account.amount.toLocaleString('en', {style: "currency", currency: account.currency})})</option>)}
-                    </select></td>
-                </tr>
-                <tr>
-                    <td>Amount:</td>
-                    <td className='right color1'>{currrencySymbol}</td>
-                    <td>
-                        <input 
-                            type="number"
-                            placeholder="0.00"
-                            value={amount}
-                            onChange={newN => setAmount(newN.target.value)} />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Fee:</td>
-                    <td className='right color1'>{currrencySymbol}</td>
-                    <td>
-                        <input 
-                            type="number"
-                            placeholder="0.00"
-                            value={fee}
-                            onChange={newN => setFee(newN.target.value)} />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Exchange Rate:</td>
-                    <td></td>
-                    <td>
-                        <input 
-                            type="number"
-                            placeholder="1"
-                            value={exchangeRate}
-                            onChange={newN => setExchangeRate(newN.target.value)} />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Date:</td>
-                    <td></td>
-                    <td>
-                        <input 
-                            type="date"
-                            placeholder="mm/dd"
-                            value={date}
-                            onChange={newN => setDate(newN.target.value)} />
-                    </td>
-                </tr>
-                <tr>
-                    <td> Descripton:</td>
-                    <td></td>
-                    <td>
-                        <input 
-                            type="text"
-                            placeholder="Description"
-                            value={description}
-                            onChange={newN => setDescription(newN.target.value)} />
-                    </td>
-                </tr>
+                <AccountSelector data={[account, setAccount, accounts, "Transfer From:"]}/>
+                <AccountSelector data={[account2, setAccount2, accounts, "Transfer To:"]}/>
+                <AmountEntry data={[currencySymbol, amount, setAmount, "Amount:"]}/>
+                <AmountEntry data={[currencySymbol, fee, setFee, "Fee:"]}/>
+                <RateEntry data={[exchangeRate, setExchangeRate]}/>
+                <DateEntry data={[date, setDate]}/>
+                <DescriptionEntry data={[description, setDescription]}/>
             </tbody></table>
 
 

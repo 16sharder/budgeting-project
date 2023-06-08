@@ -16,6 +16,7 @@ import Earnings from './pages/Earnings/EarningDetails';
 import AddEarning from './pages/Earnings/AddEarning';
 import Transfer from './pages/Accounts/AddTransfer';
 import ChooseMonth from './pages/PreviousMonths/ChooseMonth';
+import PreviousMonth from './pages/PreviousMonths/PreviousMonth';
 import SpendingsPage from './pages/PreviousMonths/PreviousSpendings';
 import WeekPage2 from './pages/PreviousMonths/WeekPage2';
 import EditEntry from './pages/Entries/EditEntry';
@@ -76,6 +77,9 @@ function App() {
 
           <Route path="/choose-month" >
             <ChooseMonth />
+          </Route>
+          <Route path="/previous-month" >
+            <PreviousMonth />
           </Route>
           <Route path="/previous-spendings" >
             <SpendingsPage />

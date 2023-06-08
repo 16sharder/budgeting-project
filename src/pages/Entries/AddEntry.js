@@ -10,6 +10,7 @@ import {useHistory, useLocation} from "react-router-dom"
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
 import { updateAccount, updateMonths } from '../../helperfuncs/UpdateFunctions';
+import { AccountSelector, AmountEntry, CategorySelector, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 
 function AddEntry() {
     const history = useHistory()
@@ -69,9 +70,6 @@ function AddEntry() {
     }, [account])
 
 
-    const catsArray = ["Groceries", "Eating Out", "Clothing", "House Supplies", "Work Supplies", "Travel", "Bills", "Cash", "Emergencies", "Other"]
-
-
     return (
         <>
             <BorderDecorations />
@@ -81,58 +79,11 @@ function AddEntry() {
             <div></div>
 
             <table className='form'><tbody>
-                <tr>
-                    <td>Bank Account:</td>
-                    <td></td>
-                    <td><select
-                        value={account}
-                        onChange={newN => setAccount(newN.target.value)} >
-                            {accounts.map((account, index) => <option value={account.account} key={index}>{account.account}</option>)}
-                    </select></td>
-                </tr>
-                <tr>
-                    <td>Category:</td>
-                    <td></td>
-                    <td><select
-                        value={category}
-                        onChange={newN => setCategory(newN.target.value)} >
-                            {catsArray.map((cat, index) => 
-                            <option value={cat} key={index}>{cat}</option>)}
-                    </select></td>
-                </tr>
-                <tr>
-                    <td>Amount:</td>
-                    <td className='right color1'>{currencySymbol}</td>
-                    <td>
-                        <input 
-                            type="number"
-                            placeholder="0.00"
-                            value={amount}
-                            onChange={newN => setAmount(newN.target.value)} />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Date:</td>
-                    <td></td>
-                    <td>
-                        <input 
-                            type="date"
-                            placeholder="mm/dd"
-                            value={date}
-                            onChange={newN => setDate(newN.target.value)} />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Descripton:</td>
-                    <td></td>
-                    <td>
-                        <input 
-                            type="text"
-                            placeholder="Description"
-                            value={description}
-                            onChange={newN => setDescription(newN.target.value)} />
-                    </td>
-                </tr>
+                <AccountSelector data={[account, setAccount, accounts, "Bank Account:"]}/>
+                <CategorySelector data={[category, setCategory]}/>
+                <AmountEntry data={[currencySymbol, amount, setAmount, "Amount:"]}/>
+                <DateEntry data={[date, setDate]}/>
+                <DescriptionEntry data={[description, setDescription]}/>
             </tbody></table>
 
 

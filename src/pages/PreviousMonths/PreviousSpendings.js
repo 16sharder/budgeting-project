@@ -11,7 +11,7 @@ import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import {createMonthDates, monthName} from "../../helperfuncs/DateCalculators"
-import {organizeDaysEntries, retrieveWeekEntries, retrieveEarnings, convertToEuros, convertToDollars, retrieveMonth} from "../../helperfuncs/FetchFunctions"
+import {organizeDaysEntries, retrieveWeekEntries, retrieveMonth} from "../../helperfuncs/FetchFunctions"
 import {calculateWeekTotals} from "../../helperfuncs/OtherCalcs"
 
 import { BorderDecorationsH } from '../../components/Styling/BorderDecoration';
@@ -21,11 +21,12 @@ import Navigation from '../../components/Styling/Navigation';
 function SpendingsPage () {
 
     // retrieves the name previously passed in the form on the ChooseMonth page
+    const history = useHistory()
     const location = useLocation()
+
     const user = location.state.user
     let currency = location.state.currency
     const month = location.state.month
-    const history = useHistory()
     const accountName = location.state.accountName
     const lastUsed = location.state.lastUsed
 
@@ -100,7 +101,6 @@ function SpendingsPage () {
     useEffect(() => {
         loadMonth()
         loadAccounts(user)
-        loadEarnings()
         loadTotals()
     }, [])
 
@@ -118,29 +118,6 @@ function SpendingsPage () {
     }
 
 
-
-    // retrieves the persons earnings for the month
-    const [earnings, setEarnings] = useState(0)
-
-    const loadEarnings = async () => {
-
-        const earnings = await retrieveEarnings(monthNumStr, user, accountName)
-
-        let totalEarnings = 0
-        for (let earning of earnings){
-            let value = earning.amount
-            // determines if the entry needs to be converted to a different currency for display
-            if (currency === "EUR") {
-                if (earning.currency != currency) value = await convertToEuros(earning.amount)
-            } 
-            else if (currency === "USD") {
-                if (earning.currency != currency) value = await convertToDollars(earning.amount)
-            } 
-            totalEarnings -= value
-        }
-
-        setEarnings(totalEarnings)
-    }
 
     // either raises an error or sends the user to the add entry page
     const sendAddEntry = () => {
@@ -160,22 +137,11 @@ function SpendingsPage () {
             <p></p>
 
             <MonthlyTable month={monthArray} viewWeek={viewWeek} total={totalsArray} currency={currency}/>
+            
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={toggleCurrency}>Change Currency</button></td>
                 <td></td>
                 <td><button onClick={sendAddEntry}>Add New Entry</button></td>
-            </tr></tbody></table>
-
-
-            <table className='netTable'><tbody><tr>
-                <td><h2>Earnings: {earnings.toLocaleString('en', {style: "currency", currency: currency})}</h2>
-                    <button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts, lastUsed: lastUsed}})}>Add New Earnings</button>
-                <br></br><button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: accountName, accounts: accounts}})}>View Earnings Details</button>
-                </td>
-                <td></td>
-                <td><h2>Net Gain/Loss: {(earnings-totalsArray[11]).toLocaleString('en', {style: "currency", currency: currency})}</h2><br></br><br></br><br></br><br></br><br></br>
-                </td>
-
             </tr></tbody></table>
 
             <p></p>

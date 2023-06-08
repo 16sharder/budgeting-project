@@ -22,15 +22,22 @@ function Earnings () {
     const account = location.state.account
     const history = useHistory()
     const accounts = location.state.accounts
+    const lastUsed = location.state.lastUsed
 
     const [entries, setEntries] = useState([])
-
+    const [total, setTotal] = useState(0)
 
     const loadEarnings = async () => {
         const result = await retrieveEarnings(month, user, account)
         let resultCopy = result.slice()
 
         setEntries(resultCopy)
+
+        let t = 0
+        for (const entry of resultCopy) {
+            t += entry.amount * -1
+        }
+        setTotal(t)
     }
 
     useEffect(() => {
@@ -38,18 +45,16 @@ function Earnings () {
     }, [])
 
 
-    const sendMonth = () => {
-        if (month == undefined) history.push({pathname:"/main", state: {user: user, currency: currency}})
-        else history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month - 1, accountName: account}})
-    }
-
     return (
         <>
             <div className='fillerBottom'></div>
             <BorderDecorationsH />
             <Navigation user={user} currency={currency} />
             <p></p>
+
             <h2>Earnings in {monthName(Number(month) -1)}</h2>
+            <div>Total: {total.toLocaleString('en', {style: "currency", currency: currency})}</div>
+            <br/>
             <div>
                 {entries.map((entry, index) => 
                     <table key={index} className='singleColumn'>
@@ -62,7 +67,12 @@ function Earnings () {
 
             <br></br>
 
-            <button onClick={sendMonth}>Return to monthly view</button>
+            <table className="twoButtons"><tbody><tr>
+                <td><button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts, lastUsed: lastUsed}})}>
+                    Add New Earnings</button></td>
+                <td><button onClick={() => history.push({pathname:"/previous-month", state: {user: user, currency: currency, month: month - 1, lastUsed: lastUsed}})}>
+                    Return to monthly finances</button></td>
+            </tr></tbody></table>
             
             <p></p>
             <div className='container bottomFix'></div>

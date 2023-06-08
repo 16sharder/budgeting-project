@@ -3,12 +3,11 @@
 // Asks the user for a month and bank account to be displayed
 // Sends the user to the PreviousSpendings Page
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
-import { retrieveUserAccountNames } from '../../helperfuncs/FetchFunctions';
 import { monthName } from '../../helperfuncs/DateCalculators';
 
 function ChooseMonth () {
@@ -16,14 +15,6 @@ function ChooseMonth () {
     const user = location.state.user
     let lastUsed = location.state.lastUsed
     let currency = location.state.currency
-
-    const [accounts, setAccounts] = useState([])
-    const getAccounts = async (user) => {
-        const accounts = await retrieveUserAccountNames(user)
-        setAccounts(accounts)
-    }
-
-    let [account, setAccount] = useState("All Accounts")
 
     const today = new Date
 
@@ -36,93 +27,45 @@ function ChooseMonth () {
     if (input != undefined) {
         input.addEventListener("keypress", ({key}) => {
             if (key == "Enter") {
-                send(input.children[0].children[0].value, input.children[2].children[0].value)}
+                send(input.children[2].children[0].value)}
         })
     }
 
-    const send = (accountName, monthVal) => {
-        if (accountName != "All Accounts") lastUsed = accountName
-        history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: monthVal, accountName: accountName, lastUsed: lastUsed}})
+    const send = (monthVal) => {
+        history.push({pathname:"/previous-month", state: {user: user, currency: currency, month: monthVal, lastUsed: lastUsed}})
     }
-
-    // loads everything
-    useEffect(() => {
-        getAccounts(user)
-    }, [])
 
 
     // sets the months to be displayed in the selection
-    const month0 = today.getMonth()
+    let base = today.getMonth()
 
-    let month1 = month0 - 1
-    if (month0 == 0){month1 = 11}
+    const months = [base]
+    for (let idx=0; idx < 11; idx += 1){
+        let mo = base - 1
+        if (base == 0) {mo = 11}
 
-    let month2 = month1 - 1
-    if (month1 == 0){month2 = 11}
-
-    let month3 = month2 - 1
-    if (month2 == 0){month3 = 11}
-
-    let month4 = month3 - 1
-    if (month3 == 0){month4 = 11}
-
-    let month5 = month4 - 1
-    if (month4 == 0){month5 = 11}
-
-    let month6 = month5 - 1
-    if (month5 == 0){month6 = 11}
-
-    let month7 = month6 - 1
-    if (month6 == 0){month7 = 11}
-
-    let month8 = month7 - 1
-    if (month7 == 0){month8 = 11}
-
-    let month9 = month8 - 1
-    if (month8 == 0){month9 = 11}
-
-    let month10 = month9 - 1
-    if (month9 == 0){month10 = 11}
-
-    let month11 = month10 - 1
-    if (month10 == 0){month11 = 11}
+        base = mo
+        months.push(mo)
+    }
 
 
 
     return (
         <>
             <BorderDecorations />
-            <h3>Please choose an account and a month to view</h3>
+            <h3>Please choose a month to view</h3>
 
 
             <table className='invisBackground'><tbody><tr id='input'>
             <td><select
-                value={account}
-                onChange={newN => setAccount(newN.target.value)} >
-                    <option value="All Accounts">All accounts</option>
-                    {accounts.map((account, index) => <option value={account} key={index}>{account}</option>)}
-            </select></td>
-            <td></td>
-            <td><select
                 value={month}
                 onChange={newN => {setMonth(newN.target.value)}}>
-                    <option value={month0}>{monthName(month0)}</option>
-                    <option value={month1}>{monthName(month1)}</option>
-                    <option value={month2}>{monthName(month2)}</option>
-                    <option value={month3}>{monthName(month3)}</option>
-                    <option value={month4}>{monthName(month4)}</option>
-                    <option value={month5}>{monthName(month5)}</option>
-                    <option value={month6}>{monthName(month6)}</option>
-                    <option value={month7}>{monthName(month7)}</option>
-                    <option value={month8}>{monthName(month8)}</option>
-                    <option value={month9}>{monthName(month9)}</option>
-                    <option value={month10}>{monthName(month10)}</option>
-                    <option value={month11}>{monthName(month11)}</option>
+                    {months.map((month) => <option value={month}>{monthName(month)}</option>)}
             </select></td>
             </tr></tbody></table>
 
             <p></p>
-            <button className="rightButton" onClick={() => send(account, month)}>Continue</button>
+            <button className="rightButton" onClick={() => send(month)}>Continue</button>
             <BorderDecorationsBottom />
         </>
     )

@@ -18,11 +18,11 @@ import { BorderDecorationsH } from '../../components/Styling/BorderDecoration';
 import { FiEdit } from 'react-icons/fi';
 
 function Accounts() {
-    const location = useLocation()
-    const user = location.state.user
-    let currency = location.state.currency
-
     const history = useHistory()
+    const location = useLocation()
+
+    const {user} = location.state
+    let {currency} = location.state
 
     const today = new Date()
     const month = today.getMonth()
@@ -135,7 +135,7 @@ function Accounts() {
 
     const sendTransfer = () => {
         if (accounts.length < 2) alert ("You must have at least two bank accounts before you can perform a transfer")
-        else history.push({pathname:"/transfer", state: {curUser: user, currency: currency, accounts: accounts}})
+        else history.push({pathname:"/transfer", state: {curUser: user, currency, accounts}})
     }
 
     const editTransfer = (transfer) => {
@@ -144,7 +144,7 @@ function Accounts() {
             if (transfer.account == acct.account) bool += 1
             if (transfer.account2 == acct.account) bool += 1
         }
-        if (bool == 2) history.push({pathname:"/edit-transfer", state: {entry: transfer, curUser: user, currency: currency, accounts: accounts, month: month}})
+        if (bool == 2) history.push({pathname:"/edit-transfer", state: {entry: transfer, curUser: user, currency, accounts, month}})
         else alert("You do not have permission to edit this transfer because you are not a user on one of the accounts involved")
     }
 
@@ -164,7 +164,7 @@ function Accounts() {
                     </tr>
                 </thead>
                 <tbody>
-                {accounts.map((account, index) => <tr key={index} className='color5' onClick={() => history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: account.account}})}>
+                {accounts.map((account, index) => <tr key={index} className='color5' onClick={() => history.push({pathname:"/previous-spendings", state: {user, currency, month, accountName: account.account}})}>
                     <td className="color1">{Number(beginnings[index]).toLocaleString('en', {style: "currency", currency: account.currency})}</td>
                     <td className="bold verticalB">{account.account}</td>
                     <td className='color1'>{account.amount.toLocaleString('en', {style: "currency", currency: account.currency})}</td></tr>)}
@@ -175,11 +175,11 @@ function Accounts() {
             <table className='twoButtons'><tbody><tr>
                 <td><button onClick={sendTransfer}>Bank Transfer</button></td>
                 <td></td>
-                <td><button onClick={() => history.push({pathname:"/add-account", state: {curUser: user, currency: currency}})}>Add New Account</button></td>
+                <td><button onClick={() => history.push({pathname:"/add-account", state: {curUser: user, currency}})}>Add New Account</button></td>
             </tr></tbody></table>
             
             <h3>Total Net Worth</h3>
-            <div className='color5'>{Number(netWorth).toLocaleString('en', {style: "currency", currency: currency})}</div>
+            <div className='color5'>{Number(netWorth).toLocaleString('en', {style: "currency", currency})}</div>
 
 
 

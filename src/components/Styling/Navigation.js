@@ -13,9 +13,9 @@ function Navigation ({user, currency, lastUsed}) {
             <table className="navigator">
                 <thead>
                     <tr>
-                        <td className="navigator" onClick={() => history.push({pathname:"/main", state: {user: user, currency: currency, lastUsed: lastUsed}})}>Home</td>
-                        <td className="navigator" onClick={() => history.push({pathname:"/accounts-view", state: {user: user, currency: currency}})}>Accounts Overview</td>
-                        <td className="navigator" onClick={() => history.push({pathname:"/choose-month", state: {user: user, currency: currency, lastUsed: lastUsed}})}>Previous Spendings</td>
+                        <td className="navigator" onClick={() => history.push({pathname:"/main", state: {user, currency, lastUsed}})}>Home</td>
+                        <td className="navigator" onClick={() => history.push({pathname:"/accounts-view", state: {user, currency}})}>Accounts Overview</td>
+                        <td className="navigator" onClick={() => history.push({pathname:"/choose-month", state: {user, currency, lastUsed}})}>Previous Spendings</td>
                         <td className="navigator" onClick={() => history.push("/")}>Log Out</td>
                     </tr>
                 </thead>

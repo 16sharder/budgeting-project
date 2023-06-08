@@ -11,6 +11,7 @@ import Month from './MonthlyRow';
 
 function AveragesTable({user, currency}) {
     const history = useHistory()
+
     const today = new Date()
     let month = (today.getMonth())
 
@@ -18,10 +19,8 @@ function AveragesTable({user, currency}) {
     const [results, setResults] = useState([])
 
     const loadMonths = async () => {
-        let res = []
-        let y = 1
-        let nums = [month]
-        let next = month
+        let [res, y, nums, next] = [[], 1, [month], month]
+        
         while (y != 6) {
             if (next == 1) {
                 next = 12
@@ -61,7 +60,7 @@ function AveragesTable({user, currency}) {
 
     // sends the user to a page displaying the desired week's information
     const viewMonth = async month => {
-        history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: "All Accounts"}})
+        history.push({pathname:"/previous-spendings", state: {user, currency, month, accountName: "All Accounts"}})
     }
 
     return(

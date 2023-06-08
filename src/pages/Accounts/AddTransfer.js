@@ -15,9 +15,8 @@ import { AccountSelector, AmountEntry, RateEntry, DateEntry, DescriptionEntry } 
 function Transfer() {
     const history = useHistory()
     const location = useLocation()
-    const curUser = location.state.curUser
-    const curRency = location.state.currency
-    const accounts = location.state.accounts
+
+    const {curUser, currency: curRency, accounts} = location.state
 
     const today = convertTodayToDate()
 

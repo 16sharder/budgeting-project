@@ -11,16 +11,14 @@ import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styli
 import { monthName } from '../../helperfuncs/DateCalculators';
 
 function ChooseMonth () {
+    const history = useHistory()
     const location = useLocation()
-    const user = location.state.user
-    let lastUsed = location.state.lastUsed
-    let currency = location.state.currency
+
+    const {user} = location.state
+    let {currency, lastUsed} = location.state
 
     const today = new Date
-
     const [month, setMonth] = useState(today.getMonth())
-
-    const history = useHistory()
 
     // event listener for when user presses Enter
     const input = document.getElementById("input")
@@ -32,7 +30,7 @@ function ChooseMonth () {
     }
 
     const send = (monthVal) => {
-        history.push({pathname:"/previous-month", state: {user: user, currency: currency, month: monthVal, lastUsed: lastUsed}})
+        history.push({pathname:"/previous-month", state: {user, currency, month: monthVal, lastUsed}})
     }
 
 

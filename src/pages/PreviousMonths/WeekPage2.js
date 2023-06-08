@@ -21,22 +21,18 @@ import { BorderDecorationsH } from '../../components/Styling/BorderDecoration';
 function WeekPage2 () {
     
     // retrieves the dates previously passed in the by clicking on the Main page table
-    const location = useLocation()
-    const user = location.state.user
-    const accounts = location.state.accounts
-    const dates = location.state.dates
-    let currency = location.state.currency
-    const month = location.state.month
     const history = useHistory()
-    const accountName = location.state.accountName
-    const lastUsed = location.state.lastUsed
+    const location = useLocation()
+
+    const {user, accountName, accounts, dates, month, lastUsed} = location.state
+    let {currency} = location.state
 
     const [message, setMessage] = useState("Loading...")
 
 
     // sends the user to a page displaying the desired entry's information
     const viewDetails = async (date, category) => {
-        history.push({pathname:"/view-details", state: {user: user, date: date, weekDates: dates, category: category, currency: currency, accounts: accounts, month: month, accountName: accountName}})
+        history.push({pathname:"/view-details", state: {user, date, weekDates: dates, category, currency, accounts, month, accountName}})
     }
     
 
@@ -85,7 +81,7 @@ function WeekPage2 () {
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={toggleCurrency}>Change Currency</button></td>
                 <td></td>
-                <td><button onClick={() => history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: accountName, lastUsed: lastUsed}})}>Return to monthly view</button></td>
+                <td><button onClick={() => history.push({pathname:"/previous-spendings", state: {user, currency, month, accountName, lastUsed}})}>Return to monthly view</button></td>
             </tr></tbody></table>
 
             <p></p>

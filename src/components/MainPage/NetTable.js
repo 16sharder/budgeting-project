@@ -103,7 +103,7 @@ function NetTable ({data}) {
 
     const sendSpendings = () => {
         if (accountName != "All Accounts") lastUsed = accountName
-        history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: accountName, lastUsed: lastUsed}})
+        history.push({pathname:"/previous-spendings", state: {user, currency, month, accountName, lastUsed}})
     }
 
     return (
@@ -125,7 +125,7 @@ function NetTable ({data}) {
                             -{spendings.toLocaleString('en', {style: "currency", currency: currency})}
                         </h3></td>
 
-                        <td onClick={() => history.push({pathname:"/earnings", state: {month: monthNumStr, user: user, currency: currency, account: accountName, accounts: accounts, lastUsed: lastUsed}})}><h3 >
+                        <td onClick={() => history.push({pathname:"/earnings", state: {month: monthNumStr, user, currency, account: accountName, accounts, lastUsed}})}><h3 >
                             {earnings.toLocaleString('en', {style: "currency", currency: currency})}
                         </h3></td>
 

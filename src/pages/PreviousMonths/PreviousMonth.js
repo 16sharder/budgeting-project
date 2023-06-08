@@ -10,10 +10,8 @@ function PreviousMonth () {
 
     const location = useLocation()
 
-    const user = location.state.user
-    let currency = location.state.currency
-    const lastUsed = location.state.lastUsed
-    const month = location.state.month
+    const {user, month, lastUsed} = location.state
+    let {currency} = location.state
 
     let monthNumStr = String(Number(month) + 1)
     if (monthNumStr.length == 1) monthNumStr = `0${monthNumStr}`

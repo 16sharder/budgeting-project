@@ -15,17 +15,11 @@ import {BorderDecorationsH} from '../../components/Styling/BorderDecoration';
 import { FiEdit } from "react-icons/fi";
 
 function ViewDetails () {
-    const location = useLocation()
-    const user = location.state.user
-    const date = location.state.date
-    const weekDates = location.state.weekDates
-    const category = location.state.category
-    const currency = location.state.currency
-    const month = location.state.month
     const history = useHistory()
-    const accounts = location.state.accounts
-    let accountName = location.state.accountName
+    const location = useLocation()
 
+    const {user, date, weekDates, category, currency, month, accounts} = location.state
+    let {accountName} = location.state
     if (accountName == undefined) accountName = "All Accounts"
 
     const [entries, setEntries] = useState([])
@@ -48,13 +42,13 @@ function ViewDetails () {
 
 
     const sendMonth = () => {
-        if (month == undefined) history.push({pathname:"/main", state: {user: user, currency: currency}})
-        else history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: accountName}})
+        if (month == undefined) history.push({pathname:"/main", state: {user, currency}})
+        else history.push({pathname:"/previous-spendings", state: {user, currency, month, accountName}})
     }
 
     const sendWeek = () => {
-        if (month == undefined) history.push({pathname:"/weekly-view", state: {user: user, dates: weekDates, currency: currency, accounts: accounts}})
-        else history.push({pathname:"/weekly-view2", state: {user: user, dates: weekDates, currency: currency, month: month, accountName: accountName}})
+        if (month == undefined) history.push({pathname:"/weekly-view", state: {user, dates: weekDates, currency, accounts}})
+        else history.push({pathname:"/weekly-view2", state: {user, dates: weekDates, currency, month, accountName}})
     }
 
     return (
@@ -68,7 +62,7 @@ function ViewDetails () {
                 {entries.map((entry, index) => 
                     <table key={index} className='singleColumn'>
                         <thead><tr className='toprow'><th>Entry {index+1}
-                            <FiEdit className="edit" onClick={() => {history.push({pathname:"/edit", state: {entry: entry, curUser: user, currency: currency, accounts: accounts, dates: weekDates, month: month}})}}/></th></tr></thead>
+                            <FiEdit className="edit" onClick={() => {history.push({pathname:"/edit", state: {entry, curUser: user, currency, accounts, dates: weekDates, month}})}}/></th></tr></thead>
                         <tbody><tr><td className='color1'><div>Account: {entry.account}</div><div>Amount: {entry.amount.toLocaleString('en', {style: "currency", currency: entry.currency})}</div><div>Description: {entry.description}</div><div></div></td></tr></tbody>
                     </table>
                 )}

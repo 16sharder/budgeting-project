@@ -63,13 +63,13 @@ function SpendingsPage () {
 
     // sends the user to a page displaying the desired week's information
     const viewWeek = async dates => {
-        history.push({pathname:"/weekly-view2", state: {dates: dates, user: user, accounts: accounts, currency: currency, month: month, accountName: accountName, lastUsed: lastUsed}})
+        history.push({pathname:"/weekly-view2", state: {dates, user, accounts, currency, month, accountName, lastUsed}})
     }
 
     // either raises an error or sends the user to the add entry page
     const sendAddEntry = () => {
         if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
-        else history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts, lastUsed: lastUsed}})
+        else history.push({pathname:"/add-entry", state: {curUser: user, currency, accounts, lastUsed}})
     }
 
 

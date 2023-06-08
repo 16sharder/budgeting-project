@@ -15,11 +15,9 @@ import { AccountSelector, AmountEntry, CategorySelector, DateEntry, DescriptionE
 function AddEntry() {
     const history = useHistory()
     const location = useLocation()
-    const curUser = location.state.curUser
-    const curRency = location.state.currency
-    const accounts = location.state.accounts
-    
-    let lastUsed = location.state.lastUsed
+
+    const {curUser, currency: curRency, accounts} = location.state
+    let {lastUsed} = location.state
     if (lastUsed == undefined) lastUsed = accounts[0].account
 
     const today = convertTodayToDate()
@@ -89,7 +87,7 @@ function AddEntry() {
 
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency, lastUsed: lastUsed}})}>Back</button></td>
+                <td><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency, lastUsed}})}>Back</button></td>
                 <td><button onClick={addEntry}>Add</button></td>
             </tr></tbody></table>
         </div>

@@ -15,13 +15,8 @@ import { AccountSelector, AmountEntry, CategorySelector, DateEntry, DescriptionE
 function EditEntry() {
     const history = useHistory()
     const location = useLocation()
-    const entry = location.state.entry
-    const curUser = location.state.curUser
-    const curRency = location.state.currency
 
-    const accounts = location.state.accounts
-    const dates = location.state.dates
-    const month = location.state.month
+    const {entry, curUser, currency: curRency, accounts} = location.state
 
     const [account, setAccount] = useState(entry.account)
     const [category, setCategory] = useState(entry.category)
@@ -32,10 +27,7 @@ function EditEntry() {
     const [description, setDescription] = useState(entry.description)
 
     // stores old values
-    const oldAcct = entry.account
-    const oldCat = entry.category
-    const oldAmt = entry.amount
-    const oldDate = entry.date
+    const {account: oldAcct, category: oldCat, amount: oldAmt, date: oldDate} = entry
 
 
     const updateEntry = async () => {
@@ -98,10 +90,7 @@ function EditEntry() {
         setSymbol(ext[0])
     }, [account])
 
-    const catsArray = ["Groceries", "Eating Out", "Clothing", "House Supplies", "Work Supplies", "Travel", "Bills", "Cash", "Emergencies", "Other"]
-
-
-
+    
     return (
         <>
             <BorderDecorations />

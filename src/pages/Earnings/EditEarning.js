@@ -15,12 +15,8 @@ import { AccountSelector, AmountEntry, DateEntry, DescriptionEntry } from '../..
 function EditEarning() {
     const history = useHistory()
     const location = useLocation()
-    const entry = location.state.entry
-    const curUser = location.state.curUser
-    const curRency = location.state.currency
 
-    const accounts = location.state.accounts
-    const month = location.state.month
+    const {entry, curUser, currency: curRency, accounts} = location.state
 
     const [account, setAccount] = useState(entry.account)
     const [currency, setCurrency] = useState(entry.currency)
@@ -30,9 +26,7 @@ function EditEarning() {
     const [description, setDescription] = useState(entry.description)
 
     // stores old values
-    const oldAcct = entry.account
-    const oldAmt = entry.amount
-    const oldDate = entry.date
+    const {account: oldAcct, amount: oldAmt, date: oldDate} = entry
 
 
     const updateEntry = async (amount) => {

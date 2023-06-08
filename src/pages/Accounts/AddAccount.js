@@ -8,12 +8,13 @@ import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
+import { AmountEntry } from '../../components/Forms/Inputs';
 
 function AddAccount() {
     const history = useHistory()
     const location = useLocation()
-    const curUser = location.state.curUser
-    const curRency = location.state.currency
+
+    const {curUser, currency: curRency} = location.state
     
     const [account, setName] = useState("")
     const [bank, setBank] = useState("")
@@ -141,17 +142,7 @@ function AddAccount() {
                             onChange={newN => setCurrency(newN.target.value)} />
                     </td>
                 </tr>
-                <tr>
-                    <td>Current Amount:</td>
-                    <td className='right color1'>{currencySymbol}</td>
-                    <td>
-                        <input 
-                            type="number"
-                            placeholder="0.00"
-                            value={amount}
-                            onChange={newN => setAmount(newN.target.value)} />
-                    </td>
-                </tr>
+                <AmountEntry data={[currencySymbol, amount, setAmount, "Current Amount:"]}/>
             </tbody></table>
             
             

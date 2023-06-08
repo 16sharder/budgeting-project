@@ -15,14 +15,10 @@ import {BorderDecorationsH} from '../../components/Styling/BorderDecoration';
 import { FiEdit } from 'react-icons/fi';
 
 function Earnings () {
-    const location = useLocation()
-    const user = location.state.user
-    const month = location.state.month
-    const currency = location.state.currency
-    const account = location.state.account
     const history = useHistory()
-    const accounts = location.state.accounts
-    const lastUsed = location.state.lastUsed
+    const location = useLocation()
+
+    const {user, month, currency, account, accounts, lastUsed} = location.state
 
     const [entries, setEntries] = useState([])
     const [total, setTotal] = useState(0)

@@ -11,11 +11,11 @@ import React from 'react';
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
+import {retrieveEarnings, convertToEuros, convertToDollars, retrieveNetSpendings} from "../helperfuncs/FetchFunctions"
+import { monthNumString } from '../helperfuncs/DateCalculators';
+
 import MonthlyTable from "../components/MainPage/Month/MonthlyTable";
 import AveragesTable from '../components/AverageSpendings/AveragesTable';
-
-import {retrieveEarnings, convertToEuros, convertToDollars, retrieveNetSpendings} from "../helperfuncs/FetchFunctions"
-
 import { BorderDecorationsH } from '../components/Styling/BorderDecoration';
 import Navigation from '../components/Styling/Navigation';
 
@@ -28,7 +28,8 @@ function MainPage () {
 
     const {user} = location.state
     let {currency, lastUsed} = location.state
-    
+
+    const today = new Date
     const [message, setMessage] = useState("Loading...")
 
 
@@ -45,7 +46,6 @@ function MainPage () {
         const names = accts.map((acct) => acct.account)
 
         let result = 0
-        const today = new Date()
         const allSpent = await retrieveNetSpendings(today.getMonth(), today.getFullYear(), names)
         for (const spent of allSpent){
             result += spent
@@ -57,8 +57,7 @@ function MainPage () {
     // retrieves the user's earnings for the month
     const [earnings, setEarnings] = useState(0)
 
-    let monthNumStr = String(new Date().getMonth() + 1)
-    if (monthNumStr.length == 1) monthNumStr = `0${monthNumStr}`
+    const monthNumStr = monthNumString(today.getMonth())
 
     const loadEarnings = async () => {
 
@@ -123,7 +122,7 @@ function MainPage () {
             <div>Please click on a week if you would like to see entries by day</div>
             <p></p>
 
-            <MonthlyTable data={[new Date, user, "All Accounts", currency, `${user}, here are your spendings for this month`, setMessage, viewWeek]}/>
+            <MonthlyTable data={[today, user, "All Accounts", currency, `${user}, here are your spendings for this month`, setMessage, viewWeek]}/>
 
 
             <table className="twoButtons"><tbody><tr>

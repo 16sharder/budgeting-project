@@ -68,16 +68,8 @@ function AveragesTable({user, currency}) {
             <thead>
                 <tr className='bold horizontalB color2'>
                     <th className='corner verticalB'>Month</th>
-                    <th>Groceries</th>
-                    <th>Eating Out</th>
-                    <th>Clothing</th>
-                    <th>House Supplies</th>
-                    <th>Work Supplies</th>
-                    <th>Travel</th>
-                    <th>Bills</th>
-                    <th>Cash</th>
-                    <th>Emergency</th>
-                    <th>Other</th>
+                    {["Groceries", "Eating Out", "Clothing", "House Supplies", "Work Supplies", "Travel", "Bills", "Cash", "Emergency", "Other"].map(
+                        (label, index) => <th key={index}>{label}</th>)}
                     <th className="bold verticalB">Total</th>
                 </tr></thead>
             <tbody>

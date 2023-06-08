@@ -60,16 +60,8 @@ function MonthlyTable({data}) {
             <thead>
                 <tr className='toprow horizontalB'>
                     <th className='bold verticalB'></th>
-                    <th>Groceries</th>
-                    <th>Eating Out</th>
-                    <th>Clothing</th>
-                    <th>House Supplies</th>
-                    <th>Work Supplies</th>
-                    <th>Travel</th>
-                    <th>Bills</th>
-                    <th>Cash</th>
-                    <th>Emergency</th>
-                    <th>Other</th>
+                    {["Groceries", "Eating Out", "Clothing", "House Supplies", "Work Supplies", "Travel", "Bills", "Cash", "Emergency", "Other"].map(
+                        (label, index) => <th key={index}>{label}</th>)}
                     <th className="verticalB">Total</th>
                 </tr>
             </thead>

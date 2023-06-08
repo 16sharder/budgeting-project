@@ -189,12 +189,7 @@ function Accounts() {
             <table>
                 <thead>
                     <tr className='toprow horizontalB'>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Amount Given</th>
-                        <th>Amount Received</th>
-                        <th>Date</th>
-                        <th>Description</th>
+                        {["From", "To", "Amount Given", "Amount Received", "Date", "Description"].map((label, index) => <th key={index}>{label}</th>)}
                         <th></th>
                     </tr>
                 </thead>

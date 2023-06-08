@@ -8,8 +8,10 @@ import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
-import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
 import { updateAccount, updateMonths } from '../../helperfuncs/UpdateFunctions';
+import { findCurrency } from '../../helperfuncs/OtherCalcs';
+
+import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
 import { AccountSelector, AmountEntry, RateEntry, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 
 function Transfer() {
@@ -67,17 +69,9 @@ function Transfer() {
     }
 
     useEffect(() => {
-        let curr;
-        for (const acct of accounts){
-            if (acct.account == account) {
-                curr = acct.currency
-                break
-            }
-        }
-        setCurrency(curr)
-        
-        const ext = Number(0).toLocaleString("en", {style: "currency", currency: curr})
-        setSymbol(ext[0])
+        const curr = findCurrency(account, accounts)
+        setCurrency(curr[0])
+        setSymbol(curr[1])
     }, [account])
 
     return (

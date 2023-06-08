@@ -3,14 +3,15 @@
 // Displays a form for the user to fill in all the data for their new entry
 // Sends the user back to the MainPage
 
-import React, { useEffect } from 'react';
-import {useState} from "react"
+import React, { useEffect, useState } from 'react';
 import {useHistory, useLocation} from "react-router-dom"
 
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
+import { findCurrency } from '../../helperfuncs/OtherCalcs';
+
 import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
-import { updateAccount, updateMonths } from '../../helperfuncs/UpdateFunctions';
 import { AccountSelector, AmountEntry, CategorySelector, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
+import { addEntry } from '../../helperfuncs/EntryFunctions';
 
 function AddEntry() {
     const history = useHistory()
@@ -30,41 +31,19 @@ function AddEntry() {
     const [date, setDate] = useState(today)
     const [description, setDescription] = useState("")
 
-    const addEntry = async () => {
+    const newEntry = async () => {
         // adds the entry to mongoDB
-        const newEntry = {account, category, currency, amount, date, description}
-        const response = await fetch("/entries", {
-            method: "POST", 
-            body: JSON.stringify(newEntry),
-            headers: {"Content-type": "application/json"}
-        })
-        if (response.status !== 201){
-            alert(`Create entry failed. Status code = ${response.status}`)
-        } else {
-
-        // adds the entry to the month's records
-        updateMonths(date, account, amount, category)
-        // updates the account that was spent from
-        updateAccount(account, amount)
-
+        const entry = {account, category, currency, amount, date, description}
+        await addEntry(entry)
 
         // returns the user to the main page
         history.push({pathname:"/main", state: {user: curUser, currency: curRency, lastUsed: account}})
-
-    }}
+    }
 
     useEffect(() => {
-        let curr;
-        for (const acct of accounts){
-            if (acct.account == account) {
-                curr = acct.currency
-                break
-            }
-        }
-        setCurrency(curr)
-
-        const ext = Number(0).toLocaleString("en", {style: "currency", currency: curr})
-        setSymbol(ext[0])
+        const curr = findCurrency(account, accounts)
+        setCurrency(curr[0])
+        setSymbol(curr[1])
     }, [account])
 
 
@@ -88,7 +67,7 @@ function AddEntry() {
 
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency, lastUsed}})}>Back</button></td>
-                <td><button onClick={addEntry}>Add</button></td>
+                <td><button onClick={newEntry}>Add</button></td>
             </tr></tbody></table>
         </div>
         <BorderDecorationsBottom />

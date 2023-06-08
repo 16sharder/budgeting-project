@@ -25,7 +25,7 @@ function ChooseMonth () {
     if (input != undefined) {
         input.addEventListener("keypress", ({key}) => {
             if (key == "Enter") {
-                send(input.children[2].children[0].value)}
+                send(input.children[0].children[0].value)}
         })
     }
 
@@ -58,7 +58,7 @@ function ChooseMonth () {
             <td><select
                 value={month}
                 onChange={newN => {setMonth(newN.target.value)}}>
-                    {months.map((month) => <option value={month}>{monthName(month)}</option>)}
+                    {months.map((month, index) => <option value={month} key={index}>{monthName(month)}</option>)}
             </select></td>
             </tr></tbody></table>
 

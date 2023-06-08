@@ -159,6 +159,13 @@ function monthName (monthNum) {
     return monthName
 }
 
+function monthNumString (month) {
+    let monthNumStr = String(Number(month) + 1)
+    if (monthNumStr.length == 1) monthNumStr = `0${monthNumStr}`
+
+    return monthNumStr
+}
+
 function convertTodayToDate () {
     let today = new Date()
     let month = String(today.getMonth()+1)
@@ -170,4 +177,4 @@ function convertTodayToDate () {
     return today
 }
 
-export {calcWeekDates, calcMonthEnd, createMonthDates, convertDate, monthName, convertTodayToDate}
+export {calcWeekDates, calcMonthEnd, createMonthDates, convertDate, monthName, monthNumString, convertTodayToDate}

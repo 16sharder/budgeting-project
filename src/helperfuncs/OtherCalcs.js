@@ -42,4 +42,17 @@ async function calculateNetWorth (user, currency){
     return sum.toFixed(2)
 }
 
-export {calculateWeekTotals, calculateNetWorth}
+function findCurrency (account, accounts) {
+    let currency;
+    for (const acct of accounts){
+        if (acct.account == account) {
+            currency = acct.currency
+            break
+        }
+    }
+    const ext = Number(0).toLocaleString("en", {style: "currency", currency: currency})
+
+    return [currency, ext[0]]
+}
+
+export {calculateWeekTotals, calculateNetWorth, findCurrency}

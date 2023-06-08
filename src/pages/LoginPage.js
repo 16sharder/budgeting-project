@@ -41,7 +41,6 @@ function LoginPage () {
 
             <h4>Please enter your name to continue:</h4>
             <input id="input"
-                className=""
                 type="text"
                 placeholder="Name"
                 value={name}

@@ -8,8 +8,10 @@ import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
 import { updateAccount, updateMonths } from '../../helperfuncs/UpdateFunctions';
+import { findCurrency } from '../../helperfuncs/OtherCalcs';
+
+import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
 import { AccountSelector, AmountEntry, RateEntry, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 
 function EditTransfer() {
@@ -32,7 +34,7 @@ function EditTransfer() {
     const {account: oldAcct, account2: oldAcct2, amount: oldAmt, date: oldDate, fee: oldFee, exchangeRate: oldRate} = entry
 
 
-    const updateEntry = async (amount) => {
+    const updateTransfer = async () => {
         // retrieves the second account to get the currency
         const account2Res = await fetch(`/accounts/${account2}`)
         const account2Data = await account2Res.json()
@@ -93,17 +95,9 @@ function EditTransfer() {
     }}
 
     useEffect(() => {
-        let curr;
-        for (const acct of accounts){
-            if (acct.account == account) {
-                curr = acct.currency
-                break
-            }
-        }
-        setCurrency(curr)
-        
-        const ext = Number(0).toLocaleString("en", {style: "currency", currency: curr})
-        setSymbol(ext[0])
+        const curr = findCurrency(account, accounts)
+        setCurrency(curr[0])
+        setSymbol(curr[1])
     }, [account])
 
 
@@ -129,7 +123,7 @@ function EditTransfer() {
 
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={() => history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})}>Back</button></td>
-                <td><button onClick={() => updateEntry(amount)}>Confirm</button></td>
+                <td><button onClick={updateTransfer}>Confirm</button></td>
             </tr></tbody></table>
     
             <br></br>

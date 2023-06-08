@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {useLocation} from "react-router-dom"
 
+import { monthName, monthNumString } from '../../helperfuncs/DateCalculators';
+
 import NetTable from '../../components/MainPage/NetTable';
 import { BorderDecorationsH } from '../../components/Styling/BorderDecoration';
 import Navigation from '../../components/Styling/Navigation';
-import { monthName } from '../../helperfuncs/DateCalculators';
 
 function PreviousMonth () {
 
@@ -13,8 +14,7 @@ function PreviousMonth () {
     const {user, month, lastUsed} = location.state
     let {currency} = location.state
 
-    let monthNumStr = String(Number(month) + 1)
-    if (monthNumStr.length == 1) monthNumStr = `0${monthNumStr}`
+    const monthNumStr = monthNumString(month)
 
     // retrieves the appropriate year
     const today = new Date

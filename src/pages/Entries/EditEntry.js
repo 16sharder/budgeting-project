@@ -8,8 +8,10 @@ import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
+import { findCurrency } from '../../helperfuncs/OtherCalcs';
+import { deleteEntry, updateEntry } from '../../helperfuncs/EntryFunctions';
+
 import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
-import { updateAccount, updateMonths } from '../../helperfuncs/UpdateFunctions';
 import { AccountSelector, AmountEntry, CategorySelector, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 
 function EditEntry() {
@@ -26,68 +28,28 @@ function EditEntry() {
     const [date, setDate] = useState(entry.date)
     const [description, setDescription] = useState(entry.description)
 
-    // stores old values
-    const {account: oldAcct, category: oldCat, amount: oldAmt, date: oldDate} = entry
 
-
-    const updateEntry = async () => {
+    const entryUpdate = async () => {
         // edits the entry in mongoDB
         const editedEntry = {account, category, currency, amount, date, description}
-        const response = await fetch(`/entries/${entry._id}`, {
-            method: "PUT", 
-            body: JSON.stringify(editedEntry),
-            headers: {"Content-type": "application/json"}
-        })
-        if (response.status !== 200){
-            alert(`Edit entry failed. Status code = ${response.status}`)
-        } else {
-
-        // subtracts the old entry data from the month's records
-        await updateMonths(oldDate, oldAcct, -oldAmt, oldCat)
-        // adds the new entry data to the month's records
-        await updateMonths(date, account, amount, category)
-
-        // updates the original account that was spent from
-        await updateAccount(oldAcct, -oldAmt)
-        // updates the actual account that was spent from
-        await updateAccount(account, amount)
-
+        await updateEntry(entry._id, editedEntry, entry, "entries")
 
         // returns the user to the view details page
         history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
+    }
 
-    }}
-
-    const deleteEntry = async () => {
-        // deletes the entry from mongoDB
-        const response = await fetch(`/entries/${entry._id}`, {method: "DELETE"})
-        if (response.status !== 204){
-            alert(`Delete entry failed. Status code = ${response.status}`)
-        } else {
-
-        // subtracts the old entry data from the month's records
-        await updateMonths(oldDate, oldAcct, -oldAmt, oldCat)
-        // updates the original account that was spent from
-        await updateAccount(oldAcct, -oldAmt)
-
+    const delEntry = async () => {
+        await deleteEntry(entry)
 
         // returns the user to the view details page
         history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
-    }}
+    }
 
 
     useEffect(() => {
-        let curr;
-        for (const acct of accounts){
-            if (acct.account == account) {
-                curr = acct.currency
-                break
-            }
-        }
-        setCurrency(curr)
-        
-        const ext = Number(0).toLocaleString("en", {style: "currency", currency: curr})
-        setSymbol(ext[0])
+        const curr = findCurrency(account, accounts)
+        setCurrency(curr[0])
+        setSymbol(curr[1])
     }, [account])
 
     
@@ -111,12 +73,12 @@ function EditEntry() {
 
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency}})}>Back</button></td>
-                <td><button onClick={updateEntry}>Confirm</button></td>
+                <td><button onClick={entryUpdate}>Confirm</button></td>
             </tr></tbody></table>
     
             <br></br>
 
-            <button onClick={deleteEntry} className="delete">Delete</button>
+            <button onClick={delEntry} className="delete">Delete</button>
             </div>
         <BorderDecorationsBottom />
         </>

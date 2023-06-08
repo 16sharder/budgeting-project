@@ -34,10 +34,10 @@ function AddEarning() {
     const newEntry = async () => {
         // adds the entry to mongoDB
         const entry = {account, category, currency, amount: amount * -1, date, month: date.slice(5, 7), description}
-        await addEntry(entry)
+        const res = await addEntry(entry)
 
         // returns the user to the main page
-        history.push({pathname:"/main", state: {user: curUser, currency: curRency, lastUsed: account}})
+        if (res) history.push({pathname:"/main", state: {user: curUser, currency: curRency, lastUsed: account}})
     }
 
 

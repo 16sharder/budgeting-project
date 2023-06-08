@@ -32,17 +32,17 @@ function EditEntry() {
     const entryUpdate = async () => {
         // edits the entry in mongoDB
         const editedEntry = {account, category, currency, amount, date, description}
-        await updateEntry(entry._id, editedEntry, entry, "entries")
+        const res = await updateEntry(entry._id, editedEntry, entry)
 
         // returns the user to the view details page
-        history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
+        if (res) history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
     }
 
     const delEntry = async () => {
-        await deleteEntry(entry)
+        const res = await deleteEntry(entry)
 
         // returns the user to the view details page
-        history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
+        if (res) history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
     }
 
 

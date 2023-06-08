@@ -8,25 +8,28 @@ async function addEntry (entry) {
     })
     if (response.status !== 201){
         alert(`Create entry failed. Status code = ${response.status}`)
+        return false
     } 
     else {
-    // adds the entry to the month's records
-    updateMonths(entry.date, entry.account, entry.amount, entry.category)
-    // updates the account that was spent from
-    updateAccount(entry.account, entry.amount)
+        // adds the entry to the month's records
+        await updateMonths(entry.date, entry.account, entry.amount, entry.category)
+        // updates the account that was spent from
+        await updateAccount(entry.account, entry.amount)
+        return true
     }
 }
 
 
-async function updateEntry (id, newEntry, oldEntry, path) {
+async function updateEntry (id, newEntry, oldEntry) {
     // edits the entry in mongoDB
-    const response = await fetch(`/${path}/${id}`, {
+    const response = await fetch(`/entries/${id}`, {
         method: "PUT", 
         body: JSON.stringify(newEntry),
         headers: {"Content-type": "application/json"}
     })
     if (response.status !== 200){
         alert(`Edit entry failed. Status code = ${response.status}`)
+        return false
     } 
     else {
         // subtracts the old entry data from the month's records
@@ -38,6 +41,7 @@ async function updateEntry (id, newEntry, oldEntry, path) {
         await updateAccount(oldEntry.account, -oldEntry.amount)
         // updates the actual account that was spent from
         await updateAccount(newEntry.account, newEntry.amount)
+        return true
     }
 }
 
@@ -47,12 +51,14 @@ async function deleteEntry (entry) {
     const response = await fetch(`/entries/${entry._id}`, {method: "DELETE"})
     if (response.status !== 204){
         alert(`Delete entry failed. Status code = ${response.status}`)
+        return false
     } 
     else {
         // subtracts the old entry data from the month's records
         await updateMonths(entry.date, entry.account, -entry.amount, entry.category)
         // updates the original account that was spent from
         await updateAccount(entry.account, -entry.amount)
+        return true
     }
 }
 

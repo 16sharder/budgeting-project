@@ -64,9 +64,9 @@ function Earnings () {
             <br></br>
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/add-earning", state: {user: user, currency: currency, accounts: accounts, lastUsed: lastUsed}})}>
+                <td><button onClick={() => history.push({pathname:"/add-earning", state: {curUser: user, currency, accounts, lastUsed}})}>
                     Add New Earnings</button></td>
-                <td><button onClick={() => history.push({pathname:"/previous-month", state: {user: user, currency: currency, month: month - 1, lastUsed: lastUsed}})}>
+                <td><button onClick={() => history.push({pathname:"/previous-month", state: {user, currency, month: month - 1, lastUsed}})}>
                     Return to monthly finances</button></td>
             </tr></tbody></table>
             

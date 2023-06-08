@@ -4,12 +4,11 @@
         // also includes a delete button
 // Sends the user back to the Accounts Page
 
-import React, { useEffect } from 'react';
-import {useState} from "react"
+import React, { useEffect, useState } from 'react';
 import {useHistory, useLocation} from "react-router-dom"
 
-import { updateAccount, updateMonths } from '../../helperfuncs/UpdateFunctions';
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
+import { deleteTransfer, updateTransfer } from '../../helperfuncs/TransferFunctions';
 
 import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
 import { AccountSelector, AmountEntry, RateEntry, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
@@ -30,69 +29,27 @@ function EditTransfer() {
     const [date, setDate] = useState(entry.date)
     const [description, setDescription] = useState(entry.description)
 
-    // stores old values
-    const {account: oldAcct, account2: oldAcct2, amount: oldAmt, date: oldDate, fee: oldFee, exchangeRate: oldRate} = entry
 
-
-    const updateTransfer = async () => {
+    const editTransfer = async () => {
         // retrieves the second account to get the currency
         const account2Res = await fetch(`/accounts/${account2}`)
         const account2Data = await account2Res.json()
 
-        const currency2 = account2Data[0].currency
-
         // edits the entry in mongoDB
-        const month = date.slice(5, 7)
-        const editedEntry = {account, account2, currency, currency2, amount, fee, exchangeRate, date, month, description}
-        const response = await fetch(`/transfers/${entry._id}`, {
-            method: "PUT", 
-            body: JSON.stringify(editedEntry),
-            headers: {"Content-type": "application/json"}
-        })
-        if (response.status !== 200){
-            alert(`Edit entry failed. Status code = ${response.status}`)
-        } else {
-
-        // removes the transfer from the month's records for both old accounts
-        await updateMonths(oldDate, oldAcct, (oldAmt + oldFee) * -1)
-        await updateMonths(oldDate, oldAcct2, oldAmt * oldRate)
-
-        // adds the transfer to the month's records for both new accounts
-        await updateMonths(date, account, Number(amount) + Number(fee))
-        await updateMonths(date, account2, amount * exchangeRate * -1)
-
-        // updates both old accounts
-        await updateAccount(oldAcct, (oldAmt + oldFee) * -1)
-        await updateAccount(oldAcct2, oldAmt * oldRate)
-
-        // updates both new accounts
-        await updateAccount(account, Number(amount) + Number(fee))
-        await updateAccount(account2, amount * exchangeRate * -1)
+        const editedEntry = {account, account2, currency, currency2: account2Data[0].currency, amount, fee, exchangeRate, date, month: date.slice(5, 7), description}
+        const res = updateTransfer(entry._id, editedEntry, entry)
 
         // returns the user to the view details page
-        history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
+        if (res) history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
 
-    }}
+    }
 
     const deleteEntry = async () => {
-        // deletes the entry from mongoDB
-        const response = await fetch(`/transfers/${entry._id}`, {method: "DELETE"})
-        if (response.status !== 204){
-            alert(`Delete entry failed. Status code = ${response.status}`)
-        } else {
-
-        // removes the transfer from the month's records for both old accounts
-        await updateMonths(oldDate, oldAcct, (oldAmt + oldFee) * -1)
-        await updateMonths(oldDate, oldAcct2, oldAmt * oldRate)
-
-        // updates both old accounts
-        await updateAccount(oldAcct, (oldAmt + oldFee) * -1)
-        await updateAccount(oldAcct2, oldAmt * oldRate)
-
+        const res = deleteTransfer()
 
         // returns the user to the view details page
-        history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
-    }}
+        if (res) history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
+    }
 
     useEffect(() => {
         const curr = findCurrency(account, accounts)
@@ -123,7 +80,7 @@ function EditTransfer() {
 
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={() => history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})}>Back</button></td>
-                <td><button onClick={updateTransfer}>Confirm</button></td>
+                <td><button onClick={editTransfer}>Confirm</button></td>
             </tr></tbody></table>
     
             <br></br>

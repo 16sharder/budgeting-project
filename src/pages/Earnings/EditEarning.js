@@ -31,17 +31,17 @@ function EditEarning() {
     const updateEarning = async () => {
         // edits the entry in mongoDB
         const editedEntry = {account, category: "Earnings", currency, amount: amount * -1, date, description}
-        await updateEntry(entry._id, editedEntry, entry, "entries")
+        const res = await updateEntry(entry._id, editedEntry, entry)
 
         // returns the user to the view details page
-        history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
+        if (res) history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
     }
 
     const deleteEarning = async () => {
-        await deleteEntry(entry)
+        const res = await deleteEntry(entry)
 
         // returns the user to the view details page
-        history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
+        if (res) history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
     }
 
     useEffect(() => {

@@ -8,8 +8,8 @@ import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
-import { updateAccount, updateMonths } from '../../helperfuncs/UpdateFunctions';
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
+import { addTransfer } from '../../helperfuncs/TransferFunctions';
 
 import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
 import { AccountSelector, AmountEntry, RateEntry, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
@@ -38,34 +38,11 @@ function Transfer() {
         const account2Res = await fetch(`/accounts/${account2}`)
         const account2Data = await account2Res.json()
 
-        const currency2 = account2Data[0].currency
-
         // adds the transfer to mongoDB
-        const month = date.slice(5, 7)
-        const newTransfer = {account, account2, currency, currency2, amount, fee, exchangeRate, date, month, description}
-        const response = await fetch("/transfers", {
-            method: "POST", 
-            body: JSON.stringify(newTransfer),
-            headers: {"Content-type": "application/json"}
-        })
-        if (response.status === 201){
-            alert("Successfully performed transfer")
-        
-        // adds the transfer to the month's records for both accounts
-        await updateMonths(date, account, Number(amount) + Number(fee))
-        await updateMonths(date, account2, amount * exchangeRate * -1)
-        // updates both accounts
-        await updateAccount(account, Number(amount) + Number(fee))
-        await updateAccount(account2, amount * exchangeRate * -1)
+        const newTransfer = {account, account2, currency, currency2: account2Data[0].currency, amount, fee, exchangeRate, date, month: date.slice(5, 7), description}
+        const res = await addTransfer(newTransfer)
 
-
-
-        history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
-
-        }else{
-            alert(`Transfer failed. Status code = ${response.status}`)
-        }
-        
+        if (res) history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
     }
 
     useEffect(() => {

@@ -23,7 +23,7 @@ function WeekPage2 () {
     // retrieves the dates previously passed in the by clicking on the Main page table
     const history = useHistory()
     const location = useLocation()
-
+    
     const {user, accountName, accounts, dates, month, lastUsed} = location.state
     let {currency} = location.state
 
@@ -41,7 +41,7 @@ function WeekPage2 () {
 
     const loadWeek = async () => {
         const weekDates = calcWeekDates(dates)
-        const entries = await retrieveWeekEntries(dates, user, 7, accountName)
+        const entries = await retrieveWeekEntries(dates, user, accountName, 7)
         let organizedDays = []
         for (let idx in weekDates){
             const day = await organizeDaysEntries(entries[idx], currency)

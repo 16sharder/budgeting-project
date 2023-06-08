@@ -102,7 +102,6 @@ function NetTable ({data}) {
 
 
     const sendSpendings = () => {
-        console.log(accountName)
         if (accountName != "All Accounts") lastUsed = accountName
         history.push({pathname:"/previous-spendings", state: {user: user, currency: currency, month: month, accountName: accountName, lastUsed: lastUsed}})
     }

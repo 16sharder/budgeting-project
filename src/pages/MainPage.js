@@ -8,78 +8,28 @@
 // Includes links to WeekPage for a given week, AddEntry, AddEarning, and EarningDetails
 
 import React from 'react';
-import MonthlyTable from "../components/MainPage/Month/MonthlyTable";
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import {createMonthDates} from "../helperfuncs/DateCalculators"
-import {organizeDaysEntries, retrieveWeekEntries, retrieveEarnings, convertToEuros, convertToDollars, retrieveMonth, retrieveNetSpendings} from "../helperfuncs/FetchFunctions"
-import {calculateWeekTotals} from "../helperfuncs/OtherCalcs"
+import MonthlyTable from "../components/MainPage/Month/MonthlyTable";
+import AveragesTable from '../components/AverageSpendings/AveragesTable';
+
+import {retrieveEarnings, convertToEuros, convertToDollars, retrieveNetSpendings} from "../helperfuncs/FetchFunctions"
 
 import { BorderDecorationsH } from '../components/Styling/BorderDecoration';
 import Navigation from '../components/Styling/Navigation';
-import AveragesTable from '../components/AverageSpendings/AveragesTable';
 
 
 function MainPage () {
 
     // retrieves the name previously passed in the form on the Login page
-    const location = useLocation()
-    const user = location.state.user
-    let currency = location.state.currency
-    let lastUsed = location.state.lastUsed
-
     const history = useHistory()
+    const location = useLocation()
 
+    const {user} = location.state
+    let {currency, lastUsed} = location.state
+    
     const [message, setMessage] = useState("Loading...")
-
-
-    // sends the user to a page displaying the desired week's information
-    const viewWeek = async dates => {
-        history.push({pathname:"/weekly-view", state: {dates: dates, user: user, accounts: accounts, currency: currency, lastUsed: lastUsed}})
-    }
-
-
-
-
-
-    // retrieves the current date so as to know which month and weeks to display
-    const today = new Date()
-    const monthDatesArray = createMonthDates(today)
-
-
-    // retrieves the information for the month to be displayed
-    const [month, setMonth] = useState([])
-
-    const loadMonth = async () => {
-        let monthArray = []
-        for (let week of monthDatesArray) {
-            // gets an array (7) of days, each day containing each entry for that day
-            const days = await retrieveWeekEntries(week, user)
-            let organizedDays = []
-            for (let day of days){
-                // sums the entries for each category for the day, returning an array of category sums
-                const organized = await organizeDaysEntries(day, currency)
-                organizedDays.push(organized)
-            }
-            // sums the entries for the week for each category
-            let organizedWeek = calculateWeekTotals(organizedDays)
-            organizedWeek[0] = week
-            // adds each week's array of sums to an array for the month
-            monthArray.push(organizedWeek)
-        }
-        setMessage(`${user}, here are your spendings for this month`)
-        setMonth(monthArray)
-    }
-
-    // sums the entries for the month for each category
-    const [totalsArray, setTotals] = useState(calculateWeekTotals(month))
-
-    const loadTotals = async () => {
-        let totals = await retrieveMonth(today.getMonth()+1, user)
-        if (totals != undefined) setTotals(totals)
-    }
-
 
 
     // gets all of the user's account information
@@ -95,6 +45,7 @@ function MainPage () {
         const names = accts.map((acct) => acct.account)
 
         let result = 0
+        const today = new Date()
         const allSpent = await retrieveNetSpendings(today.getMonth(), today.getFullYear(), names)
         for (const spent of allSpent){
             result += spent
@@ -103,41 +54,10 @@ function MainPage () {
     }
 
 
-
-    // loads everything
-    useEffect(() => {
-        loadMonth()
-        loadAccounts(user)
-        loadEarnings()
-        loadTotals()
-    }, [])
-
-
-
-
-
-    // updates the currency when button is hit
-    const toggleCurrency = () => {
-        if (currency === "EUR") location.state.currency = "USD"
-        else if (currency === "USD") location.state.currency = "EUR"
-
-        history.push({pathname:"/main", state: location.state})
-        window.location.reload()
-    }
-
-
-    // either raises an error or sends the user to the add entry page
-    const sendAddEntry = () => {
-        if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
-        else history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts, lastUsed: lastUsed}})
-    }
-
-
-
     // retrieves the user's earnings for the month
     const [earnings, setEarnings] = useState(0)
 
-    let monthNumStr = String(today.getMonth() + 1)
+    let monthNumStr = String(new Date().getMonth() + 1)
     if (monthNumStr.length == 1) monthNumStr = `0${monthNumStr}`
 
     const loadEarnings = async () => {
@@ -161,6 +81,38 @@ function MainPage () {
     }
 
 
+
+    // loads everything
+    useEffect(() => {
+        loadAccounts(user)
+        loadEarnings()
+    }, [])
+
+
+
+    // updates the currency when button is hit
+    const toggleCurrency = () => {
+        if (currency === "EUR") location.state.currency = "USD"
+        else if (currency === "USD") location.state.currency = "EUR"
+
+        history.push({pathname:"/main", state: location.state})
+        window.location.reload()
+    }
+
+
+
+    // sends the user to a page displaying the desired week's information
+    const viewWeek = async dates => {
+        history.push({pathname:"/weekly-view", state: {dates: dates, user: user, accounts: accounts, currency: currency, lastUsed: lastUsed}})
+    }
+
+    // either raises an error or sends the user to the add entry page
+    const sendAddEntry = () => {
+        if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
+        else history.push({pathname:"/add-entry", state: {curUser: user, currency: currency, accounts: accounts, lastUsed: lastUsed}})
+    }
+
+
     
     return (
         <>
@@ -171,7 +123,9 @@ function MainPage () {
             <div>Please click on a week if you would like to see entries by day</div>
             <p></p>
 
-            <MonthlyTable month={month} viewWeek={viewWeek} total={totalsArray} currency={currency}/>
+            <MonthlyTable data={[new Date, user, "All Accounts", currency, `${user}, here are your spendings for this month`, setMessage, viewWeek]}/>
+
+
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={toggleCurrency}>Change Currency</button></td>
                 <td></td>

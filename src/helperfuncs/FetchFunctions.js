@@ -50,7 +50,7 @@ async function retrieveDayEntries (day, user, accountName="All Accounts") {
 }
 
 
-async function retrieveWeekEntries (week, user, days=7, accountName="All Accounts") {
+async function retrieveWeekEntries (week, user, accountName="All Accounts", days=7) {
     // returns an array of all the entries for each day of that week
     const weekDates = calcWeekDates(week, days)
 

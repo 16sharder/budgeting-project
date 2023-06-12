@@ -7,7 +7,7 @@ import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
+import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecoration';
 import { AmountEntry } from '../../components/Forms/Inputs';
 
 function AddAccount() {
@@ -79,7 +79,8 @@ function AddAccount() {
 
     return (
         <>
-            <BorderDecorations />
+            <BasicBorders/>
+            <BorderFlourish/>
             <div className='holder'>
             <h3>Create a new account</h3>
             <div></div>
@@ -153,7 +154,6 @@ function AddAccount() {
                 <td><button onClick={addAccount}>Add</button></td>
             </tr></tbody></table>
             </div>
-            <BorderDecorationsBottom />
         </>
     )
 }

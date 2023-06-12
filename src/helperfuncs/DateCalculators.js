@@ -141,6 +141,18 @@ function convertDate (date) {
     return newDate
 }
 
+// converts the date from mongoDB format to a more human legible form
+const stringifyDate = (date) => {
+    let dateCopy = date.slice(5, date.length)
+    const dashIndex = dateCopy.indexOf("-")
+    dateCopy = `${dateCopy.slice(0, dashIndex)}/${dateCopy.slice(dashIndex+1, dateCopy.length)}`
+
+    if (dateCopy[dashIndex+1] == 0) dateCopy = `${dateCopy.slice(0, dashIndex+1)}${dateCopy.slice(dashIndex+2, dateCopy.length)}`
+    if (dateCopy[0] == 0) dateCopy = dateCopy.slice(1, dateCopy.length)
+
+    return dateCopy
+}
+
 function monthName (monthNum) {
     let monthName = ""
     if (monthNum == 0) monthName = "January"
@@ -177,4 +189,4 @@ function convertTodayToDate () {
     return today
 }
 
-export {calcWeekDates, calcMonthEnd, createMonthDates, convertDate, monthName, monthNumString, convertTodayToDate}
+export {calcWeekDates, calcMonthEnd, createMonthDates, convertDate, stringifyDate, monthName, monthNumString, convertTodayToDate}

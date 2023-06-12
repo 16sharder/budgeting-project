@@ -4,54 +4,44 @@
 
 import React from "react";
 
-function BorderDecorations () {
-    return (
-        <>
-            <div className='container top'></div>
-            <div className='container redleft'></div>
-            <div className='container redright'></div>
-            <div className='container blueleft'></div>
-            <div className='container blueright'></div>
-            
-
-            <div className='container topleft'></div>
-            <div className='container topright'></div>
-        </>
-    )
-}
-
-export function BorderDecorationsH () {
+function BasicBorders () {
     return (
         <>
             <div className='filler'></div>
 
-            <div className='container topH'></div>
-            <div className='container redleft'></div>
-            <div className='container redright'></div>
-            <div className='container blueleft'></div>
-            <div className='container blueright'></div>
+            <div className="fixed">
+                <div className="verticals color1">
+                <div className="verticals color5"></div></div>
             
 
-            <div className='container topleftH'></div>
-            <div className='container toprightH'></div>
-
-            <div className="container topleftR"></div>
-            <div className="container toprightR"></div>
-            <div className="container topleftB"></div>
-            <div className="container toprightB"></div>
+                <div className='container cornerDec topleft'></div>
+                <div className='container cornerDec topright'></div>
+            </div>
+            
+            <div className='container bottom'></div>
         </>
     )
 }
 
-export function BorderDecorationsBottom () {
+export function BorderFlourish () {
     return (
         <>
-            <div className='container bottom'></div>
-            
-            <div className='container bottomleft'></div>
-            <div className='container bottomright'></div>
+            <div className='container top'></div>
+
+            <div className="fixed">
+                <div className='container cornerDec bottomleft'></div>
+                <div className='container cornerDec bottomright'></div>
+            </div>
         </>
     )
 }
 
-export default BorderDecorations
+export function NoBorderFlourish () {
+    return (
+        <>
+            <div className='container top noflourish'></div>
+        </>
+    )
+}
+
+export default BasicBorders

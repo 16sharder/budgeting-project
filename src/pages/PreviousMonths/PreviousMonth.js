@@ -4,7 +4,7 @@ import {useLocation} from "react-router-dom"
 import { monthName, monthNumString } from '../../helperfuncs/DateCalculators';
 
 import NetTable from '../../components/MainPage/NetTable';
-import { BorderDecorationsH } from '../../components/Styling/BorderDecoration';
+import BasicBorders, {NoBorderFlourish} from '../../components/Styling/BorderDecoration';
 import Navigation from '../../components/Styling/Navigation';
 
 function PreviousMonth () {
@@ -36,20 +36,20 @@ function PreviousMonth () {
     }, [])
 
     return (
-        <>
-            <BorderDecorationsH />
+        <><div className='box'>
+            <BasicBorders/>
+            <NoBorderFlourish/>
             <Navigation user={user} currency={currency} lastUsed={lastUsed}/>
             <p></p>
 
             <h2>Financials in {monthName(month)}</h2>
             <div>Click on a section to view more details</div>
-            <NetTable data={[user, "All Accounts", accounts, currency, monthNumStr, month, year, lastUsed]}/>
+            <NetTable data={[user, "All Accounts", "All Accounts", accounts, currency, monthNumStr, month, year, lastUsed]}/>
             {accounts.map((account, index) => 
-            <NetTable data={[user, account.account, accounts, currency, monthNumStr, month, year, lastUsed]} key={index}/>)}
+            <NetTable data={[user, account.account, account.account, accounts, currency, monthNumStr, month, year, lastUsed]} key={index}/>)}
 
             <p></p>
-            <div className='container bottomSep'></div>
-        </>
+        </div></>
     )
 }
 

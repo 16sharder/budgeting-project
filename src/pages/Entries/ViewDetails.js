@@ -10,7 +10,7 @@ import {useHistory, useLocation} from "react-router-dom"
 import {retrieveDayEntries} from "../../helperfuncs/FetchFunctions"
 
 import Navigation from '../../components/Styling/Navigation';
-import {BorderDecorationsH} from '../../components/Styling/BorderDecoration';
+import BasicBorders, {NoBorderFlourish} from '../../components/Styling/BorderDecoration';
 
 import { FiEdit } from "react-icons/fi";
 
@@ -52,9 +52,9 @@ function ViewDetails () {
     }
 
     return (
-        <>
-            <div className='fillerBottom'></div>
-            <BorderDecorationsH />
+        <><div className='box'>
+            <BasicBorders/>
+            <NoBorderFlourish/>
             <Navigation user={user} currency={currency} />
             <p></p>
             <h2>{category} entries for {date}</h2>
@@ -75,8 +75,7 @@ function ViewDetails () {
             </div>
             
             <p></p>
-            <div className='container bottomFix'></div>
-        </>
+        </div></>
     )
 }
 

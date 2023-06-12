@@ -22,6 +22,7 @@ import WeekPage2 from './pages/PreviousMonths/WeekPage2';
 import EditEntry from './pages/Entries/EditEntry';
 import EditEarning from './pages/Earnings/EditEarning';
 import EditTransfer from './pages/Accounts/EditTransfer';
+import ViewTransfers from './pages/Accounts/ViewTransfers';
 
 function App() {
   return (
@@ -72,6 +73,9 @@ function App() {
           </Route>
           <Route path="/edit-transfer" >
             <EditTransfer />
+          </Route>
+          <Route path="/view-transfers" >
+            <ViewTransfers />
           </Route>
 
 

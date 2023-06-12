@@ -11,7 +11,7 @@ import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
 import { addEntry } from '../../helperfuncs/EntryFunctions';
 
-import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
+import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecoration';
 import { AccountSelector, AmountEntry, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 
 function AddEarning() {
@@ -50,7 +50,8 @@ function AddEarning() {
 
     return (
         <>
-            <BorderDecorations />
+        <BasicBorders/>
+        <BorderFlourish/>
         <div>
 
             <h3>Add earnings</h3>
@@ -70,7 +71,6 @@ function AddEarning() {
                 <td><button onClick={newEntry}>Add</button></td>
             </tr></tbody></table>
         </div>
-        <BorderDecorationsBottom />
         </>
     )
 }

@@ -7,7 +7,7 @@ import React from 'react';
 import {useState} from "react"
 import {useHistory} from "react-router-dom"
 
-import BorderDecorations, {BorderDecorationsBottom} from '../components/Styling/BorderDecoration';
+import BasicBorders, {BorderFlourish} from '../components/Styling/BorderDecoration';
 
 function LoginPage () {
     const [name, setName] = useState("")
@@ -29,7 +29,8 @@ function LoginPage () {
 
     return (
         <>
-            <BorderDecorations />
+            <BasicBorders/>
+            <BorderFlourish/>
             <h2>Welcome to your budgeting tool!</h2>
 
             <p className='color5'>This tool is designed to help users get a better understanding of their monthly expenses.
@@ -48,7 +49,6 @@ function LoginPage () {
             <p></p>
             <button className="rightButton" onClick={() => send(name)}>Continue</button>
             
-            <BorderDecorationsBottom />
         </>
     )
 }

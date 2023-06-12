@@ -7,7 +7,7 @@ import React from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
+import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecoration';
 import { monthName } from '../../helperfuncs/DateCalculators';
 
 function ChooseMonth () {
@@ -50,7 +50,8 @@ function ChooseMonth () {
 
     return (
         <>
-            <BorderDecorations />
+            <BasicBorders/>
+            <BorderFlourish/>
             <h3>Please choose a month to view</h3>
 
 
@@ -64,7 +65,6 @@ function ChooseMonth () {
 
             <p></p>
             <button className="rightButton" onClick={() => send(month)}>Continue</button>
-            <BorderDecorationsBottom />
         </>
     )
 }

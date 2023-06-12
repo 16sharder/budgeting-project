@@ -10,11 +10,11 @@ import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import { retrieveNetSpendings, retrieveUserAccountNames } from '../../helperfuncs/FetchFunctions';
-import {monthName} from "../../helperfuncs/DateCalculators"
+import {monthName, stringifyDate} from "../../helperfuncs/DateCalculators"
 import {calculateNetWorth} from "../../helperfuncs/OtherCalcs"
 
 import Navigation from '../../components/Styling/Navigation';
-import { BorderDecorationsH } from '../../components/Styling/BorderDecoration';
+import BasicBorders, { NoBorderFlourish } from '../../components/Styling/BorderDecoration';
 import { FiEdit } from 'react-icons/fi';
 
 function Accounts() {
@@ -107,18 +107,6 @@ function Accounts() {
     
         setTransfers(transferList)
     }
-    
-    
-    const changeDate = (date) => {
-        let dateCopy = date.slice(5, date.length)
-        const dashIndex = dateCopy.indexOf("-")
-        dateCopy = `${dateCopy.slice(0, dashIndex)}/${dateCopy.slice(dashIndex+1, dateCopy.length)}`
-
-        if (dateCopy[dashIndex+1] == 0) dateCopy = `${dateCopy.slice(0, dashIndex+1)}${dateCopy.slice(dashIndex+2, dateCopy.length)}`
-        if (dateCopy[0] == 0) dateCopy = dateCopy.slice(1, dateCopy.length)
-
-        return dateCopy
-    }
 
 
 
@@ -149,8 +137,9 @@ function Accounts() {
     }
 
     return (
-        <>
-            <BorderDecorationsH />
+        <><div className='box'>
+            <BasicBorders/>
+            <NoBorderFlourish/>
             <Navigation user={user} currency={currency} />
             <p></p>
             <h2>Accounts Overview</h2>
@@ -199,7 +188,7 @@ function Accounts() {
                         <td className='bold color5'>{transfer.account2}</td>
                         <td className="color1">{transfer.amount.toLocaleString('en', {style: "currency", currency: transfer.currency})}</td>
                         <td className='color1'>{(transfer.amount * transfer.exchangeRate).toLocaleString('en', {style: "currency", currency: transfer.currency2})}</td>
-                        <td>{changeDate(transfer.date)}</td>
+                        <td>{stringifyDate(transfer.date)}</td>
                         <td>{transfer.description}</td>
                         <td className='color1'><FiEdit onClick={() => editTransfer(transfer)}/></td>
                     </tr>)}
@@ -208,8 +197,7 @@ function Accounts() {
 
 
             <p></p>
-            <div className='container bottomSep'></div>
-        </>
+        </div></>
     )
 }
 

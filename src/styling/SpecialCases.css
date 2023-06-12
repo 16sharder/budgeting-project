@@ -33,6 +33,7 @@ input#input {
 
 
 
+
 .singleColumn {
     width: 455px;
 }
@@ -47,4 +48,34 @@ input#input {
 .edit {
     position: relative;
     left: 150px;
+}
+
+
+
+
+.viewTransfers {
+    border: 0px ;
+    font-size: large;
+    background-color: #F2EBE5;
+    width: 700px;
+}
+
+.transfers {
+    border: 0px;
+    vertical-align: top;
+}
+
+.inTransfer {
+    border: 0px;
+    width: 420px;
+}
+
+.inTransfer td {
+    padding: 0px;
+    padding-bottom: 10px;
+    border: 0px;
+}
+
+.edge {
+    width: 75px;
 }

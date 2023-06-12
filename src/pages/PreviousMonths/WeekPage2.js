@@ -14,7 +14,7 @@ import {organizeDaysEntries, retrieveWeekEntries} from "../../helperfuncs/FetchF
 import {calculateWeekTotals} from "../../helperfuncs/OtherCalcs"
 
 import Navigation from '../../components/Styling/Navigation';
-import { BorderDecorationsH } from '../../components/Styling/BorderDecoration';
+import BasicBorders, {NoBorderFlourish} from '../../components/Styling/BorderDecoration';
 
 
 
@@ -69,8 +69,9 @@ function WeekPage2 () {
     
 
     return (
-        <>
-            <BorderDecorationsH />
+        <><div className='box'>
+            <BasicBorders/>
+            <NoBorderFlourish/>
             <Navigation user={user} currency={currency} lastUsed={lastUsed}/>
             <p></p>
             <h2>{message}</h2>
@@ -85,8 +86,7 @@ function WeekPage2 () {
             </tr></tbody></table>
 
             <p></p>
-            <div className='container bottomSep'></div>
-        </>
+        </div></>
     )
 }
 

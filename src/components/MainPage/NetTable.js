@@ -5,7 +5,7 @@ import {useHistory} from "react-router-dom"
 import { convertToDollars, convertToEuros, retrieveEarnings, retrieveMonth, retrieveNetSpendings } from '../../helperfuncs/FetchFunctions';
 
 function NetTable ({data}) {
-    let [user, accountName, accounts, currency, monthNumStr, month, year, lastUsed] = data
+    let [user, label, accountName, accounts, currency, monthNumStr, month, year, lastUsed] = data
 
     const [spendings, setSpendings] = useState(0)
     const [earnings, setEarnings] = useState(0)
@@ -108,7 +108,7 @@ function NetTable ({data}) {
 
     return (
         <>
-            <h3>{accountName}</h3>
+            <h3>{label}</h3>
             <table>
                 <thead>
                     <tr className='bold color2 horizontalB wide'>
@@ -129,11 +129,11 @@ function NetTable ({data}) {
                             {earnings.toLocaleString('en', {style: "currency", currency: currency})}
                         </h3></td>
 
-                        <td className='color1'><h3>
+                        <td className='color1' onClick={() => history.push({pathname:"/view-transfers", state: {user, currency, month: Number(month) + 1, year, accountName, accounts}})}><h3>
                             -{tOut.toLocaleString('en', {style: "currency", currency: currency})}
                         </h3></td>
 
-                        <td><h3>
+                        <td onClick={() => history.push({pathname:"/view-transfers", state: {user, currency, month: Number(month) + 1, year, accountName, accounts}})}><h3>
                             {tIn.toLocaleString('en', {style: "currency", currency: currency})}
                         </h3></td>
 

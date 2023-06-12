@@ -12,7 +12,7 @@ import {useHistory, useLocation} from "react-router-dom"
 
 import {monthName} from "../../helperfuncs/DateCalculators"
 
-import { BorderDecorationsH } from '../../components/Styling/BorderDecoration';
+import BasicBorders, {NoBorderFlourish} from '../../components/Styling/BorderDecoration';
 import Navigation from '../../components/Styling/Navigation';
 
 
@@ -75,8 +75,9 @@ function SpendingsPage () {
 
 
     return (
-        <>
-            <BorderDecorationsH />
+        <><div className='box'>
+            <BasicBorders/>
+            <NoBorderFlourish/>
             <Navigation user={user} currency={currency} lastUsed={lastUsed}/>
             <p></p>
             <h2>{message}</h2>
@@ -92,8 +93,7 @@ function SpendingsPage () {
             </tr></tbody></table>
 
             <p></p>
-            <div className='container bottomSep'></div>
-        </>
+        </div></>
     )
 }
 

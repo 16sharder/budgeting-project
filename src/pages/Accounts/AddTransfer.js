@@ -11,7 +11,7 @@ import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
 import { addTransfer } from '../../helperfuncs/TransferFunctions';
 
-import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
+import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecoration';
 import { AccountSelector, AmountEntry, RateEntry, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 
 function Transfer() {
@@ -53,7 +53,8 @@ function Transfer() {
 
     return (
         <>
-            <BorderDecorations />
+            <BasicBorders/>
+            <BorderFlourish/>
             <div className='holder'>
             <h3>Bank Transfer</h3>
             <div></div>
@@ -75,7 +76,6 @@ function Transfer() {
                 <td><button onClick={performTransfer}>Transfer</button></td>
             </tr></tbody></table>
             </div>
-            <BorderDecorationsBottom />
         </>
     )
 }

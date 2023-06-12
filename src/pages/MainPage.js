@@ -16,8 +16,9 @@ import { monthNumString } from '../helperfuncs/DateCalculators';
 
 import MonthlyTable from "../components/MainPage/Month/MonthlyTable";
 import AveragesTable from '../components/AverageSpendings/AveragesTable';
-import { BorderDecorationsH } from '../components/Styling/BorderDecoration';
+import BasicBorders, {NoBorderFlourish} from '../components/Styling/BorderDecoration';
 import Navigation from '../components/Styling/Navigation';
+import NetTable from '../components/MainPage/NetTable';
 
 
 function MainPage () {
@@ -114,8 +115,9 @@ function MainPage () {
 
     
     return (
-        <>
-            <BorderDecorationsH />
+        <><div className='box'>
+            <BasicBorders/>
+            <NoBorderFlourish/>
             <Navigation user={user} currency={currency} lastUsed={lastUsed}/>
             <p></p>
             <h2>{message}</h2>
@@ -132,16 +134,9 @@ function MainPage () {
             </tr></tbody></table>
 
 
+            <NetTable data={[user, "", "All Accounts", accounts, currency, monthNumStr, today.getMonth(), today.getFullYear(), lastUsed]}/>
 
-            <table className='netTable'><tbody><tr>
-                <td><h2>Earnings: {earnings.toLocaleString('en', {style: "currency", currency: currency})}</h2>
-                    <button onClick={ () => history.push({pathname:"/earnings", state: {month: monthNumStr, user, currency, account: "All Accounts", accounts, lastUsed}})}>View Earnings Details</button>
-                </td>
-                <td></td>
-                <td><h2>Net Gain/Loss: {Number(netGain).toLocaleString('en', {style: "currency", currency: currency})}</h2><br></br><br></br><br></br><br></br><br></br>
-                </td>
 
-            </tr></tbody></table>
 
             <br></br>
 
@@ -150,8 +145,7 @@ function MainPage () {
             <AveragesTable user={user} currency={currency}/>
 
             <p></p>
-            <div className='container bottomSep'></div>
-        </>
+        </div></>
     )
 }
 

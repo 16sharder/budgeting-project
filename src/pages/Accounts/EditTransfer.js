@@ -10,7 +10,7 @@ import {useHistory, useLocation} from "react-router-dom"
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
 import { deleteTransfer, updateTransfer } from '../../helperfuncs/TransferFunctions';
 
-import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
+import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecoration';
 import { AccountSelector, AmountEntry, RateEntry, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 
 function EditTransfer() {
@@ -60,7 +60,8 @@ function EditTransfer() {
 
     return (
         <>
-            <BorderDecorations />
+            <BasicBorders/>
+            <BorderFlourish/>
             <div className='holder'>
 
             <h3>Edit transfer</h3>
@@ -87,7 +88,6 @@ function EditTransfer() {
 
             <button onClick={deleteEntry} className="delete">Delete</button>
             </div>
-        <BorderDecorationsBottom />
         </>
     )
 }

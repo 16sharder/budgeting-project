@@ -14,7 +14,7 @@ import {organizeDaysEntries, retrieveWeekEntries} from "../helperfuncs/FetchFunc
 import {calculateWeekTotals} from "../helperfuncs/OtherCalcs"
 
 import Navigation from '../components/Styling/Navigation';
-import { BorderDecorationsH } from '../components/Styling/BorderDecoration';
+import BasicBorders, {NoBorderFlourish} from '../components/Styling/BorderDecoration';
 
 
 
@@ -69,8 +69,9 @@ function WeekPage () {
     
 
     return (
-        <>
-            <BorderDecorationsH />
+        <><div className='box'>
+            <BasicBorders/>
+            <NoBorderFlourish/>
             <Navigation user={user} currency={currency} lastUsed={lastUsed}/>
             <p></p>
             <h2>{message}</h2>
@@ -86,8 +87,7 @@ function WeekPage () {
 
             <button onClick={() => history.push({pathname:"/main", state: {user, currency, lastUsed}})}>Return to monthly view</button>
             <p></p>
-            <div className='container bottomSep'></div>
-        </>
+        </div></>
     )
 }
 

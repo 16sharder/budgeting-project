@@ -9,7 +9,7 @@ import {useHistory, useLocation} from "react-router-dom"
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
 
-import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
+import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecoration';
 import { AccountSelector, AmountEntry, CategorySelector, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 import { addEntry } from '../../helperfuncs/EntryFunctions';
 
@@ -49,7 +49,8 @@ function AddEntry() {
 
     return (
         <>
-            <BorderDecorations />
+            <BasicBorders/>
+            <BorderFlourish/>
         <div  className='holder'>
 
             <h3>Create a new entry</h3>
@@ -70,7 +71,6 @@ function AddEntry() {
                 <td><button onClick={newEntry}>Add</button></td>
             </tr></tbody></table>
         </div>
-        <BorderDecorationsBottom />
         </>
     )
 }

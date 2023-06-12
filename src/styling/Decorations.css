@@ -16,201 +16,80 @@ table.navigator {
 
 
 
+  
+.verticals {
+    border-right: 5px solid;
+    border-left: 5px solid;
+    width: 97%;
+    height: 100%;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+}
 
 
 
 .container {
     margin:0 auto;
-    padding:10px 25px;
     color: #9F496E;
   }
   
 div.top {
-    width: 96.5%;
+    width: 100%;
     left: 0px;
-    top: 5px;
-    border-bottom: 5px solid;
-    position: absolute;
-}
-  
-div.topH {
-    width: 96.5%;
-    left: 0px;
-    top: 31px;
+    top: 27px;
     border-bottom: 5px solid;
     position: fixed;
     z-index: 4;
 }
   
+div.top.noflourish {
+    top: 52px;
+}
+  
 div.bottom {
-    width: 96.5%;
+    width: 100%;
     left: 0px;
-    bottom: 5px;
+    bottom: 27px;
     border-top: 5px solid;
     position: absolute;
 }
+
   
-div.redleft {
-    height: 200%;
-    top: 0px;
-    left: 25px;
-    border-left: 5px solid;
-    position: fixed;
-}
-  
-div.redright {
-    height: 200%;
-    top: 0px;
-    right: 25px;
-    border-right: 5px solid;
-    position: fixed;
-}
-  
-  
-div.blueleft {
-    height: 200%;
-    top: 0px;
-    left: 40px;
-    border-left: 5px solid;
-    color: #405fab;
-    position: fixed;
-}
-  
-div.blueright {
-    height: 200%;
-    top: 0px;
-    right: 40px;
-    border-right: 5px solid;
-    color: #405fab;
-    position: fixed;
-}
-  
-  
-div.topleft {
-    width: 10px;
-    height: 25px;
-    top: -5px;
-    left: -5px;
+div.cornerDec { 
+    width: 55px;
+    height: 40px;
     color: darkgreen;
+    position: absolute;
+}
+
+div.topleft {
+    top: 0px;
+    left: 0px;
     border-right: 5px solid;
     border-bottom: 5px solid;
-    position: absolute;
 }
   
 div.topright {
-    width: 10px;
-    height: 25px;
-    top: -5px;
-    right: -5px;
-    color: darkgreen;
+    top: 0px;
+    right: 0px;
     border-left: 5px solid;
     border-bottom: 5px solid;
-    position: absolute;
-}
-  
-div.topleftH {
-    width: 10px;
-    height: 25px;
-    top: -5px;
-    left: -5px;
-    color: darkgreen;
-    border-right: 5px solid;
-    border-bottom: 5px solid;
-    position: fixed;
-    z-index: 6;
-}
-  
-div.toprightH {
-    width: 10px;
-    height: 25px;
-    top: -5px;
-    right: -5px;
-    color: darkgreen;
-    border-left: 5px solid;
-    border-bottom: 5px solid;
-    position: fixed;
-    z-index: 6;
-}
-  
-div.topleftR {
-    width: 10px;
-    height: 31px;
-    top: 0px;
-    left: 25px;
-    border-left: 5px solid;
-    position: fixed;
-    z-index: 5;
-}
-  
-div.toprightR {
-    width: 10px;
-    height: 31px;
-    top: 0px;
-    right: 25px;
-    border-right: 5px solid;
-    position: fixed;
-    z-index: 5;
-}
-  
-div.topleftB {
-    width: 10px;
-    height: 31px;
-    top: 0px;
-    left: 40px;
-    color: #405fab;
-    border-left: 5px solid;
-    position: fixed;
-    z-index: 5;
-}
-  
-div.toprightB {
-    width: 10px;
-    height: 31px;
-    top: 0px;
-    right: 40px;
-    color: #405fab;
-    border-right: 5px solid;
-    position: fixed;
-    z-index: 5;
 }
   
 div.bottomleft {
-    width: 10px;
-    height: 25px;
-    bottom: -5px;
-    left: -5px;
-    color: darkgreen;
+    bottom: 0px;
+    left: 0px;
     border-right: 5px solid;
     border-top: 5px solid;
-    position: absolute
 }
   
 div.bottomright {
-    width: 10px;
-    height: 25px;
-    bottom: -5px;
-    right: -5px;
-    color: darkgreen;
+    bottom: 0px;
+    right: 0px;
     border-left: 5px solid;
     border-top: 5px solid;
-    position: absolute
-}
-  
-div.bottomSep {
-    width: 96.5%;
-    left: 0px;
-    bottom: 5px;
-    border-top: 5px solid;
-    position: relative;
-}
-  
-div.bottomFix {
-    width: 96.5%;
-    left: 0px;
-    bottom: 5px;
-    border-top: 5px solid;
-    position: fixed;
-    z-index: 5;
 }
 
 
@@ -222,26 +101,8 @@ div.bottomFix {
     padding:10px 25px;
     width: 100%;
     height: 31px;
-    top: -5px;
-    left: -5px;
-    border-right: 5px solid;
-    border-bottom: 5px solid;
+    top: 0px;
     position: fixed;
-    border-color: #F2EBE5;
     background-color: #F2EBE5;
     z-index: 4;
-  }
-  
-  .fillerBottom {
-    margin:0 auto;
-    padding:10px 25px;
-    width: 100%;
-    height: 31px;
-    bottom: -30px;
-    left: -5px;
-    border-right: 5px solid;
-    border-top: 5px solid;
-    position: fixed;
-    border-color: #F2EBE5;
-    background-color: #F2EBE5;
-  }
+}

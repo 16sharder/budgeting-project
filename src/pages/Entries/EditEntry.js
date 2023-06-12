@@ -11,7 +11,7 @@ import {useHistory, useLocation} from "react-router-dom"
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
 import { deleteEntry, updateEntry } from '../../helperfuncs/EntryFunctions';
 
-import BorderDecorations, {BorderDecorationsBottom} from '../../components/Styling/BorderDecoration';
+import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecoration';
 import { AccountSelector, AmountEntry, CategorySelector, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 
 function EditEntry() {
@@ -55,7 +55,8 @@ function EditEntry() {
     
     return (
         <>
-            <BorderDecorations />
+            <BasicBorders/>
+            <BorderFlourish/>
         <div className='holder'>
 
             <h3>Edit entry</h3>
@@ -80,7 +81,6 @@ function EditEntry() {
 
             <button onClick={delEntry} className="delete">Delete</button>
             </div>
-        <BorderDecorationsBottom />
         </>
     )
 }

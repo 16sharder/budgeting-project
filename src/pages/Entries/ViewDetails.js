@@ -62,7 +62,7 @@ function ViewDetails () {
                 {entries.map((entry, index) => 
                     <table key={index} className='singleColumn'>
                         <thead><tr className='toprow'><th>Entry {index+1}
-                            <FiEdit className="edit" onClick={() => {history.push({pathname:"/edit", state: {entry, curUser: user, currency, accounts, dates: weekDates, month}})}}/></th></tr></thead>
+                            <FiEdit className="edit" onClick={() => {history.push({pathname:"/edit", state: {entry, accounts, back: location.state}})}}/></th></tr></thead>
                         <tbody><tr><td className='color1'><div>Account: {entry.account}</div><div>Amount: {entry.amount.toLocaleString('en', {style: "currency", currency: entry.currency})}</div><div>Description: {entry.description}</div><div></div></td></tr></tbody>
                     </table>
                 )}

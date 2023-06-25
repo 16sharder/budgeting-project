@@ -33,13 +33,30 @@ function Transfer() {
     const [description, setDescription] = useState("")
 
 
-    const performTransfer = async () => {
+    // event listener for when user presses Enter
+    const input = document.getElementById("input")
+
+    const checkKey = (key, children) => {
+        if (key == "Enter") {
+            performTransfer({account: children[0].children[2].children[0].value, 
+                account2: children[1].children[2].children[0].value, 
+                currency: findCurrency(children[0].children[2].children[0].value, accounts)[0], 
+                amount: children[2].children[2].children[0].value, 
+                fee: children[3].children[2].children[0].value, 
+                exchangeRate: children[4].children[2].children[0].value,
+                date: children[5].children[2].children[0].value, 
+                description: children[6].children[2].children[0].value})} 
+    }
+    
+
+    const performTransfer = async (newTransfer) => {
         // retrieves the second account to get the currency
-        const account2Res = await fetch(`/accounts/${account2}`)
+        const account2Res = await fetch(`/accounts/${newTransfer.account2}`)
         const account2Data = await account2Res.json()
 
         // adds the transfer to mongoDB
-        const newTransfer = {account, account2, currency, currency2: account2Data[0].currency, amount, fee, exchangeRate, date, month: date.slice(5, 7), description}
+        newTransfer.currency2 = account2Data[0].currency
+        newTransfer.month = date.slice(5, 7)
         const res = await addTransfer(newTransfer)
 
         if (res) history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
@@ -51,6 +68,15 @@ function Transfer() {
         setSymbol(curr[1])
     }, [account])
 
+
+    useEffect(() => {
+        if (input != undefined) {
+            const children = input.children
+            input.addEventListener("keypress", (key) => checkKey(key.key, children))
+            return () => input.removeEventListener("keypress", (key) => checkKey(key, children))
+        }
+    }, [input])
+
     return (
         <>
             <BasicBorders/>
@@ -59,7 +85,7 @@ function Transfer() {
             <h3>Bank Transfer</h3>
             <div></div>
 
-            <table className='form'><tbody>
+            <table className='form'><tbody id="input">
                 <AccountSelector data={[account, setAccount, accounts, "Transfer From:"]}/>
                 <AccountSelector data={[account2, setAccount2, accounts, "Transfer To:"]}/>
                 <AmountEntry data={[currencySymbol, amount, setAmount, "Amount:"]}/>
@@ -73,7 +99,7 @@ function Transfer() {
 
             <table className='twoButtons'><tbody><tr>
                 <td><button onClick={() => history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})}>Back</button></td>
-                <td><button onClick={performTransfer}>Transfer</button></td>
+                <td><button onClick={() => performTransfer({account, account2, currency, amount, fee, exchangeRate, date, description})}>Transfer</button></td>
             </tr></tbody></table>
             </div>
         </>

@@ -18,7 +18,7 @@ function EditEntry() {
     const history = useHistory()
     const location = useLocation()
 
-    const {entry, curUser, currency: curRency, accounts} = location.state
+    const {entry, accounts, back} = location.state
 
     const [account, setAccount] = useState(entry.account)
     const [category, setCategory] = useState(entry.category)
@@ -35,14 +35,14 @@ function EditEntry() {
         const res = await updateEntry(entry._id, editedEntry, entry)
 
         // returns the user to the view details page
-        if (res) history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
+        if (res) history.push({pathname:"/view-details", state: back})
     }
 
     const delEntry = async () => {
         const res = await deleteEntry(entry)
 
         // returns the user to the view details page
-        if (res) history.push({pathname:"/main", state: {user: curUser, currency: curRency}})
+        if (res) history.push({pathname:"/view-details", state: back})
     }
 
 
@@ -73,7 +73,7 @@ function EditEntry() {
 
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency}})}>Back</button></td>
+                <td><button onClick={() => history.push({pathname:"/view-details", state: back})}>Back</button></td>
                 <td><button onClick={entryUpdate}>Confirm</button></td>
             </tr></tbody></table>
     

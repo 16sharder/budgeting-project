@@ -145,6 +145,7 @@ function MainPage () {
             <AveragesTable user={user} currency={currency}/>
 
             <p></p>
+            <br/>
         </div></>
     )
 }

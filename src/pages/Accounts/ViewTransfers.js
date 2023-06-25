@@ -46,7 +46,7 @@ function ViewTransfers () {
                 if (accountNames.includes(transfer.account)) {
                     tOut.push(transfer)
                 }
-                else if (accountNames.includes(transfer.account2)) {
+                if (accountNames.includes(transfer.account2)) {
                     tIn.push(transfer)
                 }}
         }
@@ -94,6 +94,7 @@ function ViewTransfers () {
             <p></p>
 
             <h2>Transfers in {monthName(Number(month) -1)} - {accountName}</h2>
+            <div>Net Transfered: {(totalIn-totalOut).toLocaleString('en', {style: "currency", currency: currency})}</div>
 
             <table className='viewTransfers'>
                 <thead><tr>

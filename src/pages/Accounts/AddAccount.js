@@ -27,6 +27,19 @@ function AddAccount() {
     const [accountNames, setNames] = useState([])
     const [banks, setBanks] = useState([])
 
+    // event listener for when user presses Enter
+    const input = document.getElementById("input")
+
+    const checkKey = (key, children) => {
+        if (key == "Enter") {
+            addAccount({account: children[0].children[2].children[0].value, 
+                bank: children[1].children[2].children[0].value,  
+                user: children[2].children[2].children[0].value, 
+                user2: children[2].children[2].children[1].value, 
+                currency: children[3].children[2].children[0].value,
+                amount: children[4].children[2].children[0].value})} 
+    }
+
     const getAccounts = async () => {
         const resp = await fetch(`/accounts`)
         if (resp.status == 200){
@@ -39,16 +52,16 @@ function AddAccount() {
         }
     }
 
-    const addAccount = async () => {
+    const addAccount = async (newAccount) => {
         for (const name of accountNames) {
-            if (name == account){
+            if (name == newAccount.account){
                 alert("That account name is already in use. Please use a different name")
                 return
             }
         }
         
 
-        const newAccount = {account, bank, user, user2, currency, amount}
+        newAccount = {account, bank, user, user2, currency, amount}
         const response = await fetch("/accounts", {
             method: "POST", 
             body: JSON.stringify(newAccount),
@@ -77,6 +90,15 @@ function AddAccount() {
         setSymbol(ext[0])
     }, [currency])
 
+    useEffect(() => {
+        if (input != undefined) {
+            const children = input.children
+            input.addEventListener("keypress", (key) => checkKey(key.key, children))
+            return () => input.removeEventListener("keypress", (key) => checkKey(key, children))
+        }
+    }, [input])
+
+
     return (
         <>
             <BasicBorders/>
@@ -85,7 +107,7 @@ function AddAccount() {
             <h3>Create a new account</h3>
             <div></div>
 
-            <table className='form'><tbody>
+            <table className='form'><tbody id="input">
                 <tr>
                     <td>Account Name:</td>
                     <td></td>
@@ -151,7 +173,7 @@ function AddAccount() {
             <table className='twoButtons'><tbody><tr>
                 <td><button onClick={() => history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})}>Back</button></td>
                 <td></td>
-                <td><button onClick={addAccount}>Add</button></td>
+                <td><button onClick={() => addAccount({account, bank, user, user2, currency, amount})}>Add</button></td>
             </tr></tbody></table>
             </div>
         </>

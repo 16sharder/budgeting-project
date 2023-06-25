@@ -17,14 +17,14 @@ function PreviousMonth () {
     const monthNumStr = monthNumString(month)
 
     // retrieves the appropriate year
-    const today = new Date
+    const today = new Date()
     let year = today.getFullYear()
     if (month > today.getMonth()) {year = year - 1}
 
 
     const [accounts, setAccounts] = useState([])
 
-    const loadAccounts = async (user) => {
+    const loadAccounts = async () => {
         const response = await fetch(`/accounts/${user}`)
         const data = await response.json()
         setAccounts(data)
@@ -32,7 +32,7 @@ function PreviousMonth () {
 
     // loads everything
     useEffect(() => {
-        loadAccounts(user)
+        loadAccounts()
     }, [])
 
     return (
@@ -44,6 +44,7 @@ function PreviousMonth () {
 
             <h2>Financials in {monthName(month)}</h2>
             <div>Click on a section to view more details</div>
+            <br></br>
             <NetTable data={[user, "All Accounts", "All Accounts", accounts, currency, monthNumStr, month, year, lastUsed]}/>
             {accounts.map((account, index) => 
             <NetTable data={[user, account.account, account.account, accounts, currency, monthNumStr, month, year, lastUsed]} key={index}/>)}

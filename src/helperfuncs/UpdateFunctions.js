@@ -14,9 +14,7 @@ async function updateAccount (account, amount) {
         body: JSON.stringify(update),
         headers: {"Content-type": "application/json"}
     })
-    if (res.status === 200){
-        alert("Successfully updated accounts")
-    } else{
+    if (res.status !== 200){
         alert(`Update failed. Status code = ${res.status}`)
     }
 }

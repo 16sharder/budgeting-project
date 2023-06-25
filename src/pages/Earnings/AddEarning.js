@@ -27,13 +27,26 @@ function AddEarning() {
     const category = "Earnings"
     const [currency, setCurrency] = useState(accounts[0].currency)
     const [currencySymbol, setSymbol] = useState(accounts[0].currency)
-    const [amount, setAmount] = useState(0)
+    const [amount, setAmount] = useState()
     const [date, setDate] = useState(convertTodayToDate())
     const [description, setDescription] = useState("")
 
-    const newEntry = async () => {
+    // event listener for when user presses Enter
+    const input = document.getElementById("input")
+
+    const checkKey = (key, children) => {
+        if (key == "Enter") {
+            newEntry({account: children[0].children[2].children[0].value, category, 
+                currency: findCurrency(children[0].children[2].children[0].value, accounts)[0], 
+                amount: children[1].children[2].children[0].value, 
+                date: children[2].children[2].children[0].value, 
+                description: children[3].children[2].children[0].value})} 
+    }
+
+
+    const newEntry = async (entry) => {
         // adds the entry to mongoDB
-        const entry = {account, category, currency, amount: amount * -1, date, month: date.slice(5, 7), description}
+        entry.month = date.slice(5, 7)
         const res = await addEntry(entry)
 
         // returns the user to the main page
@@ -47,6 +60,13 @@ function AddEarning() {
         setSymbol(curr[1])
     }, [account])
 
+    useEffect(() => {
+        if (input != undefined) {
+            const children = input.children
+            input.addEventListener("keypress", (key) => checkKey(key.key, children))
+            return () => input.removeEventListener("keypress", (key) => checkKey(key, children))
+        }
+    }, [input])
 
     return (
         <>
@@ -57,7 +77,7 @@ function AddEarning() {
             <h3>Add earnings</h3>
             <div></div>
 
-            <table className='form'><tbody>
+            <table className='form'><tbody id="input">
                 <AccountSelector data={[account, setAccount, accounts, "Bank Account:"]}/>
                 <AmountEntry data={[currencySymbol, amount, setAmount, "Amount:"]}/>
                 <DateEntry data={[date, setDate]}/>
@@ -68,7 +88,7 @@ function AddEarning() {
 
             <table className='twoButtons'><tbody><tr>
                 <td><button onClick={() => history.push({pathname:"/main", state: {user: curUser, currency: curRency, lastUsed}})}>Back</button></td>
-                <td><button onClick={newEntry}>Add</button></td>
+                <td><button onClick={() => newEntry({account, category, currency, amount: amount * -1, date, description})}>Add</button></td>
             </tr></tbody></table>
         </div>
         </>

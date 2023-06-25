@@ -22,7 +22,7 @@ function calcWeekDates(week, days=7) {
             incre -= 1
         }
         if (month == 12) {month = 0}
-        while (int != days) {
+        while (int < days) {
             weekDates.push(`${month + 1}/${date - end}`)
             date += 1
             int += 1

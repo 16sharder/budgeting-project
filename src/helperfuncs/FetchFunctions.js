@@ -76,12 +76,17 @@ async function retrieveEarnings (month, user, accountName="All Accounts") {
 
     const result = await fetchEarnings()
 
+    const today = new Date()
+    let year = today.getFullYear()
+    if (today.getMonth()+1 < Number(month)) year -= 1
+
     // if it is only requesting a specific account, only retrieves that account's earnings
     if (accountName != "All Accounts") {
         const resultCopy = result.slice()
         for (let entry of result){
             if (accountName != entry.account) resultCopy.splice(resultCopy.indexOf(entry), 1)
             else if (entry.category != "Earnings") resultCopy.splice(resultCopy.indexOf(entry), 1)
+            else if (entry.date.slice(0, 4) != year) resultCopy.splice(resultCopy.indexOf(entry), 1)
         }
     
         return resultCopy
@@ -93,6 +98,7 @@ async function retrieveEarnings (month, user, accountName="All Accounts") {
     for (let entry of result){
         if (! userAccounts.includes(entry.account)) resultCopy.splice(resultCopy.indexOf(entry), 1)
         else if (entry.category != "Earnings") resultCopy.splice(resultCopy.indexOf(entry), 1)
+        else if (entry.date.slice(0, 4) != year) resultCopy.splice(resultCopy.indexOf(entry), 1)
     }
 
     return resultCopy

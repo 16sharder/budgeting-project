@@ -13,6 +13,10 @@ import { createMonthDates } from '../../../helperfuncs/DateCalculators';
 
 function MonthlyTable({data}) {
     const [date, user, accountName, currency, message, setMessage, viewWeek] = data
+    
+    let n = 7
+    let d = 0
+    if (date.getMonth() == (new Date()).getMonth()) d = -1
 
     // retrieves the information for the month to be displayed
     const [monthArr, setMonth] = useState([])
@@ -21,8 +25,9 @@ function MonthlyTable({data}) {
     const loadMonth = async () => {
         let monthArray = []
         for (let week of monthDatesArray) {
+            if (week == monthDatesArray[4] && d == -1) n = 0
             // gets an array (7) of days, each day containing each entry for that day
-            const days = await retrieveWeekEntries(week, user, accountName)
+            const days = await retrieveWeekEntries(week, user, accountName, n)
             let organizedDays = []
             for (let day of days){
                 // sums the entries for each category for the day, returning an array of category sums

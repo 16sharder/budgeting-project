@@ -17,10 +17,10 @@ function Week({week, viewWeek, currency}) {
         <tr className='color1' onClick={ () => viewWeek(week[0])}>
             <td className='verticalB bold color2 dates'>{week[0]}</td>
             
-            {copyWeek.slice(1, 11).map((cat, index) => <td key={index}>{cat}</td>)}
+            {copyWeek.slice(1, 12).map((cat, index) => <td key={index}>{cat}</td>)}
 
             <td className='verticalB color4'>
-                {week.slice(1).reduce((a, b) => a + b, 0).toLocaleString('en', {style: "currency", currency: currency})}
+                {week.slice(1, 11).reduce((a, b) => a + b, 0).toLocaleString('en', {style: "currency", currency: currency})}
             </td>
         </tr>
     )

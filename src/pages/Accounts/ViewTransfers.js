@@ -63,7 +63,6 @@ function ViewTransfers () {
         let tOut = 0
         let tIn = 0
 
-        console.log(tOut, tIn)
         for (const transfer of transfersOut){
             tOut += transfer.amount + transfer.fee
         }

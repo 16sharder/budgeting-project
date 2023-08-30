@@ -26,7 +26,7 @@ function AccountSelector ({data}) {
 
 function CategorySelector ({data}) {
     const [category, setCategory] = data
-    const catsArray = ["Groceries", "Eating Out", "Clothing", "House Supplies", "Work Supplies", "Travel", "Bills", "Cash", "Emergencies", "Other"]
+    const catsArray = ["Groceries", "Eating Out", "Clothing", "House Supplies", "Work Supplies", "Travel", "Bills", "Cash", "Emergencies", "Other", "Unusual Expenses"]
     return(
         <tr>
             <td>Category:</td>

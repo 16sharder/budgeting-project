@@ -18,8 +18,10 @@ function NetTable ({data}) {
     const history = useHistory()
 
     const loadSpendings = async () => {
-        let totals = await retrieveMonth(Number(month)+1, user, accountName)
-        if (totals != undefined) setSpendings(totals[11])
+        let totals = await retrieveMonth(Number(month)+1, year, user, accountName)
+        if (totals != undefined) {
+            setSpendings(totals[12] + totals[11])
+        }
     }
 
     // retrieves the persons earnings for the month
@@ -78,7 +80,7 @@ function NetTable ({data}) {
         }
         setNet(result)
 
-        if (result < 0) setColor("color1")
+        if ((result) < 0) setColor("color1")
     }
 
 

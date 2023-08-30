@@ -138,12 +138,13 @@ async function retrieveNetSpendings (month, year, accounts) {
     return netSpendings
 }
 
-async function retrieveMonth (month, user, account="All Accounts") {
+async function retrieveMonth (month, year, user, account="All Accounts") {
     const fetchMonth = async () => {
         const response = await fetch(`/months/${month}`)
         const data = await response.json()
         return data
     }
+
     let monGroc = 0
     let monEat = 0
     let monClo = 0
@@ -154,6 +155,7 @@ async function retrieveMonth (month, user, account="All Accounts") {
     let monCash = 0
     let monEmr = 0
     let monOth = 0
+    let monUnus = 0
 
     let allAccts = await fetchMonth()
     let accountNames = [account]
@@ -161,7 +163,7 @@ async function retrieveMonth (month, user, account="All Accounts") {
 
     if (allAccts.length != 0) {
         for (let acct of allAccts) {
-            if (accountNames.includes(acct.account)) {
+            if (accountNames.includes(acct.account) && acct.year == year) {
                 monGroc += acct.categoryTotals["Groceries"]
                 monEat += acct.categoryTotals["Eating Out"]
                 monClo += acct.categoryTotals["Clothing"]
@@ -172,9 +174,10 @@ async function retrieveMonth (month, user, account="All Accounts") {
                 monCash += acct.categoryTotals["Cash"]
                 monEmr += acct.categoryTotals["Emergencies"]
                 monOth += acct.categoryTotals["Other"]
+                if (acct.categoryTotals["Unusual Expenses"] != undefined) monUnus += acct.categoryTotals["Unusual Expenses"]
             }}
         const monTot = monGroc+monEat+monClo+monHous+monWork+monTrav+monBil+monCash+monEmr+monOth
-        const monStats = [allAccts[0].monthName, monGroc, monEat, monClo, monHous, monWork, monTrav, monBil, monCash, monEmr, monOth, monTot, month-1]
+        const monStats = [allAccts[0].monthName, monGroc, monEat, monClo, monHous, monWork, monTrav, monBil, monCash, monEmr, monOth, monUnus, monTot, month-1]
         return monStats
     } else return undefined
 }
@@ -205,7 +208,7 @@ async function retrieveMultipleMonths(months) {
         cash += month[8]
         emr += month[9]
         other += month[10]
-        total += month[11]
+        total += month[12]
 
     }
     return [groc, eat, clo, house, work, trav, bills, cash, emr, other, total, x]
@@ -231,7 +234,7 @@ async function convertToDollars (amount) {
 async function organizeDaysEntries (dayEntries, currency) {
     // takes an array consisting of all the entries for that day
     // returns an array of the current sums of the different expense categories for that day
-    let categoryResults = ["", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    let categoryResults = ["", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     if (dayEntries.length === 0) {return categoryResults}
 
@@ -257,6 +260,7 @@ async function organizeDaysEntries (dayEntries, currency) {
         else if (entry.category == "Cash") categoryResults[8] += value
         else if (entry.category == "Emergencies") categoryResults[9] += value
         else if (entry.category == "Other") categoryResults[10] += value
+        else if (entry.category == "Unusual Expenses") categoryResults[11] += value
     }
 
     return categoryResults

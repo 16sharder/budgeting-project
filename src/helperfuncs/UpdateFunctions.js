@@ -41,7 +41,7 @@ async function updateMonths  (date, account, amount, category) {
     // if there is no previously created month, creates a new one
     if (thisMonth == undefined) {
         const monthNam = monthName(month - 1)
-        const categoryTotals = {"Groceries": 0, "Eating Out": 0, "Clothing": 0, "House Supplies": 0, "Work Supplies": 0, "Travel": 0, "Bills": 0, "Cash": 0, "Emergencies": 0, "Other": 0, "Earnings": 0}
+        const categoryTotals = {"Groceries": 0, "Eating Out": 0, "Clothing": 0, "House Supplies": 0, "Work Supplies": 0, "Travel": 0, "Bills": 0, "Cash": 0, "Emergencies": 0, "Other": 0, "Unusual": 0, "Earnings": 0}
         const monthlyTotal = 0
 
         const newMonth = {account, month, year, monthName: monthNam, categoryTotals, monthlyTotal}
@@ -67,7 +67,8 @@ async function updateMonths  (date, account, amount, category) {
     // updates the categoryTotals using the new amount 
     const catTotals = thisMonth.categoryTotals
     if (category != undefined) {
-        const oldCats = catTotals[category]
+        let oldCats = catTotals[category]
+        if (oldCats == null) oldCats = 0
         const newCats = oldCats + Number(amount)
         catTotals[category] = newCats
     }

@@ -23,6 +23,7 @@ function WeeklyTable({week, viewDetails, total, currency}) {
                     <th>Cash</th>
                     <th>Emergency</th>
                     <th>Other</th>
+                    <th>Unusual Expenses</th>
                     <th className="verticalB">Total</th>
                 </tr>
             </thead>
@@ -30,7 +31,7 @@ function WeeklyTable({week, viewDetails, total, currency}) {
                 {week.map((day, index) => <Day day={day} viewDetails={viewDetails} currency={currency} key={index}/>)}
                 <tr className='horizontalB'>
                     <td className='corner verticalB'>Total</td>
-                    {total.slice(1, 11).map((cat, index) => <td key={index}>{cat.toLocaleString('en', {style: "currency", currency: currency})}</td>)}
+                    {total.slice(1, 12).map((cat, index) => <td key={index}>{cat.toLocaleString('en', {style: "currency", currency: currency})}</td>)}
                     <td className='verticalB'>{total.slice(1).reduce((a, b) => a + b, 0).toLocaleString('en', {style: "currency", currency: currency})}</td>
                 </tr>
             </tbody>

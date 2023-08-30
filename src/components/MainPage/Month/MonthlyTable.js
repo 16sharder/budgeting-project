@@ -46,10 +46,10 @@ function MonthlyTable({data}) {
 
 
     // sums the entries for the month for each category
-    const [total, setTotals] = useState(new Array(12).fill(0))
+    const [total, setTotals] = useState(new Array(13).fill(0))
 
     const loadTotals = async () => {
-        let totals = await retrieveMonth(Number(date.getMonth())+1, user, accountName)
+        let totals = await retrieveMonth(Number(date.getMonth())+1, Number(date.getFullYear()), user, accountName)
         if (totals != undefined) setTotals(totals)
     }
 
@@ -65,7 +65,7 @@ function MonthlyTable({data}) {
             <thead>
                 <tr className='toprow horizontalB'>
                     <th className='bold verticalB'></th>
-                    {["Groceries", "Eating Out", "Clothing", "House Supplies", "Work Supplies", "Travel", "Bills", "Cash", "Emergency", "Other"].map(
+                    {["Groceries", "Eating Out", "Clothing", "House Supplies", "Work Supplies", "Travel", "Bills", "Cash", "Emergency", "Other", "Unusual Expenses"].map(
                         (label, index) => <th key={index}>{label}</th>)}
                     <th className="verticalB">Total</th>
                 </tr>
@@ -74,8 +74,8 @@ function MonthlyTable({data}) {
                 {monthArr.map((week, index) => <Week week={week} viewWeek={viewWeek} currency={currency} key={index}/>)}
                 <tr className='horizontalB'>
                     <td className='corner verticalB'>Total</td>
-                    {total.slice(1, 11).map((cat, index) => <td key={index}>{cat.toLocaleString('en', {style: "currency", currency: currency})}</td>)}
-                    <td className='verticalB'>{total[11].toLocaleString('en', {style: "currency", currency: currency})}</td>
+                    {total.slice(1, 12).map((cat, index) => <td key={index}>{cat.toLocaleString('en', {style: "currency", currency: currency})}</td>)}
+                    <td className='verticalB'>{total[12].toLocaleString('en', {style: "currency", currency: currency})}</td>
                 </tr>
             </tbody>
         </table>

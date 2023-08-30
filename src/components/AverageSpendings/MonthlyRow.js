@@ -7,16 +7,16 @@ import React from 'react';
 function Month({month, viewMonth, currency}) {
     return(
         <tr className='color1'>
-            <td className='verticalB bold color2 dates' onClick={ () => viewMonth(month[0])}>
+            <td className='verticalB bold color2 dates' onClick={ () => viewMonth(month[13])}>
                 {month[0]}
             </td>
 
-            {month.slice(1, 11).map((cat, index) => <td onClick={ () => viewMonth(month[12])} key={index}> 
+            {month.slice(1, 11).map((cat, index) => <td onClick={ () => viewMonth(month[13])} key={index}> 
                 {cat.toLocaleString('en', {style: "currency", currency: currency})}
             </td>)}
             
-            <td className='verticalB color4' onClick={ () => viewMonth(month[12])}>
-                {month[11].toLocaleString('en', {style: "currency", currency: currency})}
+            <td className='verticalB color4' onClick={ () => viewMonth(month[13])}>
+                {month[12].toLocaleString('en', {style: "currency", currency: currency})}
             </td>
         </tr>
     )

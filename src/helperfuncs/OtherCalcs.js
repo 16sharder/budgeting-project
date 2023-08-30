@@ -2,7 +2,7 @@ import { convertToEuros, convertToDollars } from "./FetchFunctions"
 
 function calculateWeekTotals (weekEntries){
     // takes an array of category results for each day, thus the array consists of 7 arrays of amounts
-    let categoryResults = ["", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    let categoryResults = ["", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     for (let dayArray of weekEntries) {
         categoryResults[1] += dayArray[1]
         categoryResults[2] += dayArray[2]
@@ -14,6 +14,7 @@ function calculateWeekTotals (weekEntries){
         categoryResults[8] += dayArray[8]
         categoryResults[9] += dayArray[9]
         categoryResults[10] += dayArray[10]
+        categoryResults[11] += dayArray[11]
     }
 
     return categoryResults

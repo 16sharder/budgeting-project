@@ -13,14 +13,14 @@ function Day({day, viewDetails, currency}) {
     }
 
     
-    const catsArray = ["Groceries", "Eating Out", "Clothing", "House Supplies", "Work Supplies", "Travel", "Bills", "Cash", "Emergencies", "Other"]
+    const catsArray = ["Groceries", "Eating Out", "Clothing", "House Supplies", "Work Supplies", "Travel", "Bills", "Cash", "Emergencies", "Other", "Unusual Expenses"]
     return(
         <tr className='color1'>
             <td className='bold color2 verticalB'>
                 {day[0]}
             </td>
 
-            {copyDay.slice(1, 11).map((cat, index) => 
+            {copyDay.slice(1, 12).map((cat, index) => 
             <td onClick={ () => viewDetails(day[0], catsArray[index])} key={index}>{cat}</td>)}
 
             <td className='verticalB color4'>

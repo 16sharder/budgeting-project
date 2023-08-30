@@ -37,7 +37,7 @@ function EditTransfer() {
 
         // edits the entry in mongoDB
         const editedEntry = {account, account2, currency, currency2: account2Data[0].currency, amount, fee, exchangeRate, date, month: date.slice(5, 7), description}
-        const res = updateTransfer(entry._id, editedEntry, entry)
+        const res = await updateTransfer(entry._id, editedEntry, entry)
 
         // returns the user to the view details page
         if (res) history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
@@ -45,7 +45,7 @@ function EditTransfer() {
     }
 
     const deleteEntry = async () => {
-        const res = deleteTransfer()
+        const res = await deleteTransfer(entry)
 
         // returns the user to the view details page
         if (res) history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})

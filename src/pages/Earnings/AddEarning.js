@@ -38,7 +38,7 @@ function AddEarning() {
         if (key == "Enter") {
             newEntry({account: children[0].children[2].children[0].value, category, 
                 currency: findCurrency(children[0].children[2].children[0].value, accounts)[0], 
-                amount: children[1].children[2].children[0].value, 
+                amount: children[1].children[2].children[0].value *= -1, 
                 date: children[2].children[2].children[0].value, 
                 description: children[3].children[2].children[0].value})} 
     }

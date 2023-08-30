@@ -14,6 +14,7 @@ function AveragesTable({user, currency}) {
 
     const today = new Date()
     let month = (today.getMonth())
+    let year = (today.getFullYear())
 
     // retrieves each individual month's spendings
     const [results, setResults] = useState([])
@@ -29,10 +30,12 @@ function AveragesTable({user, currency}) {
             y += 1
         }
         for (let month of nums) {
-            let mo = await retrieveMonth(month, user)
-            if (mo[11] != 0) res.push(mo)
+            let mo = await retrieveMonth(month, year, user)
+
+            if (mo[12] != 0) res.push(mo)
             if (month == 0) {
                 month = 12
+                year -= 1
             } else {month -= 1}
         }
         setResults(res.reverse())

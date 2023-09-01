@@ -66,16 +66,29 @@ input#input {
 }
 
 .inTransfer {
-    border: 0px;
+    border: 2px solid;
+    border-bottom: 0px;
     width: 420px;
 }
 
 .inTransfer td {
-    padding: 0px;
+    padding: 5px;
     padding-bottom: 10px;
+    padding-top: 10px;
     border: 0px;
+    text-align: left;
 }
 
 .edge {
     width: 75px;
 }
+
+.descrip {
+    width: 125px;
+    vertical-align: top;
+}
+
+.divider {
+    border-right: 2px solid;
+}
+

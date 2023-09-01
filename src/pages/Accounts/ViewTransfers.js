@@ -9,6 +9,7 @@ import BasicBorders, {NoBorderFlourish} from '../../components/Styling/BorderDec
 
 import { FiEdit } from "react-icons/fi";
 import { monthName, stringifyDate } from '../../helperfuncs/DateCalculators';
+import TransferItem from '../../components/TransferItem';
 
 function ViewTransfers () {
     const history = useHistory()
@@ -104,58 +105,12 @@ function ViewTransfers () {
                 <tbody><tr>
                     <td className='transfers'>
                         {transfersOut.map((transfer, index) => 
-                        <table key={index} className='singleColumn'>
-                            <thead><tr className='toprow'><th>Transfer {index+1}
-                                <FiEdit className="edit" onClick={() => editTransfer(transfer)}/></th></tr></thead>
-                            <tbody><tr><td className='color1'>
-                                <table className='inTransfer'><tbody>
-                                    <tr>
-                                        <td className='edge'>From:<br/>To:</td>
-                                        <td>{transfer.account}<br/>{transfer.account2}</td>
-                                        <td className='edge'>{transfer.amount.toLocaleString('en', {style: "currency", currency: transfer.currency})}
-                                        <br/>{(transfer.amount * transfer.exchangeRate).toLocaleString('en', {style: "currency", currency: transfer.currency2})}</td>
-                                    </tr>
-                                </tbody></table>
-                                <table className='inTransfer'><tbody>
-                                    <tr>
-                                        <td className='edge'>Fee:</td>
-                                        <td className='left'>{transfer.fee.toLocaleString('en', {style: "currency", currency: transfer.currency})}</td>
-                                        <td>&emsp; &emsp;</td>
-                                        <td className='right'>Date:</td>
-                                        <td className='edge'>{stringifyDate(transfer.date)}</td>
-                                    </tr>
-                                </tbody></table>
-                                <div>Description: &emsp; {transfer.description}</div>
-                            </td></tr></tbody>
-                        </table>
+                        <TransferItem data={[index, transfer, editTransfer]} key={index}/>
                         )}
                     </td>
                     <td className='transfers'>
                         {transfersIn.map((transfer, index) => 
-                        <table key={index} className='singleColumn'>
-                            <thead><tr className='toprow'><th>Transfer {index+1}
-                                <FiEdit className="edit" onClick={() => editTransfer(transfer)}/></th></tr></thead>
-                            <tbody><tr><td className='color1'>
-                                <table className='inTransfer'><tbody>
-                                    <tr>
-                                        <td className='edge'>From:<br/>To:</td>
-                                        <td>{transfer.account}<br/>{transfer.account2}</td>
-                                        <td className='edge'>{transfer.amount.toLocaleString('en', {style: "currency", currency: transfer.currency})}
-                                        <br/>{(transfer.amount * transfer.exchangeRate).toLocaleString('en', {style: "currency", currency: transfer.currency2})}</td>
-                                    </tr>
-                                </tbody></table>
-                                <table className='inTransfer'><tbody>
-                                    <tr>
-                                        <td className='edge'>Fee:</td>
-                                        <td className='left'>{transfer.fee.toLocaleString('en', {style: "currency", currency: transfer.currency})}</td>
-                                        <td>&emsp; &emsp;</td>
-                                        <td className='right'>Date:</td>
-                                        <td className='edge'>{stringifyDate(transfer.date)}</td>
-                                    </tr>
-                                </tbody></table>
-                                <div>Description: &emsp; {transfer.description}</div>
-                            </td></tr></tbody>
-                        </table>
+                        <TransferItem data={[index, transfer, editTransfer]} key={index}/>
                         )}
                     </td>
                 </tr></tbody>

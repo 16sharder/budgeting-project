@@ -11,6 +11,8 @@ import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useDispatch } from 'react-redux'
+import { toEuro, toDollar } from '../../redux/currencySlice';
 
 import {monthName} from "../../helperfuncs/DateCalculators"
 
@@ -22,11 +24,12 @@ function SpendingsPage () {
     // retrieves the name previously passed in the form on the ChooseMonth page
     const history = useHistory()
     const location = useLocation()
+    const dispatch = useDispatch()
 
     const user = useSelector(state => state.user.value)
+    const currency = useSelector(state => state.currency.value)
 
     const {month, accountName, lastUsed} = location.state
-    let {currency} = location.state
 
     const [message, setMessage] = useState("Loading...")
 
@@ -56,8 +59,8 @@ function SpendingsPage () {
 
     // updates the currency when button is hit
     const toggleCurrency = () => {
-        if (currency === "EUR") location.state.currency = "USD"
-        else if (currency === "USD") location.state.currency = "EUR"
+        if (currency === "EUR") dispatch(toDollar())
+        else if (currency === "USD") dispatch(toEuro())
 
         history.push({pathname:"/previous-spendings", state: location.state})
         window.location.reload()
@@ -67,13 +70,13 @@ function SpendingsPage () {
 
     // sends the user to a page displaying the desired week's information
     const viewWeek = async dates => {
-        history.push({pathname:"/weekly-view2", state: {dates, accounts, currency, month, accountName, lastUsed}})
+        history.push({pathname:"/weekly-view2", state: {dates, accounts, month, accountName, lastUsed}})
     }
 
     // either raises an error or sends the user to the add entry page
     const sendAddEntry = () => {
         if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
-        else history.push({pathname:"/add-entry", state: {currency, accounts, lastUsed}})
+        else history.push({pathname:"/add-entry", state: {accounts, lastUsed}})
     }
 
 
@@ -82,13 +85,13 @@ function SpendingsPage () {
         <><div className='box'>
             <BasicBorders/>
             <NoBorderFlourish/>
-            <Navigation currency={currency} lastUsed={lastUsed}/>
+            <Navigation lastUsed={lastUsed}/>
             <p></p>
             <h2>{message}</h2>
             <div>Please click on a week if you would like to see entries by day</div>
             <p></p>
 
-            <MonthlyTable data={[new Date(year, month, 1), accountName, currency, `${accountName} - Spendings for ${monthName(month)}`, setMessage, viewWeek]}/>
+            <MonthlyTable data={[new Date(year, month, 1), accountName, `${accountName} - Spendings for ${monthName(month)}`, setMessage, viewWeek]}/>
             
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={toggleCurrency}>Change Currency</button></td>

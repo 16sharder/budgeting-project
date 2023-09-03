@@ -8,7 +8,7 @@ import {useState} from "react"
 import {useHistory} from "react-router-dom"
 
 import { useDispatch } from 'react-redux'
-import { login } from '../redux/slice';
+import { login } from '../redux/userSlice';
 
 import BasicBorders, {BorderFlourish} from '../components/Styling/BorderDecoration';
 
@@ -27,9 +27,10 @@ function LoginPage () {
         })
     }
 
+    // TODO: delete state once no longer needed in Main
     const send = (nameVal) => {
         dispatch(login(nameVal))
-        history.push({pathname:"/main", state: {currency: "EUR"}})
+        history.push({pathname:"/main", state: {}})
     }
 
     return (

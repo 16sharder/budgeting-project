@@ -22,7 +22,7 @@ function ViewDetails () {
 
     const user = useSelector(state => state.user.value)
 
-    const {date, weekDates, category, currency, month, accounts} = location.state
+    const {date, weekDates, category, month, accounts} = location.state
     let {accountName} = location.state
     if (accountName == undefined) accountName = "All Accounts"
 
@@ -46,20 +46,20 @@ function ViewDetails () {
 
 
     const sendMonth = () => {
-        if (month == undefined) history.push({pathname:"/main", state: {currency}})
-        else history.push({pathname:"/previous-spendings", state: {currency, month, accountName}})
+        if (month == undefined) history.push({pathname:"/main", state: {}})
+        else history.push({pathname:"/previous-spendings", state: {month, accountName}})
     }
 
     const sendWeek = () => {
-        if (month == undefined) history.push({pathname:"/weekly-view", state: {dates: weekDates, currency, accounts}})
-        else history.push({pathname:"/weekly-view2", state: {dates: weekDates, currency, month, accountName}})
+        if (month == undefined) history.push({pathname:"/weekly-view", state: {dates: weekDates, accounts}})
+        else history.push({pathname:"/weekly-view2", state: {dates: weekDates, month, accountName}})
     }
 
     return (
         <><div className='box'>
             <BasicBorders/>
             <NoBorderFlourish/>
-            <Navigation currency={currency} />
+            <Navigation/>
             <p></p>
             <h2>{category} entries for {date}</h2>
             <div>

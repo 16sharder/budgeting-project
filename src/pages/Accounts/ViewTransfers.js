@@ -17,8 +17,9 @@ function ViewTransfers () {
     const location = useLocation()
 
     const user = useSelector(state => state.user.value)
+    const currency = useSelector(state => state.currency.value)
 
-    const {currency, month, year, accountName, accounts} = location.state
+    const {month, year, accountName, accounts} = location.state
 
 
     // loads all of the transfers from the current and previous months
@@ -76,7 +77,7 @@ function ViewTransfers () {
 
         setTotOut(tOut)
         setTotIn(tIn)
-    }, transfersIn)
+    }, [transfersIn])
 
 
     const editTransfer = (transfer) => {
@@ -85,7 +86,7 @@ function ViewTransfers () {
             if (transfer.account == acct.account) bool += 1
             if (transfer.account2 == acct.account) bool += 1
         }
-        if (bool == 2) history.push({pathname:"/edit-transfer", state: {entry: transfer, currency, accounts, month}})
+        if (bool == 2) history.push({pathname:"/edit-transfer", state: {entry: transfer, accounts, month}})
         else alert("You do not have permission to edit this transfer because you are not a user on one of the accounts involved")
     }
 
@@ -93,16 +94,16 @@ function ViewTransfers () {
         <><div className='box'>
             <BasicBorders/>
             <NoBorderFlourish/>
-            <Navigation currency={currency} />
+            <Navigation/>
             <p></p>
 
             <h2>Transfers in {monthName(Number(month) -1)} - {accountName}</h2>
-            <div>Net Transfered: {(totalIn-totalOut).toLocaleString('en', {style: "currency", currency: currency})}</div>
+            <div>Net Transfered: {(totalIn-totalOut).toLocaleString('en', {style: "currency", currency})}</div>
 
             <table className='viewTransfers'>
                 <thead><tr>
-                    <th className='borderless'><h2 className='noTop'>Transfered Out: {totalOut.toLocaleString('en', {style: "currency", currency: currency})}</h2></th>
-                    <th className='borderless'><h2 className='noTop'>Transfered In: {totalIn.toLocaleString('en', {style: "currency", currency: currency})}</h2></th>
+                    <th className='borderless'><h2 className='noTop'>Transfered Out: {totalOut.toLocaleString('en', {style: "currency", currency})}</h2></th>
+                    <th className='borderless'><h2 className='noTop'>Transfered In: {totalIn.toLocaleString('en', {style: "currency", currency})}</h2></th>
                 </tr></thead>
 
                 <tbody><tr>
@@ -120,7 +121,7 @@ function ViewTransfers () {
             </table>
 
             <br/>      
-            <button onClick={() => history.push({pathname:"/previous-month", state: {currency, month: month - 1}})}>
+            <button onClick={() => history.push({pathname:"/previous-month", state: {month: month - 1}})}>
                 Return to {monthName(Number(month) -1)} Finances</button>
 
             

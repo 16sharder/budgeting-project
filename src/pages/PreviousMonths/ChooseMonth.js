@@ -14,7 +14,7 @@ function ChooseMonth () {
     const history = useHistory()
     const location = useLocation()
 
-    let {currency, lastUsed} = location.state
+    let {lastUsed} = location.state
 
     const today = new Date
     const [month, setMonth] = useState(today.getMonth())
@@ -29,7 +29,7 @@ function ChooseMonth () {
     }
 
     const send = (monthVal) => {
-        history.push({pathname:"/previous-month", state: {currency, month: monthVal, lastUsed}})
+        history.push({pathname:"/previous-month", state: {month: monthVal, lastUsed}})
     }
 
 

@@ -17,7 +17,7 @@ function AddEntry() {
     const history = useHistory()
     const location = useLocation()
 
-    const {currency: curRency, accounts} = location.state
+    const {accounts} = location.state
     let {lastUsed} = location.state
     if (lastUsed == undefined) lastUsed = accounts[0].account
 
@@ -49,7 +49,7 @@ function AddEntry() {
         const res = await addEntry(entry)
 
         // returns the user to the main page
-        if (res) history.push({pathname:"/main", state: {currency: curRency, lastUsed: account}})
+        if (res) history.push({pathname:"/main", state: {lastUsed: account}})
     }
 
     useEffect(() => {
@@ -87,7 +87,7 @@ function AddEntry() {
 
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/main", state: {currency: curRency, lastUsed}})}>Back</button></td>
+                <td><button onClick={() => history.push({pathname:"/main", state: {lastUsed}})}>Back</button></td>
                 <td><button onClick={() => newEntry({account, category, currency, amount, date, description})}>Add</button></td>
             </tr></tbody></table>
         </div>

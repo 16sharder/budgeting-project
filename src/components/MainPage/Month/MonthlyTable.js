@@ -15,8 +15,9 @@ import { createMonthDates } from '../../../helperfuncs/DateCalculators';
 
 function MonthlyTable({data}) {
     const user = useSelector(state => state.user.value)
+    const currency = useSelector(state => state.currency.value)
 
-    const [date, accountName, currency, message, setMessage, viewWeek] = data
+    const [date, accountName, message, setMessage, viewWeek] = data
     
     let n = 7
     let d = 0
@@ -78,8 +79,8 @@ function MonthlyTable({data}) {
                 {monthArr.map((week, index) => <Week week={week} viewWeek={viewWeek} currency={currency} key={index}/>)}
                 <tr className='horizontalB'>
                     <td className='corner verticalB'>Total</td>
-                    {total.slice(1, 12).map((cat, index) => <td key={index}>{cat.toLocaleString('en', {style: "currency", currency: currency})}</td>)}
-                    <td className='verticalB'>{total[12].toLocaleString('en', {style: "currency", currency: currency})}</td>
+                    {total.slice(1, 12).map((cat, index) => <td key={index}>{cat.toLocaleString('en', {style: "currency", currency})}</td>)}
+                    <td className='verticalB'>{total[12].toLocaleString('en', {style: "currency", currency})}</td>
                 </tr>
             </tbody>
         </table>

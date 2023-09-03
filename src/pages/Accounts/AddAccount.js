@@ -15,8 +15,6 @@ import { AmountEntry } from '../../components/Forms/Inputs';
 function AddAccount() {
     const history = useHistory()
     const location = useLocation()
-
-    const {currency: curRency} = location.state
     
     const [account, setName] = useState("")
     const [bank, setBank] = useState("")
@@ -71,7 +69,7 @@ function AddAccount() {
         })
         if (response.status === 201){
             alert("Successfully created a new account")
-            history.push({pathname:"/accounts-view", state: {currency: curRency}})
+            history.push({pathname:"/accounts-view"})
 
         } else{
             alert(`Create account failed. Status code = ${response.status}`)
@@ -173,7 +171,7 @@ function AddAccount() {
             
 
             <table className='twoButtons'><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/accounts-view", state: {currency: curRency}})}>Back</button></td>
+                <td><button onClick={() => history.push({pathname:"/accounts-view"})}>Back</button></td>
                 <td></td>
                 <td><button onClick={() => addAccount({account, bank, user, user2, currency, amount})}>Add</button></td>
             </tr></tbody></table>

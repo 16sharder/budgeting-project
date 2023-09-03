@@ -18,7 +18,7 @@ function EditEarning() {
     const history = useHistory()
     const location = useLocation()
 
-    const {entry, currency: curRency, accounts} = location.state
+    const {entry, accounts} = location.state
 
     const [account, setAccount] = useState(entry.account)
     const [currency, setCurrency] = useState(entry.currency)
@@ -34,14 +34,14 @@ function EditEarning() {
         const res = await updateEntry(entry._id, editedEntry, entry)
 
         // returns the user to the view details page
-        if (res) history.push({pathname:"/main", state: {currency: curRency}})
+        if (res) history.push({pathname:"/main", state: {}})
     }
 
     const deleteEarning = async () => {
         const res = await deleteEntry(entry)
 
         // returns the user to the view details page
-        if (res) history.push({pathname:"/main", state: {currency: curRency}})
+        if (res) history.push({pathname:"/main", state: {}})
     }
 
     useEffect(() => {
@@ -70,7 +70,7 @@ function EditEarning() {
 
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/main", state: {currency: curRency}})}>Back</button></td>
+                <td><button onClick={() => history.push({pathname:"/main", state: {}})}>Back</button></td>
                 <td><button onClick={updateEarning}>Confirm</button></td>
             </tr></tbody></table>
     

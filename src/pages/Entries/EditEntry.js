@@ -23,7 +23,7 @@ function EditEntry() {
     const [account, setAccount] = useState(entry.account)
     const [category, setCategory] = useState(entry.category)
     const [currency, setCurrency] = useState(entry.currency)
-    const [currencySymbol, setSymbol] = useState(accounts[0].currency)
+    const [currencySymbol, setSymbol] = useState(entry.currency)
     const [amount, setAmount] = useState(entry.amount)
     const [date, setDate] = useState(entry.date)
     const [description, setDescription] = useState(entry.description)

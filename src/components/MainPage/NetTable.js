@@ -8,8 +8,9 @@ import { convertToDollars, convertToEuros, retrieveEarnings, retrieveMonth, retr
 
 function NetTable ({data}) {
     const user = useSelector(state => state.user.value)
+    const currency = useSelector(state => state.currency.value)
 
-    let [label, accountName, accounts, currency, monthNumStr, month, year, lastUsed] = data
+    let [label, accountName, accounts, monthNumStr, month, year, lastUsed] = data
 
     const [spendings, setSpendings] = useState(0)
     const [earnings, setEarnings] = useState(0)
@@ -109,7 +110,7 @@ function NetTable ({data}) {
 
     const sendSpendings = () => {
         if (accountName != "All Accounts") lastUsed = accountName
-        history.push({pathname:"/previous-spendings", state: {currency, month, accountName, lastUsed}})
+        history.push({pathname:"/previous-spendings", state: {month, accountName, lastUsed}})
     }
 
     return (
@@ -128,23 +129,23 @@ function NetTable ({data}) {
                 <tbody>
                     <tr className='wide'>
                         <td className='color1' onClick={sendSpendings}><h3>
-                            -{spendings.toLocaleString('en', {style: "currency", currency: currency})}
+                            -{spendings.toLocaleString('en', {style: "currency", currency})}
                         </h3></td>
 
-                        <td onClick={() => history.push({pathname:"/earnings", state: {month: monthNumStr, currency, account: accountName, accounts, lastUsed}})}><h3 >
-                            {earnings.toLocaleString('en', {style: "currency", currency: currency})}
+                        <td onClick={() => history.push({pathname:"/earnings", state: {month: monthNumStr, account: accountName, accounts, lastUsed}})}><h3 >
+                            {earnings.toLocaleString('en', {style: "currency", currency})}
                         </h3></td>
 
-                        <td className='color1' onClick={() => history.push({pathname:"/view-transfers", state: {currency, month: Number(month) + 1, year, accountName, accounts}})}><h3>
-                            -{tOut.toLocaleString('en', {style: "currency", currency: currency})}
+                        <td className='color1' onClick={() => history.push({pathname:"/view-transfers", state: {month: Number(month) + 1, year, accountName, accounts}})}><h3>
+                            -{tOut.toLocaleString('en', {style: "currency", currency})}
                         </h3></td>
 
-                        <td onClick={() => history.push({pathname:"/view-transfers", state: {currency, month: Number(month) + 1, year, accountName, accounts}})}><h3>
-                            {tIn.toLocaleString('en', {style: "currency", currency: currency})}
+                        <td onClick={() => history.push({pathname:"/view-transfers", state: {month: Number(month) + 1, year, accountName, accounts}})}><h3>
+                            {tIn.toLocaleString('en', {style: "currency", currency})}
                         </h3></td>
 
                         <td className={`verticalB ${netColor}`}><h3>
-                            {net.toLocaleString('en', {style: "currency", currency: currency})}
+                            {net.toLocaleString('en', {style: "currency", currency})}
                         </h3></td>
                     </tr>
                 </tbody>

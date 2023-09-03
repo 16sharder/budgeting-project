@@ -12,10 +12,11 @@ import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { retrieveMonth, retrieveMultipleMonths } from '../../helperfuncs/FetchFunctions';
 import Month from './MonthlyRow';
 
-function AveragesTable({currency}) {
+function AveragesTable() {
     const history = useHistory()
 
     const user = useSelector(state => state.user.value)
+    const currency = useSelector(state => state.currency.value)
 
     const today = new Date()
     let month = (today.getMonth())
@@ -68,7 +69,7 @@ function AveragesTable({currency}) {
 
     // sends the user to a page displaying the desired week's information
     const viewMonth = async month => {
-        history.push({pathname:"/previous-spendings", state: {currency, month, accountName: "All Accounts"}})
+        history.push({pathname:"/previous-spendings", state: {month, accountName: "All Accounts"}})
     }
 
     return(
@@ -84,8 +85,8 @@ function AveragesTable({currency}) {
             {results.map((month, index) => <Month month={month} viewMonth={viewMonth} currency={currency} key={index}/>)}
                 <tr className='horizontalB'>
                     <th className='corner verticalB'>Average</th>
-                    {averages.slice(0, 10).map((cat, index) => <th key={index}>{cat.toLocaleString('en', {style: "currency", currency: currency})}</th>)}
-                    <th className='verticalB'>{averages[10].toLocaleString('en', {style: "currency", currency: currency})}</th>
+                    {averages.slice(0, 10).map((cat, index) => <th key={index}>{cat.toLocaleString('en', {style: "currency", currency})}</th>)}
+                    <th className='verticalB'>{averages[10].toLocaleString('en', {style: "currency", currency})}</th>
                 </tr>
             </tbody>
         </table>

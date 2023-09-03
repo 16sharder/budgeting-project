@@ -18,7 +18,7 @@ function Transfer() {
     const history = useHistory()
     const location = useLocation()
 
-    const {currency: curRency, accounts} = location.state
+    const {accounts} = location.state
 
     const today = convertTodayToDate()
 
@@ -59,7 +59,7 @@ function Transfer() {
         newTransfer.month = date.slice(5, 7)
         const res = await addTransfer(newTransfer)
 
-        if (res) history.push({pathname:"/accounts-view", state: {currency: curRency}})
+        if (res) history.push({pathname:"/accounts-view"})
     }
 
     useEffect(() => {
@@ -98,7 +98,7 @@ function Transfer() {
 
 
             <table className='twoButtons'><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/accounts-view", state: {currency: curRency}})}>Back</button></td>
+                <td><button onClick={() => history.push({pathname:"/accounts-view"})}>Back</button></td>
                 <td><button onClick={() => performTransfer({account, account2, currency, amount, fee, exchangeRate, date, description})}>Transfer</button></td>
             </tr></tbody></table>
             </div>

@@ -10,6 +10,8 @@ import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useDispatch } from 'react-redux'
+import { toEuro, toDollar } from '../redux/currencySlice';
 
 import {calcWeekDates} from "../helperfuncs/DateCalculators"
 import {organizeDaysEntries, retrieveWeekEntries} from "../helperfuncs/FetchFunctions"
@@ -25,18 +27,19 @@ function WeekPage () {
     // retrieves the dates previously passed in the by clicking on the Main page table
     const history = useHistory()
     const location = useLocation()
+    const dispatch = useDispatch()
 
     const user = useSelector(state => state.user.value)
+    let currency = useSelector(state => state.currency.value)
 
     const {accounts, dates, lastUsed} = location.state
-    let {currency} = location.state
 
     const [message, setMessage] = useState("Loading...")
 
 
     // sends the user to a page displaying the desired entry's information
     const viewDetails = async (date, category) => {
-        history.push({pathname:"/view-details", state: {date, weekDates: dates, category, currency, accounts}})
+        history.push({pathname:"/view-details", state: {date, weekDates: dates, category, accounts}})
     }
     
 
@@ -64,8 +67,8 @@ function WeekPage () {
 
 
     const toggleCurrency = () => {
-        if (currency === "EUR") location.state.currency = "USD"
-        else if (currency === "USD") location.state.currency = "EUR"
+        if (currency === "EUR") dispatch(toDollar())
+        else if (currency === "USD") dispatch(toEuro())
 
         history.push({pathname:"/weekly-view", state: location.state})
         window.location.reload()
@@ -76,7 +79,7 @@ function WeekPage () {
         <><div className='box'>
             <BasicBorders/>
             <NoBorderFlourish/>
-            <Navigation currency={currency} lastUsed={lastUsed}/>
+            <Navigation lastUsed={lastUsed}/>
             <p></p>
             <h2>{message}</h2>
             <div>Please click on an entry if you would like to see more details</div>
@@ -86,10 +89,10 @@ function WeekPage () {
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={toggleCurrency}>Change Currency</button></td>
                 <td></td>
-                <td><button onClick={() => history.push({pathname:"/add-entry", state: {currency, accounts, lastUsed}})}>Add New Entry</button></td>
+                <td><button onClick={() => history.push({pathname:"/add-entry", state: {accounts, lastUsed}})}>Add New Entry</button></td>
             </tr></tbody></table>
 
-            <button onClick={() => history.push({pathname:"/main", state: {currency, lastUsed}})}>Return to monthly view</button>
+            <button onClick={() => history.push({pathname:"/main", state: {lastUsed}})}>Return to monthly view</button>
             <p></p>
         </div></>
     )

@@ -17,7 +17,7 @@ function EditTransfer() {
     const history = useHistory()
     const location = useLocation()
 
-    const {entry, currency: curRency, accounts} = location.state
+    const {entry, accounts} = location.state
 
     const [account, setAccount] = useState(entry.account)
     const [account2, setAccount2] = useState(entry.account2)
@@ -40,7 +40,7 @@ function EditTransfer() {
         const res = await updateTransfer(entry._id, editedEntry, entry)
 
         // returns the user to the view details page
-        if (res) history.push({pathname:"/accounts-view", state: {currency: curRency}})
+        if (res) history.push({pathname:"/accounts-view"})
 
     }
 
@@ -48,7 +48,7 @@ function EditTransfer() {
         const res = await deleteTransfer(entry)
 
         // returns the user to the view details page
-        if (res) history.push({pathname:"/accounts-view", state: {currency: curRency}})
+        if (res) history.push({pathname:"/accounts-view"})
     }
 
     useEffect(() => {
@@ -80,7 +80,7 @@ function EditTransfer() {
 
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/accounts-view", state: {currency: curRency}})}>Back</button></td>
+                <td><button onClick={() => history.push({pathname:"/accounts-view"})}>Back</button></td>
                 <td><button onClick={editTransfer}>Confirm</button></td>
             </tr></tbody></table>
     

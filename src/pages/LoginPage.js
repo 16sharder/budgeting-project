@@ -9,9 +9,10 @@ import {useHistory} from "react-router-dom"
 
 import { useDispatch } from 'react-redux'
 import { login } from '../redux/userSlice';
+import { setAccounts } from '../redux/accountsSlice';
+import { setRecent } from '../redux/historySlice';
 
 import BasicBorders, {BorderFlourish} from '../components/Styling/BorderDecoration';
-import { setAccounts } from '../redux/accountsSlice';
 
 function LoginPage () {
     const [name, setName] = useState("")
@@ -28,15 +29,16 @@ function LoginPage () {
         })
     }
 
-    // TODO: delete state once no longer needed in Main
     const send = async (nameVal) => {
         dispatch(login(nameVal))
 
         const response = await fetch(`/accounts/${nameVal}`)
         const accounts = await response.json()
         dispatch(setAccounts(accounts))
+
+        dispatch(setRecent(accounts[0].account))
         
-        history.push({pathname:"/main", state: {}})
+        history.push({pathname:"/main"})
     }
 
     return (

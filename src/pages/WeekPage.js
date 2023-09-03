@@ -32,7 +32,7 @@ function WeekPage () {
     const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
 
-    const {dates, lastUsed} = location.state
+    const {dates} = location.state
 
     const [message, setMessage] = useState("Loading...")
 
@@ -79,7 +79,7 @@ function WeekPage () {
         <><div className='box'>
             <BasicBorders/>
             <NoBorderFlourish/>
-            <Navigation lastUsed={lastUsed}/>
+            <Navigation/>
             <p></p>
             <h2>{message}</h2>
             <div>Please click on an entry if you would like to see more details</div>
@@ -89,10 +89,10 @@ function WeekPage () {
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={toggleCurrency}>Change Currency</button></td>
                 <td></td>
-                <td><button onClick={() => history.push({pathname:"/add-entry", state: {lastUsed}})}>Add New Entry</button></td>
+                <td><button onClick={() => history.push({pathname:"/add-entry"})}>Add New Entry</button></td>
             </tr></tbody></table>
 
-            <button onClick={() => history.push({pathname:"/main", state: {lastUsed}})}>Return to monthly view</button>
+            <button onClick={() => history.push({pathname:"/main"})}>Return to monthly view</button>
             <p></p>
         </div></>
     )

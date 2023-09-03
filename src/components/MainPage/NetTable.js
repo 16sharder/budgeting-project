@@ -3,15 +3,19 @@ import {useState, useEffect} from "react"
 import {useHistory} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useDispatch } from 'react-redux'
+import { setRecent } from '../../redux/historySlice';
 
 import { convertToDollars, convertToEuros, retrieveEarnings, retrieveMonth, retrieveNetSpendings } from '../../helperfuncs/FetchFunctions';
 
 function NetTable ({data}) {
+    const dispatch = useDispatch()
+
     const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
     const accounts = useSelector(state => state.accounts.value)
 
-    let [label, accountName, monthNumStr, month, year, lastUsed] = data
+    let [label, accountName, monthNumStr, month, year] = data
 
     const [spendings, setSpendings] = useState(0)
     const [earnings, setEarnings] = useState(0)
@@ -110,8 +114,15 @@ function NetTable ({data}) {
 
 
     const sendSpendings = () => {
-        if (accountName != "All Accounts") lastUsed = accountName
-        history.push({pathname:"/previous-spendings", state: {month, accountName, lastUsed}})
+        if (accountName != "All Accounts") dispatch(setRecent(accountName))
+        
+        history.push({pathname:"/previous-spendings", state: {month, accountName}})
+    }
+
+    const sendEarnings = () => {
+        if (accountName != "All Accounts") dispatch(setRecent(accountName))
+        
+        history.push({pathname:"/earnings", state: {month: monthNumStr, account: accountName}})
     }
 
     return (
@@ -133,7 +144,7 @@ function NetTable ({data}) {
                             -{spendings.toLocaleString('en', {style: "currency", currency})}
                         </h3></td>
 
-                        <td onClick={() => history.push({pathname:"/earnings", state: {month: monthNumStr, account: accountName, lastUsed}})}><h3 >
+                        <td onClick={sendEarnings}><h3 >
                             {earnings.toLocaleString('en', {style: "currency", currency})}
                         </h3></td>
 

@@ -15,7 +15,7 @@ function PreviousMonth () {
 
     const accounts = useSelector(state => state.accounts.value)
 
-    const {month, lastUsed} = location.state
+    const {month} = location.state
 
     const monthNumStr = monthNumString(month)
 
@@ -28,15 +28,15 @@ function PreviousMonth () {
         <><div className='box'>
             <BasicBorders/>
             <NoBorderFlourish/>
-            <Navigation lastUsed={lastUsed}/>
+            <Navigation/>
             <p></p>
 
             <h2>Financials in {monthName(month)}</h2>
             <div>Click on a section to view more details</div>
             <br></br>
-            <NetTable data={["All Accounts", "All Accounts", accounts, monthNumStr, month, year, lastUsed]}/>
+            <NetTable data={["All Accounts", "All Accounts", monthNumStr, month, year]}/>
             {accounts.map((account, index) => 
-            <NetTable data={[account.account, account.account, monthNumStr, month, year, lastUsed]} key={index}/>)}
+            <NetTable data={[account.account, account.account, monthNumStr, month, year]} key={index}/>)}
 
             <p></p>
         </div></>

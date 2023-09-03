@@ -23,7 +23,7 @@ function Earnings () {
     const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
 
-    const {month, account, lastUsed} = location.state
+    const {month, account} = location.state
 
     const [entries, setEntries] = useState([])
     const [total, setTotal] = useState(0)
@@ -70,9 +70,9 @@ function Earnings () {
             <br></br>
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/add-earning", state: {lastUsed}})}>
+                <td><button onClick={() => history.push({pathname:"/add-earning"})}>
                     Add New Earnings</button></td>
-                <td><button onClick={() => history.push({pathname:"/previous-month", state: {month: month - 1, lastUsed}})}>
+                <td><button onClick={() => history.push({pathname:"/previous-month", state: {month: month - 1}})}>
                     Return to {monthName(Number(month) -1)} Finances</button></td>
             </tr></tbody></table>
             

@@ -10,6 +10,8 @@ import {useState, useEffect} from "react"
 import {useHistory} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useDispatch } from 'react-redux'
+import { setRecent } from '../../redux/historySlice';
 
 import { retrieveNetSpendings, retrieveUserAccountNames } from '../../helperfuncs/FetchFunctions';
 import {monthName, stringifyDate} from "../../helperfuncs/DateCalculators"
@@ -21,6 +23,7 @@ import { FiEdit } from 'react-icons/fi';
 
 function Accounts() {
     const history = useHistory()
+    const dispatch = useDispatch()
 
     const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
@@ -132,6 +135,11 @@ function Accounts() {
         else alert("You do not have permission to edit this transfer because you are not a user on one of the accounts involved")
     }
 
+    const selectAccount = (account) => {
+        dispatch(setRecent(account.account))
+        history.push({pathname:"/previous-spendings", state: {month, accountName: account.account}})
+    }
+
     return (
         <><div className='box'>
             <BasicBorders/>
@@ -149,7 +157,7 @@ function Accounts() {
                     </tr>
                 </thead>
                 <tbody>
-                {accounts.map((account, index) => <tr key={index} className='color5' onClick={() => history.push({pathname:"/previous-spendings", state: {month, accountName: account.account}})}>
+                {accounts.map((account, index) => <tr key={index} className='color5' onClick={() => selectAccount(account)}>
                     <td className="color1">{Number(beginnings[index]).toLocaleString('en', {style: "currency", currency: account.currency})}</td>
                     <td className="bold verticalB">{account.account}</td>
                     <td className='color1'>{account.amount.toLocaleString('en', {style: "currency", currency: account.currency})}</td></tr>)}

@@ -4,9 +4,11 @@
 // Sends the user back to the MainPage
 
 import React, { useEffect, useState } from 'react';
-import {useHistory, useLocation} from "react-router-dom"
+import {useHistory} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useDispatch } from 'react-redux'
+import { setRecent } from '../../redux/historySlice';
 
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
@@ -17,16 +19,14 @@ import { addEntry } from '../../helperfuncs/EntryFunctions';
 
 function AddEntry() {
     const history = useHistory()
-    const location = useLocation()
+    const dispatch = useDispatch()
 
     const accounts = useSelector(state => state.accounts.value)
-
-    let {lastUsed} = location.state
-    if (lastUsed == undefined) lastUsed = accounts[0].account
+    const lastUsedAccount = useSelector(state => state.recentAccount.value)
 
     const today = convertTodayToDate()
 
-    const [account, setAccount] = useState(lastUsed)
+    const [account, setAccount] = useState(lastUsedAccount)
     const [category, setCategory] = useState("Groceries")
     const [currency, setCurrency] = useState(accounts[0].currency)
     const [currencySymbol, setSymbol] = useState(accounts[0].currency)
@@ -51,8 +51,10 @@ function AddEntry() {
         // adds the entry to mongoDB
         const res = await addEntry(entry)
 
+        dispatch(setRecent(account))
+
         // returns the user to the main page
-        if (res) history.push({pathname:"/main", state: {lastUsed: account}})
+        if (res) history.push({pathname:"/main"})
     }
 
     useEffect(() => {
@@ -90,7 +92,7 @@ function AddEntry() {
 
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/main", state: {lastUsed}})}>Back</button></td>
+                <td><button onClick={() => history.push({pathname:"/main"})}>Back</button></td>
                 <td><button onClick={() => newEntry({account, category, currency, amount, date, description})}>Add</button></td>
             </tr></tbody></table>
         </div>

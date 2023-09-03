@@ -32,7 +32,7 @@ function WeekPage2 () {
     const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
     
-    const {accountName, dates, month, lastUsed} = location.state
+    const {accountName, dates, month} = location.state
 
     const [message, setMessage] = useState("Loading...")
 
@@ -79,7 +79,7 @@ function WeekPage2 () {
         <><div className='box'>
             <BasicBorders/>
             <NoBorderFlourish/>
-            <Navigation lastUsed={lastUsed}/>
+            <Navigation/>
             <p></p>
             <h2>{message}</h2>
             <div>Please click on an entry if you would like to see more details</div>
@@ -89,7 +89,7 @@ function WeekPage2 () {
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={toggleCurrency}>Change Currency</button></td>
                 <td></td>
-                <td><button onClick={() => history.push({pathname:"/previous-spendings", state: {month, accountName, lastUsed}})}>Return to monthly view</button></td>
+                <td><button onClick={() => history.push({pathname:"/previous-spendings", state: {month, accountName}})}>Return to monthly view</button></td>
             </tr></tbody></table>
 
             <p></p>

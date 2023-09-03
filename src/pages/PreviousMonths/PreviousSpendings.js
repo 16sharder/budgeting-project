@@ -29,7 +29,7 @@ function SpendingsPage () {
     const currency = useSelector(state => state.currency.value)
     const accounts = useSelector(state => state.accounts.value)
 
-    const {month, accountName, lastUsed} = location.state
+    const {month, accountName} = location.state
 
     const [message, setMessage] = useState("Loading...")
 
@@ -56,13 +56,13 @@ function SpendingsPage () {
 
     // sends the user to a page displaying the desired week's information
     const viewWeek = async dates => {
-        history.push({pathname:"/weekly-view2", state: {dates, month, accountName, lastUsed}})
+        history.push({pathname:"/weekly-view2", state: {dates, month, accountName}})
     }
 
     // either raises an error or sends the user to the add entry page
     const sendAddEntry = () => {
         if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
-        else history.push({pathname:"/add-entry", state: {lastUsed}})
+        else history.push({pathname:"/add-entry"})
     }
 
 
@@ -71,7 +71,7 @@ function SpendingsPage () {
         <><div className='box'>
             <BasicBorders/>
             <NoBorderFlourish/>
-            <Navigation lastUsed={lastUsed}/>
+            <Navigation/>
             <p></p>
             <h2>{message}</h2>
             <div>Please click on a week if you would like to see entries by day</div>

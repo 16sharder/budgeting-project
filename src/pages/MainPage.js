@@ -33,8 +33,6 @@ function MainPage () {
     const currency = useSelector(state => state.currency.value)
     const accounts = useSelector(state => state.accounts.value)
 
-    let {lastUsed} = location.state
-
     const today = new Date
     const [message, setMessage] = useState("Loading...")
 
@@ -45,8 +43,7 @@ function MainPage () {
         if (currency === "EUR") dispatch(toDollar())
         else if (currency === "USD") dispatch(toEuro())
 
-        // TODO: delete state once no longer needed in Main
-        history.push({pathname:"/main", state: location.state})
+        history.push({pathname:"/main"})
         window.location.reload()
     }
 
@@ -54,13 +51,13 @@ function MainPage () {
 
     // sends the user to a page displaying the desired week's information
     const viewWeek = async dates => {
-        history.push({pathname:"/weekly-view", state: {dates, lastUsed}})
+        history.push({pathname:"/weekly-view", state: {dates}})
     }
 
     // either raises an error or sends the user to the add entry page
     const sendAddEntry = () => {
         if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
-        else history.push({pathname:"/add-entry", state: {lastUsed}})
+        else history.push({pathname:"/add-entry"})
     }
 
 
@@ -69,7 +66,7 @@ function MainPage () {
         <><div className='box'>
             <BasicBorders/>
             <NoBorderFlourish/>
-            <Navigation lastUsed={lastUsed}/>
+            <Navigation/>
             <p></p>
             <h2>{message}</h2>
             <div>Please click on a week if you would like to see entries by day</div>
@@ -85,7 +82,7 @@ function MainPage () {
             </tr></tbody></table>
 
 
-            <NetTable data={["", "All Accounts", monthNumString(today.getMonth()), today.getMonth(), today.getFullYear(), lastUsed]}/>
+            <NetTable data={["", "All Accounts", monthNumString(today.getMonth()), today.getMonth(), today.getFullYear()]}/>
 
 
 

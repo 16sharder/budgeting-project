@@ -5,16 +5,13 @@
 
 import React from 'react';
 import {useState} from "react"
-import {useHistory, useLocation} from "react-router-dom"
+import {useHistory} from "react-router-dom"
 
 import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecoration';
 import { monthName } from '../../helperfuncs/DateCalculators';
 
 function ChooseMonth () {
     const history = useHistory()
-    const location = useLocation()
-
-    let {lastUsed} = location.state
 
     const today = new Date
     const [month, setMonth] = useState(today.getMonth())
@@ -29,7 +26,7 @@ function ChooseMonth () {
     }
 
     const send = (monthVal) => {
-        history.push({pathname:"/previous-month", state: {month: monthVal, lastUsed}})
+        history.push({pathname:"/previous-month", state: {month: monthVal}})
     }
 
 

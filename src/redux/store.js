@@ -5,6 +5,7 @@ import storage from "redux-persist/lib/storage";
 import userReducer from './userSlice'
 import currencyReducer from './currencySlice'
 import accountsReducer from './accountsSlice'
+import { recentAccountReducer, backtrackLinkReducer } from './historySlice';
 
 
 const persistConfig = {
@@ -15,7 +16,9 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userReducer,
   currency: currencyReducer,
-  accounts: accountsReducer
+  accounts: accountsReducer,
+  recentAccount: recentAccountReducer,
+  backtrackLink: backtrackLinkReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

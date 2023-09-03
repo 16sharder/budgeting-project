@@ -2,20 +2,23 @@ import React from 'react';
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+
 import { retrieveUserAccountNames} from "../../helperfuncs/FetchFunctions"
 
 import Navigation from '../../components/Styling/Navigation';
 import BasicBorders, {NoBorderFlourish} from '../../components/Styling/BorderDecoration';
 
-import { FiEdit } from "react-icons/fi";
-import { monthName, stringifyDate } from '../../helperfuncs/DateCalculators';
+import { monthName } from '../../helperfuncs/DateCalculators';
 import TransferItem from '../../components/TransferItem';
 
 function ViewTransfers () {
     const history = useHistory()
     const location = useLocation()
 
-    const {user, currency, month, year, accountName, accounts} = location.state
+    const user = useSelector(state => state.user.value)
+
+    const {currency, month, year, accountName, accounts} = location.state
 
 
     // loads all of the transfers from the current and previous months
@@ -82,7 +85,7 @@ function ViewTransfers () {
             if (transfer.account == acct.account) bool += 1
             if (transfer.account2 == acct.account) bool += 1
         }
-        if (bool == 2) history.push({pathname:"/edit-transfer", state: {entry: transfer, curUser: user, currency, accounts, month}})
+        if (bool == 2) history.push({pathname:"/edit-transfer", state: {entry: transfer, currency, accounts, month}})
         else alert("You do not have permission to edit this transfer because you are not a user on one of the accounts involved")
     }
 
@@ -90,7 +93,7 @@ function ViewTransfers () {
         <><div className='box'>
             <BasicBorders/>
             <NoBorderFlourish/>
-            <Navigation user={user} currency={currency} />
+            <Navigation currency={currency} />
             <p></p>
 
             <h2>Transfers in {monthName(Number(month) -1)} - {accountName}</h2>
@@ -117,7 +120,7 @@ function ViewTransfers () {
             </table>
 
             <br/>      
-            <button onClick={() => history.push({pathname:"/previous-month", state: {user, currency, month: month - 1}})}>
+            <button onClick={() => history.push({pathname:"/previous-month", state: {currency, month: month - 1}})}>
                 Return to {monthName(Number(month) -1)} Finances</button>
 
             

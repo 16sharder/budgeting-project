@@ -7,6 +7,8 @@ import React from 'react';
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+
 import {retrieveDayEntries} from "../../helperfuncs/FetchFunctions"
 
 import Navigation from '../../components/Styling/Navigation';
@@ -18,7 +20,9 @@ function ViewDetails () {
     const history = useHistory()
     const location = useLocation()
 
-    const {user, date, weekDates, category, currency, month, accounts} = location.state
+    const user = useSelector(state => state.user.value)
+
+    const {date, weekDates, category, currency, month, accounts} = location.state
     let {accountName} = location.state
     if (accountName == undefined) accountName = "All Accounts"
 
@@ -42,20 +46,20 @@ function ViewDetails () {
 
 
     const sendMonth = () => {
-        if (month == undefined) history.push({pathname:"/main", state: {user, currency}})
-        else history.push({pathname:"/previous-spendings", state: {user, currency, month, accountName}})
+        if (month == undefined) history.push({pathname:"/main", state: {currency}})
+        else history.push({pathname:"/previous-spendings", state: {currency, month, accountName}})
     }
 
     const sendWeek = () => {
-        if (month == undefined) history.push({pathname:"/weekly-view", state: {user, dates: weekDates, currency, accounts}})
-        else history.push({pathname:"/weekly-view2", state: {user, dates: weekDates, currency, month, accountName}})
+        if (month == undefined) history.push({pathname:"/weekly-view", state: {dates: weekDates, currency, accounts}})
+        else history.push({pathname:"/weekly-view2", state: {dates: weekDates, currency, month, accountName}})
     }
 
     return (
         <><div className='box'>
             <BasicBorders/>
             <NoBorderFlourish/>
-            <Navigation user={user} currency={currency} />
+            <Navigation currency={currency} />
             <p></p>
             <h2>{category} entries for {date}</h2>
             <div>

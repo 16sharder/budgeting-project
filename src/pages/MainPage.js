@@ -11,7 +11,8 @@ import React from 'react';
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import {retrieveEarnings, convertToEuros, convertToDollars, retrieveNetSpendings} from "../helperfuncs/FetchFunctions"
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+
 import { monthNumString } from '../helperfuncs/DateCalculators';
 
 import MonthlyTable from "../components/MainPage/Month/MonthlyTable";
@@ -27,7 +28,8 @@ function MainPage () {
     const history = useHistory()
     const location = useLocation()
 
-    const {user} = location.state
+    const user = useSelector(state => state.user.value)
+
     let {currency, lastUsed} = location.state
 
     const today = new Date
@@ -36,56 +38,16 @@ function MainPage () {
 
     // gets all of the user's account information
     const [accounts, setAccounts] = useState([])
-    const [netGain, setNetGain] = useState(0)
 
     const loadAccounts = async (user) => {
         // retrieves a list of the user's accounts
         const response = await fetch(`/accounts/${user}`)
         const accts = await response.json()
         setAccounts(accts)
-
-        const names = accts.map((acct) => acct.account)
-
-        let result = 0
-        const allSpent = await retrieveNetSpendings(today.getMonth(), today.getFullYear(), names)
-        for (const spent of allSpent){
-            result += spent
-        }
-        setNetGain(result)
     }
 
-
-    // retrieves the user's earnings for the month
-    const [earnings, setEarnings] = useState(0)
-
-    const monthNumStr = monthNumString(today.getMonth())
-
-    const loadEarnings = async () => {
-
-        const earnings = await retrieveEarnings(monthNumStr, user)
-
-        let totalEarnings = 0
-        for (let earning of earnings){
-            let value = earning.amount
-            // determines if the entry needs to be converted to a different currency for display
-            if (currency === "EUR") {
-                if (earning.currency != currency) value = await convertToEuros(earning.amount)
-            } 
-            else if (currency === "USD") {
-                if (earning.currency != currency) value = await convertToDollars(earning.amount)
-            } 
-            totalEarnings -= value
-        }
-
-        setEarnings(totalEarnings)
-    }
-
-
-
-    // loads everything
     useEffect(() => {
         loadAccounts(user)
-        loadEarnings()
     }, [])
 
 
@@ -103,13 +65,13 @@ function MainPage () {
 
     // sends the user to a page displaying the desired week's information
     const viewWeek = async dates => {
-        history.push({pathname:"/weekly-view", state: {dates, user, accounts, currency, lastUsed}})
+        history.push({pathname:"/weekly-view", state: {dates, accounts, currency, lastUsed}})
     }
 
     // either raises an error or sends the user to the add entry page
     const sendAddEntry = () => {
         if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
-        else history.push({pathname:"/add-entry", state: {curUser: user, currency, accounts, lastUsed}})
+        else history.push({pathname:"/add-entry", state: {currency, accounts, lastUsed}})
     }
 
 
@@ -118,13 +80,13 @@ function MainPage () {
         <><div className='box'>
             <BasicBorders/>
             <NoBorderFlourish/>
-            <Navigation user={user} currency={currency} lastUsed={lastUsed}/>
+            <Navigation currency={currency} lastUsed={lastUsed}/>
             <p></p>
             <h2>{message}</h2>
             <div>Please click on a week if you would like to see entries by day</div>
             <p></p>
 
-            <MonthlyTable data={[today, user, "All Accounts", currency, `${user}, here are your spendings for this month`, setMessage, viewWeek]}/>
+            <MonthlyTable data={[today, "All Accounts", currency, `${user}, here are your spendings for this month`, setMessage, viewWeek]}/>
 
 
             <table className="twoButtons"><tbody><tr>
@@ -134,7 +96,7 @@ function MainPage () {
             </tr></tbody></table>
 
 
-            <NetTable data={[user, "", "All Accounts", accounts, currency, monthNumStr, today.getMonth(), today.getFullYear(), lastUsed]}/>
+            <NetTable data={["", "All Accounts", accounts, currency, monthNumString(today.getMonth()), today.getMonth(), today.getFullYear(), lastUsed]}/>
 
 
 
@@ -142,7 +104,7 @@ function MainPage () {
 
             <h3>Monthly Spendings:</h3>
 
-            <AveragesTable user={user} currency={currency}/>
+            <AveragesTable currency={currency}/>
 
             <p></p>
             <br/>

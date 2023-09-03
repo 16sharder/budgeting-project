@@ -7,12 +7,16 @@
 import React, { useEffect, useState } from 'react';
 import Week from "./WeeklyRow"
 
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+
 import { organizeDaysEntries, retrieveMonth, retrieveWeekEntries } from '../../../helperfuncs/FetchFunctions';
 import { calculateWeekTotals } from '../../../helperfuncs/OtherCalcs';
 import { createMonthDates } from '../../../helperfuncs/DateCalculators';
 
 function MonthlyTable({data}) {
-    const [date, user, accountName, currency, message, setMessage, viewWeek] = data
+    const user = useSelector(state => state.user.value)
+
+    const [date, accountName, currency, message, setMessage, viewWeek] = data
     
     let n = 7
     let d = 0

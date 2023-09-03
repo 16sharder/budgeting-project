@@ -7,6 +7,8 @@ import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+
 import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecoration';
 import { AmountEntry } from '../../components/Forms/Inputs';
 
@@ -14,11 +16,11 @@ function AddAccount() {
     const history = useHistory()
     const location = useLocation()
 
-    const {curUser, currency: curRency} = location.state
+    const {currency: curRency} = location.state
     
     const [account, setName] = useState("")
     const [bank, setBank] = useState("")
-    const [user, setUser] = useState(curUser)
+    const [user, setUser] = useState(useSelector(state => state.user.value))
     const [user2, setUser2] = useState("")
     const [currency, setCurrency] = useState("EUR")
     const [currencySymbol, setSymbol] = useState("")
@@ -69,7 +71,7 @@ function AddAccount() {
         })
         if (response.status === 201){
             alert("Successfully created a new account")
-            history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})
+            history.push({pathname:"/accounts-view", state: {currency: curRency}})
 
         } else{
             alert(`Create account failed. Status code = ${response.status}`)
@@ -171,7 +173,7 @@ function AddAccount() {
             
 
             <table className='twoButtons'><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/accounts-view", state: {user: curUser, currency: curRency}})}>Back</button></td>
+                <td><button onClick={() => history.push({pathname:"/accounts-view", state: {currency: curRency}})}>Back</button></td>
                 <td></td>
                 <td><button onClick={() => addAccount({account, bank, user, user2, currency, amount})}>Add</button></td>
             </tr></tbody></table>

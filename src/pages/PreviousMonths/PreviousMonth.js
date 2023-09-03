@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {useLocation} from "react-router-dom"
 
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+
 import { monthName, monthNumString } from '../../helperfuncs/DateCalculators';
 
 import NetTable from '../../components/MainPage/NetTable';
@@ -11,7 +13,9 @@ function PreviousMonth () {
 
     const location = useLocation()
 
-    const {user, month, lastUsed} = location.state
+    const user = useSelector(state => state.user.value)
+
+    const {month, lastUsed} = location.state
     let {currency} = location.state
 
     const monthNumStr = monthNumString(month)
@@ -39,15 +43,15 @@ function PreviousMonth () {
         <><div className='box'>
             <BasicBorders/>
             <NoBorderFlourish/>
-            <Navigation user={user} currency={currency} lastUsed={lastUsed}/>
+            <Navigation currency={currency} lastUsed={lastUsed}/>
             <p></p>
 
             <h2>Financials in {monthName(month)}</h2>
             <div>Click on a section to view more details</div>
             <br></br>
-            <NetTable data={[user, "All Accounts", "All Accounts", accounts, currency, monthNumStr, month, year, lastUsed]}/>
+            <NetTable data={["All Accounts", "All Accounts", accounts, currency, monthNumStr, month, year, lastUsed]}/>
             {accounts.map((account, index) => 
-            <NetTable data={[user, account.account, account.account, accounts, currency, monthNumStr, month, year, lastUsed]} key={index}/>)}
+            <NetTable data={[account.account, account.account, accounts, currency, monthNumStr, month, year, lastUsed]} key={index}/>)}
 
             <p></p>
         </div></>

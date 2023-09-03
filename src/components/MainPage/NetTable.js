@@ -2,10 +2,14 @@ import React from 'react';
 import {useState, useEffect} from "react"
 import {useHistory} from "react-router-dom"
 
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+
 import { convertToDollars, convertToEuros, retrieveEarnings, retrieveMonth, retrieveNetSpendings } from '../../helperfuncs/FetchFunctions';
 
 function NetTable ({data}) {
-    let [user, label, accountName, accounts, currency, monthNumStr, month, year, lastUsed] = data
+    const user = useSelector(state => state.user.value)
+
+    let [label, accountName, accounts, currency, monthNumStr, month, year, lastUsed] = data
 
     const [spendings, setSpendings] = useState(0)
     const [earnings, setEarnings] = useState(0)
@@ -105,7 +109,7 @@ function NetTable ({data}) {
 
     const sendSpendings = () => {
         if (accountName != "All Accounts") lastUsed = accountName
-        history.push({pathname:"/previous-spendings", state: {user, currency, month, accountName, lastUsed}})
+        history.push({pathname:"/previous-spendings", state: {currency, month, accountName, lastUsed}})
     }
 
     return (
@@ -127,15 +131,15 @@ function NetTable ({data}) {
                             -{spendings.toLocaleString('en', {style: "currency", currency: currency})}
                         </h3></td>
 
-                        <td onClick={() => history.push({pathname:"/earnings", state: {month: monthNumStr, user, currency, account: accountName, accounts, lastUsed}})}><h3 >
+                        <td onClick={() => history.push({pathname:"/earnings", state: {month: monthNumStr, currency, account: accountName, accounts, lastUsed}})}><h3 >
                             {earnings.toLocaleString('en', {style: "currency", currency: currency})}
                         </h3></td>
 
-                        <td className='color1' onClick={() => history.push({pathname:"/view-transfers", state: {user, currency, month: Number(month) + 1, year, accountName, accounts}})}><h3>
+                        <td className='color1' onClick={() => history.push({pathname:"/view-transfers", state: {currency, month: Number(month) + 1, year, accountName, accounts}})}><h3>
                             -{tOut.toLocaleString('en', {style: "currency", currency: currency})}
                         </h3></td>
 
-                        <td onClick={() => history.push({pathname:"/view-transfers", state: {user, currency, month: Number(month) + 1, year, accountName, accounts}})}><h3>
+                        <td onClick={() => history.push({pathname:"/view-transfers", state: {currency, month: Number(month) + 1, year, accountName, accounts}})}><h3>
                             {tIn.toLocaleString('en', {style: "currency", currency: currency})}
                         </h3></td>
 

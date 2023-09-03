@@ -7,10 +7,14 @@ import React from 'react';
 import {useState} from "react"
 import {useHistory} from "react-router-dom"
 
+import { useDispatch } from 'react-redux'
+import { login } from '../redux/slice';
+
 import BasicBorders, {BorderFlourish} from '../components/Styling/BorderDecoration';
 
 function LoginPage () {
     const [name, setName] = useState("")
+    const dispatch = useDispatch()
 
     const history = useHistory()
 
@@ -24,7 +28,8 @@ function LoginPage () {
     }
 
     const send = (nameVal) => {
-        history.push({pathname:"/main", state: {user: nameVal, currency: "EUR"}})
+        dispatch(login(nameVal))
+        history.push({pathname:"/main", state: {currency: "EUR"}})
     }
 
     return (

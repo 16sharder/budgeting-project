@@ -6,11 +6,16 @@
 
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+
 import { retrieveMonth, retrieveMultipleMonths } from '../../helperfuncs/FetchFunctions';
 import Month from './MonthlyRow';
 
-function AveragesTable({user, currency}) {
+function AveragesTable({currency}) {
     const history = useHistory()
+
+    const user = useSelector(state => state.user.value)
 
     const today = new Date()
     let month = (today.getMonth())
@@ -63,7 +68,7 @@ function AveragesTable({user, currency}) {
 
     // sends the user to a page displaying the desired week's information
     const viewMonth = async month => {
-        history.push({pathname:"/previous-spendings", state: {user, currency, month, accountName: "All Accounts"}})
+        history.push({pathname:"/previous-spendings", state: {currency, month, accountName: "All Accounts"}})
     }
 
     return(

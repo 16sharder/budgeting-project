@@ -10,6 +10,8 @@ import MonthlyTable from "../../components/MainPage/Month/MonthlyTable";
 import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+
 import {monthName} from "../../helperfuncs/DateCalculators"
 
 import BasicBorders, {NoBorderFlourish} from '../../components/Styling/BorderDecoration';
@@ -21,7 +23,9 @@ function SpendingsPage () {
     const history = useHistory()
     const location = useLocation()
 
-    const {user, month, accountName, lastUsed} = location.state
+    const user = useSelector(state => state.user.value)
+
+    const {month, accountName, lastUsed} = location.state
     let {currency} = location.state
 
     const [message, setMessage] = useState("Loading...")
@@ -63,13 +67,13 @@ function SpendingsPage () {
 
     // sends the user to a page displaying the desired week's information
     const viewWeek = async dates => {
-        history.push({pathname:"/weekly-view2", state: {dates, user, accounts, currency, month, accountName, lastUsed}})
+        history.push({pathname:"/weekly-view2", state: {dates, accounts, currency, month, accountName, lastUsed}})
     }
 
     // either raises an error or sends the user to the add entry page
     const sendAddEntry = () => {
         if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
-        else history.push({pathname:"/add-entry", state: {curUser: user, currency, accounts, lastUsed}})
+        else history.push({pathname:"/add-entry", state: {currency, accounts, lastUsed}})
     }
 
 
@@ -78,13 +82,13 @@ function SpendingsPage () {
         <><div className='box'>
             <BasicBorders/>
             <NoBorderFlourish/>
-            <Navigation user={user} currency={currency} lastUsed={lastUsed}/>
+            <Navigation currency={currency} lastUsed={lastUsed}/>
             <p></p>
             <h2>{message}</h2>
             <div>Please click on a week if you would like to see entries by day</div>
             <p></p>
 
-            <MonthlyTable data={[new Date(year, month, 1), user, accountName, currency, `${accountName} - Spendings for ${monthName(month)}`, setMessage, viewWeek]}/>
+            <MonthlyTable data={[new Date(year, month, 1), accountName, currency, `${accountName} - Spendings for ${monthName(month)}`, setMessage, viewWeek]}/>
             
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={toggleCurrency}>Change Currency</button></td>

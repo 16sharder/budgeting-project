@@ -18,8 +18,9 @@ function ViewTransfers () {
 
     const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
+    const accounts = useSelector(state => state.accounts.value)
 
-    const {month, year, accountName, accounts} = location.state
+    const {month, year, accountName} = location.state
 
 
     // loads all of the transfers from the current and previous months
@@ -86,7 +87,7 @@ function ViewTransfers () {
             if (transfer.account == acct.account) bool += 1
             if (transfer.account2 == acct.account) bool += 1
         }
-        if (bool == 2) history.push({pathname:"/edit-transfer", state: {entry: transfer, accounts, month}})
+        if (bool == 2) history.push({pathname:"/edit-transfer", state: {entry: transfer, month}})
         else alert("You do not have permission to edit this transfer because you are not a user on one of the accounts involved")
     }
 

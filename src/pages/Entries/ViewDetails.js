@@ -22,7 +22,7 @@ function ViewDetails () {
 
     const user = useSelector(state => state.user.value)
 
-    const {date, weekDates, category, month, accounts} = location.state
+    const {date, weekDates, category, month} = location.state
     let {accountName} = location.state
     if (accountName == undefined) accountName = "All Accounts"
 
@@ -51,7 +51,7 @@ function ViewDetails () {
     }
 
     const sendWeek = () => {
-        if (month == undefined) history.push({pathname:"/weekly-view", state: {dates: weekDates, accounts}})
+        if (month == undefined) history.push({pathname:"/weekly-view", state: {dates: weekDates}})
         else history.push({pathname:"/weekly-view2", state: {dates: weekDates, month, accountName}})
     }
 
@@ -66,7 +66,7 @@ function ViewDetails () {
                 {entries.map((entry, index) => 
                     <table key={index} className='singleColumn'>
                         <thead><tr className='toprow'><th>Entry {index+1}
-                            <FiEdit className="edit" onClick={() => {history.push({pathname:"/edit", state: {entry, accounts, back: location.state}})}}/></th></tr></thead>
+                            <FiEdit className="edit" onClick={() => {history.push({pathname:"/edit", state: {entry, back: location.state}})}}/></th></tr></thead>
                         <tbody><tr><td className='color1'><div>Account: {entry.account}</div><div>Amount: {entry.amount.toLocaleString('en', {style: "currency", currency: entry.currency})}</div><div>Description: {entry.description}</div><div></div></td></tr></tbody>
                     </table>
                 )}

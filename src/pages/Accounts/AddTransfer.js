@@ -5,7 +5,9 @@
 
 import React, { useEffect } from 'react';
 import {useState} from "react"
-import {useHistory, useLocation} from "react-router-dom"
+import {useHistory} from "react-router-dom"
+
+import { useSelector } from 'react-redux/es/hooks/useSelector';
 
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
@@ -16,9 +18,8 @@ import { AccountSelector, AmountEntry, RateEntry, DateEntry, DescriptionEntry } 
 
 function Transfer() {
     const history = useHistory()
-    const location = useLocation()
 
-    const {accounts} = location.state
+    const accounts = useSelector(state => state.accounts.value)
 
     const today = convertTodayToDate()
 
@@ -86,8 +87,8 @@ function Transfer() {
             <div></div>
 
             <table className='form'><tbody id="input">
-                <AccountSelector data={[account, setAccount, accounts, "Transfer From:"]}/>
-                <AccountSelector data={[account2, setAccount2, accounts, "Transfer To:"]}/>
+                <AccountSelector data={[account, setAccount, "Transfer From:"]}/>
+                <AccountSelector data={[account2, setAccount2, "Transfer To:"]}/>
                 <AmountEntry data={[currencySymbol, amount, setAmount, "Amount:"]}/>
                 <AmountEntry data={[currencySymbol, fee, setFee, "Fee:"]}/>
                 <RateEntry data={[exchangeRate, setExchangeRate]}/>

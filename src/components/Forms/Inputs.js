@@ -1,8 +1,10 @@
 import React from 'react';
 
+import { useSelector } from 'react-redux/es/hooks/useSelector';
 
 function AccountSelector ({data}) {
-    const [account, setAccount, accounts, label] = data
+    const [account, setAccount, label] = data
+    const accounts = useSelector(state => state.accounts.value)
 
     const displayAmount = (account) => {
         if (label == "Bank Account:") return ""

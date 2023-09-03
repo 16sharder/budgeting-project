@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 
 import userReducer from './userSlice'
 import currencyReducer from './currencySlice'
+import accountsReducer from './accountsSlice'
 
 
 const persistConfig = {
@@ -13,7 +14,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: userReducer,
-  currency: currencyReducer
+  currency: currencyReducer,
+  accounts: accountsReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

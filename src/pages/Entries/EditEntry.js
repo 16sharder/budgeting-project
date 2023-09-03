@@ -8,6 +8,8 @@ import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
 import { deleteEntry, updateEntry } from '../../helperfuncs/EntryFunctions';
 
@@ -18,7 +20,9 @@ function EditEntry() {
     const history = useHistory()
     const location = useLocation()
 
-    const {entry, accounts, back} = location.state
+    const accounts = useSelector(state => state.accounts.value)
+
+    const {entry, back} = location.state
 
     const [account, setAccount] = useState(entry.account)
     const [category, setCategory] = useState(entry.category)
@@ -63,7 +67,7 @@ function EditEntry() {
             <div></div>
 
             <table className='form'><tbody>
-                <AccountSelector data={[account, setAccount, accounts, "Bank Account:"]}/>
+                <AccountSelector data={[account, setAccount, "Bank Account:"]}/>
                 <CategorySelector data={[category, setCategory]}/>
                 <AmountEntry data={[currencySymbol, amount, setAmount, "Amount:"]}/>
                 <DateEntry data={[date, setDate]}/>

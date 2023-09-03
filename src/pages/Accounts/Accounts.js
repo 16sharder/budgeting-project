@@ -24,28 +24,23 @@ function Accounts() {
 
     const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
+    const accounts = useSelector(state => state.accounts.value)
 
     const today = new Date()
     const month = today.getMonth()
     const year = today.getFullYear()
     
     // gets all of the user's account information
-    const [accounts, setAccounts] = useState([])
     const [beginnings, setBeginnings] = useState([])
 
-    const loadAccounts = async (user) => {
-        // retrieves a list of the user's accounts
-        const response = await fetch(`/accounts/${user}`)
-        const data = await response.json()
-        setAccounts(data)
-
+    const loadAccounts = async () => {
         // also loads account info for the beginning of the month
-        const names = data.map((acct) => acct.account)
+        const names = accounts.map((acct) => acct.account)
         const spent = await retrieveNetSpendings(month, year, names)
 
         const result = []
-        for (const idx in data){
-            result.push(data[idx].amount - spent[idx])
+        for (const idx in accounts){
+            result.push(accounts[idx].amount - spent[idx])
         }
         setBeginnings(result)
     }
@@ -115,7 +110,7 @@ function Accounts() {
 
     useEffect(() => {
         loadNetWorth()
-        loadAccounts(user)
+        loadAccounts()
         loadTransfers()
     }, [])
 
@@ -124,7 +119,7 @@ function Accounts() {
 
     const sendTransfer = () => {
         if (accounts.length < 2) alert ("You must have at least two bank accounts before you can perform a transfer")
-        else history.push({pathname:"/transfer", state: {accounts}})
+        else history.push({pathname:"/transfer"})
     }
 
     const editTransfer = (transfer) => {
@@ -133,7 +128,7 @@ function Accounts() {
             if (transfer.account == acct.account) bool += 1
             if (transfer.account2 == acct.account) bool += 1
         }
-        if (bool == 2) history.push({pathname:"/edit-transfer", state: {entry: transfer, accounts, month}})
+        if (bool == 2) history.push({pathname:"/edit-transfer", state: {entry: transfer, month}})
         else alert("You do not have permission to edit this transfer because you are not a user on one of the accounts involved")
     }
 

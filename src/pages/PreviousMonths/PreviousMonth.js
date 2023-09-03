@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {useLocation} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
@@ -13,7 +13,7 @@ function PreviousMonth () {
 
     const location = useLocation()
 
-    const user = useSelector(state => state.user.value)
+    const accounts = useSelector(state => state.accounts.value)
 
     const {month, lastUsed} = location.state
 
@@ -23,20 +23,6 @@ function PreviousMonth () {
     const today = new Date()
     let year = today.getFullYear()
     if (month > today.getMonth()) {year = year - 1}
-
-
-    const [accounts, setAccounts] = useState([])
-
-    const loadAccounts = async () => {
-        const response = await fetch(`/accounts/${user}`)
-        const data = await response.json()
-        setAccounts(data)
-    }
-
-    // loads everything
-    useEffect(() => {
-        loadAccounts()
-    }, [])
 
     return (
         <><div className='box'>
@@ -50,7 +36,7 @@ function PreviousMonth () {
             <br></br>
             <NetTable data={["All Accounts", "All Accounts", accounts, monthNumStr, month, year, lastUsed]}/>
             {accounts.map((account, index) => 
-            <NetTable data={[account.account, account.account, accounts, monthNumStr, month, year, lastUsed]} key={index}/>)}
+            <NetTable data={[account.account, account.account, monthNumStr, month, year, lastUsed]} key={index}/>)}
 
             <p></p>
         </div></>

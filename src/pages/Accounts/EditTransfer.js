@@ -7,6 +7,8 @@
 import React, { useEffect, useState } from 'react';
 import {useHistory, useLocation} from "react-router-dom"
 
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
 import { deleteTransfer, updateTransfer } from '../../helperfuncs/TransferFunctions';
 
@@ -17,7 +19,9 @@ function EditTransfer() {
     const history = useHistory()
     const location = useLocation()
 
-    const {entry, accounts} = location.state
+    const accounts = useSelector(state => state.accounts.value)
+
+    const {entry} = location.state
 
     const [account, setAccount] = useState(entry.account)
     const [account2, setAccount2] = useState(entry.account2)
@@ -68,8 +72,8 @@ function EditTransfer() {
             <div></div>
 
             <table className='form'><tbody>
-                <AccountSelector data={[account, setAccount, accounts, "Transfer From:"]}/>
-                <AccountSelector data={[account2, setAccount2, accounts, "Transfer To:"]}/>
+                <AccountSelector data={[account, setAccount, "Transfer From:"]}/>
+                <AccountSelector data={[account2, setAccount2, "Transfer To:"]}/>
                 <AmountEntry data={[currencySymbol, amount, setAmount, "Amount:"]}/>
                 <AmountEntry data={[currencySymbol, fee, setFee, "Fee:"]}/>
                 <RateEntry data={[exchangeRate, setExchangeRate]}/>

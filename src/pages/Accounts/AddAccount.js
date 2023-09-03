@@ -5,16 +5,24 @@
 
 import React, { useEffect } from 'react';
 import {useState} from "react"
-import {useHistory, useLocation} from "react-router-dom"
+import {useHistory} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useDispatch } from 'react-redux'
+import { setAccounts } from '../../redux/accountsSlice';
 
 import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecoration';
 import { AmountEntry } from '../../components/Forms/Inputs';
 
 function AddAccount() {
     const history = useHistory()
-    const location = useLocation()
+    const dispatch = useDispatch()
+
+    const currentUser = useSelector(state => state.user.value)
+
+    const accounts = useSelector(state => state.accounts.value)
+    const accountNames = accounts.map((acct) => acct.account)
+    const banks = Array.from(Set(accounts.map((acct) => acct.bank)))
     
     const [account, setName] = useState("")
     const [bank, setBank] = useState("")
@@ -23,9 +31,6 @@ function AddAccount() {
     const [currency, setCurrency] = useState("EUR")
     const [currencySymbol, setSymbol] = useState("")
     const [amount, setAmount] = useState(0)
-
-    const [accountNames, setNames] = useState([])
-    const [banks, setBanks] = useState([])
 
     // event listener for when user presses Enter
     const input = document.getElementById("input")
@@ -38,18 +43,6 @@ function AddAccount() {
                 user2: children[2].children[2].children[1].value, 
                 currency: children[3].children[2].children[0].value,
                 amount: children[4].children[2].children[0].value})} 
-    }
-
-    const getAccounts = async () => {
-        const resp = await fetch(`/accounts`)
-        if (resp.status == 200){
-            const data = await resp.json()
-            setNames(data.map((acct) => acct.account))
-
-            const bnks = (data.map((acct) => acct.bank))
-            const bankSet = new Set(bnks)
-            setBanks(Array.from(bankSet))
-        }
     }
 
     const addAccount = async (newAccount) => {
@@ -69,16 +62,17 @@ function AddAccount() {
         })
         if (response.status === 201){
             alert("Successfully created a new account")
+
+            const response = await fetch(`/accounts/${currentUser}`)
+            const accounts = await response.json()
+            dispatch(setAccounts(accounts))
+
             history.push({pathname:"/accounts-view"})
 
         } else{
             alert(`Create account failed. Status code = ${response.status}`)
         }
     }
-
-    useEffect(() => {
-        getAccounts()
-    }, [])
 
     useEffect(() => {
         let ext;

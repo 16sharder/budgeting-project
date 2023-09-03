@@ -32,14 +32,14 @@ function WeekPage2 () {
     const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
     
-    const {accountName, accounts, dates, month, lastUsed} = location.state
+    const {accountName, dates, month, lastUsed} = location.state
 
     const [message, setMessage] = useState("Loading...")
 
 
     // sends the user to a page displaying the desired entry's information
     const viewDetails = async (date, category) => {
-        history.push({pathname:"/view-details", state: {date, weekDates: dates, category, accounts, month, accountName}})
+        history.push({pathname:"/view-details", state: {date, weekDates: dates, category, month, accountName}})
     }
     
 

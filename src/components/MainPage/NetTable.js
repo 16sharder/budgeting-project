@@ -9,8 +9,9 @@ import { convertToDollars, convertToEuros, retrieveEarnings, retrieveMonth, retr
 function NetTable ({data}) {
     const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
+    const accounts = useSelector(state => state.accounts.value)
 
-    let [label, accountName, accounts, monthNumStr, month, year, lastUsed] = data
+    let [label, accountName, monthNumStr, month, year, lastUsed] = data
 
     const [spendings, setSpendings] = useState(0)
     const [earnings, setEarnings] = useState(0)
@@ -132,15 +133,15 @@ function NetTable ({data}) {
                             -{spendings.toLocaleString('en', {style: "currency", currency})}
                         </h3></td>
 
-                        <td onClick={() => history.push({pathname:"/earnings", state: {month: monthNumStr, account: accountName, accounts, lastUsed}})}><h3 >
+                        <td onClick={() => history.push({pathname:"/earnings", state: {month: monthNumStr, account: accountName, lastUsed}})}><h3 >
                             {earnings.toLocaleString('en', {style: "currency", currency})}
                         </h3></td>
 
-                        <td className='color1' onClick={() => history.push({pathname:"/view-transfers", state: {month: Number(month) + 1, year, accountName, accounts}})}><h3>
+                        <td className='color1' onClick={() => history.push({pathname:"/view-transfers", state: {month: Number(month) + 1, year, accountName}})}><h3>
                             -{tOut.toLocaleString('en', {style: "currency", currency})}
                         </h3></td>
 
-                        <td onClick={() => history.push({pathname:"/view-transfers", state: {month: Number(month) + 1, year, accountName, accounts}})}><h3>
+                        <td onClick={() => history.push({pathname:"/view-transfers", state: {month: Number(month) + 1, year, accountName}})}><h3>
                             {tIn.toLocaleString('en', {style: "currency", currency})}
                         </h3></td>
 

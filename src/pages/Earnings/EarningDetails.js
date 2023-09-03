@@ -23,7 +23,7 @@ function Earnings () {
     const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
 
-    const {month, account, accounts, lastUsed} = location.state
+    const {month, account, lastUsed} = location.state
 
     const [entries, setEntries] = useState([])
     const [total, setTotal] = useState(0)
@@ -61,7 +61,7 @@ function Earnings () {
                 {entries.map((entry, index) => 
                     <table key={index} className='singleColumn'>
                         <thead><tr className='toprow'><th>Entry {index+1}
-                            <FiEdit className="edit" onClick={() => {history.push({pathname:"/edit-earning", state: {entry: entry, accounts: accounts, month: month}})}}/></th></tr></thead>
+                            <FiEdit className="edit" onClick={() => {history.push({pathname:"/edit-earning", state: {entry: entry, month: month}})}}/></th></tr></thead>
                         <tbody><tr><td className='color1'><div>Account: {entry.account}</div><div>Amount: {(entry.amount*-1).toLocaleString('en', {style: "currency", currency: entry.currency})}</div><div>Description: {entry.description}</div><div></div></td></tr></tbody>
                     </table>
                 )}
@@ -70,7 +70,7 @@ function Earnings () {
             <br></br>
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/add-earning", state: {accounts, lastUsed}})}>
+                <td><button onClick={() => history.push({pathname:"/add-earning", state: {lastUsed}})}>
                     Add New Earnings</button></td>
                 <td><button onClick={() => history.push({pathname:"/previous-month", state: {month: month - 1, lastUsed}})}>
                     Return to {monthName(Number(month) -1)} Finances</button></td>

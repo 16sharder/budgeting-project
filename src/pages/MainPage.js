@@ -8,7 +8,7 @@
 // Includes links to WeekPage for a given week, AddEntry, AddEarning, and EarningDetails
 
 import React from 'react';
-import {useState, useEffect} from "react"
+import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
@@ -31,26 +31,12 @@ function MainPage () {
 
     const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
+    const accounts = useSelector(state => state.accounts.value)
 
     let {lastUsed} = location.state
 
     const today = new Date
     const [message, setMessage] = useState("Loading...")
-
-
-    // gets all of the user's account information
-    const [accounts, setAccounts] = useState([])
-
-    const loadAccounts = async (user) => {
-        // retrieves a list of the user's accounts
-        const response = await fetch(`/accounts/${user}`)
-        const accts = await response.json()
-        setAccounts(accts)
-    }
-
-    useEffect(() => {
-        loadAccounts(user)
-    }, [])
 
 
 
@@ -68,13 +54,13 @@ function MainPage () {
 
     // sends the user to a page displaying the desired week's information
     const viewWeek = async dates => {
-        history.push({pathname:"/weekly-view", state: {dates, accounts, lastUsed}})
+        history.push({pathname:"/weekly-view", state: {dates, lastUsed}})
     }
 
     // either raises an error or sends the user to the add entry page
     const sendAddEntry = () => {
         if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
-        else history.push({pathname:"/add-entry", state: {accounts, lastUsed}})
+        else history.push({pathname:"/add-entry", state: {lastUsed}})
     }
 
 
@@ -99,7 +85,7 @@ function MainPage () {
             </tr></tbody></table>
 
 
-            <NetTable data={["", "All Accounts", accounts, monthNumString(today.getMonth()), today.getMonth(), today.getFullYear(), lastUsed]}/>
+            <NetTable data={["", "All Accounts", monthNumString(today.getMonth()), today.getMonth(), today.getFullYear(), lastUsed]}/>
 
 
 

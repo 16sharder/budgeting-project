@@ -7,7 +7,7 @@
 
 import React from 'react';
 import MonthlyTable from "../../components/MainPage/Month/MonthlyTable";
-import {useState, useEffect} from "react"
+import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
@@ -26,27 +26,13 @@ function SpendingsPage () {
     const location = useLocation()
     const dispatch = useDispatch()
 
-    const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
+    const accounts = useSelector(state => state.accounts.value)
 
     const {month, accountName, lastUsed} = location.state
 
     const [message, setMessage] = useState("Loading...")
 
-
-    // gets all of the users account information, for use in passing on to next pages
-    const [accounts, setAccounts] = useState([])
-
-    const loadAccounts = async (user) => {
-        const response = await fetch(`/accounts/${user}`)
-        const data = await response.json()
-        setAccounts(data)
-    }
-
-    // loads everything
-    useEffect(() => {
-        loadAccounts(user)
-    }, [])
 
 
     // retrieves the current date so as to know which month and weeks to display
@@ -70,13 +56,13 @@ function SpendingsPage () {
 
     // sends the user to a page displaying the desired week's information
     const viewWeek = async dates => {
-        history.push({pathname:"/weekly-view2", state: {dates, accounts, month, accountName, lastUsed}})
+        history.push({pathname:"/weekly-view2", state: {dates, month, accountName, lastUsed}})
     }
 
     // either raises an error or sends the user to the add entry page
     const sendAddEntry = () => {
         if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
-        else history.push({pathname:"/add-entry", state: {accounts, lastUsed}})
+        else history.push({pathname:"/add-entry", state: {lastUsed}})
     }
 
 

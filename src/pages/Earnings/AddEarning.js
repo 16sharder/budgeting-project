@@ -7,6 +7,8 @@ import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
 import { addEntry } from '../../helperfuncs/EntryFunctions';
@@ -18,8 +20,8 @@ function AddEarning() {
     const history = useHistory()
     const location = useLocation()
 
+    const accounts = useSelector(state => state.accounts.value)
 
-    const {accounts} = location.state
     let {lastUsed} = location.state
     if (lastUsed == undefined) lastUsed = accounts[0].account
 
@@ -78,7 +80,7 @@ function AddEarning() {
             <div></div>
 
             <table className='form'><tbody id="input">
-                <AccountSelector data={[account, setAccount, accounts, "Bank Account:"]}/>
+                <AccountSelector data={[account, setAccount, "Bank Account:"]}/>
                 <AmountEntry data={[currencySymbol, amount, setAmount, "Amount:"]}/>
                 <DateEntry data={[date, setDate]}/>
                 <DescriptionEntry data={[description, setDescription]}/>

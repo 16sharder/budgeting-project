@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux'
 import { login } from '../redux/userSlice';
 
 import BasicBorders, {BorderFlourish} from '../components/Styling/BorderDecoration';
+import { setAccounts } from '../redux/accountsSlice';
 
 function LoginPage () {
     const [name, setName] = useState("")
@@ -28,8 +29,13 @@ function LoginPage () {
     }
 
     // TODO: delete state once no longer needed in Main
-    const send = (nameVal) => {
+    const send = async (nameVal) => {
         dispatch(login(nameVal))
+
+        const response = await fetch(`/accounts/${nameVal}`)
+        const accounts = await response.json()
+        dispatch(setAccounts(accounts))
+        
         history.push({pathname:"/main", state: {}})
     }
 

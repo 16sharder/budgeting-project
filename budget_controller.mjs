@@ -95,16 +95,19 @@ app.post("/accounts", asyncHandler(async(req, res, next) => {
 
 app.get("/accounts", asyncHandler(async(req, res, next) => {
     // uses getAllAccounts function from model to return all accounts for specified user
-    const accounts = await entries.getAllAccounts()
-    res.type("application/json").status(200).send(accounts)
+    // const accounts = await entries.getAllAccounts()
+    // res.type("application/json").status(200).send(accounts)
 }))
 
 
 app.get("/accounts/:user", asyncHandler(async(req, res, next) => {
     // uses getAllAccounts function from model to return all accounts for specified user
     const user = req.params.user
-    const accounts = await entries.getAllUserAccounts(user)
-    res.type("application/json").status(200).send(accounts)
+    if (user == undefined) res.type("application/json").status(404).send({Error: "Not a valid user"})
+    else {
+        const accounts = await entries.getAllUserAccounts(user)
+        res.type("application/json").status(200).send(accounts)
+    }
 }))
 
 

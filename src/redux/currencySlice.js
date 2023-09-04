@@ -18,7 +18,6 @@ export const currencySlice = createSlice({
   }
 })
 
-// Action creators are generated for each case reducer function
 export const { toEuro, toDollar } = currencySlice.actions
 
 export default currencySlice.reducer

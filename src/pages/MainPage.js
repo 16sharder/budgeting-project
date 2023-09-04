@@ -9,7 +9,7 @@
 
 import React from 'react';
 import {useState} from "react"
-import {useHistory, useLocation} from "react-router-dom"
+import {useHistory} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useDispatch } from 'react-redux'
@@ -26,7 +26,6 @@ import NetTable from '../components/MainPage/NetTable';
 
 function MainPage () {
     const history = useHistory()
-    const location = useLocation()
     const dispatch = useDispatch()
 
     const user = useSelector(state => state.user.value)

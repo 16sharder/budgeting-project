@@ -17,7 +17,7 @@ export const { setRecent } = recentAccountSlice.actions
 export const linkSlice = createSlice({
     name: 'backtrackLink',
     initialState: {
-        value: ""
+        value: "/"
     },
     reducers: {
         setLink(state, action) {

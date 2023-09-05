@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useRAccountsDispatch, reloadAccounts } from '../../helperfuncs/UpdateFunctions';
 
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
 import { deleteEntry, updateEntry } from '../../helperfuncs/EntryFunctions';
@@ -20,7 +20,7 @@ function EditEarning() {
     const history = useHistory()
     const location = useLocation()
 
-    const accounts = useSelector(state => state.accounts.value)
+    const [user, accounts, dispatch] = useRAccountsDispatch()
 
     const {entry} = location.state
 
@@ -37,12 +37,16 @@ function EditEarning() {
         const editedEntry = {account, category: "Earnings", currency, amount: amount * -1, date, description}
         const res = await updateEntry(entry._id, editedEntry, entry)
 
+        await reloadAccounts(user, dispatch)
+
         // returns the user to the view details page
         if (res) history.push({pathname:"/main", state: {}})
     }
 
     const deleteEarning = async () => {
         const res = await deleteEntry(entry)
+
+        await reloadAccounts(user, dispatch)
 
         // returns the user to the view details page
         if (res) history.push({pathname:"/main", state: {}})

@@ -1,4 +1,6 @@
+import { useDispatch, useSelector } from "react-redux"
 import { monthName } from "./DateCalculators"
+import { setAccounts } from "../redux/accountsSlice"
 
 async function updateAccount (account, amount) {
     // updates the account that was spent from
@@ -85,5 +87,22 @@ async function updateMonths  (date, account, amount, category) {
     }
 }
 
+// for use in conjunction with reloadAccounts, is a react hook
+function useRAccountsDispatch() {
+    const user = useSelector(state => state.user.value)
+    const accounts = useSelector(state => state.accounts.value)
+    const dispatch = useDispatch()
 
-export {updateMonths, updateAccount}
+    return [user, accounts, dispatch]
+}
+
+// after any change in the accounts, is called to reset the accounts state var
+async function reloadAccounts(user, dispatch) {
+    const response = await fetch(`/accounts/${user}`)
+    const accounts = await response.json()
+    
+    dispatch(setAccounts(accounts))
+}
+
+
+export {updateMonths, updateAccount, useRAccountsDispatch, reloadAccounts}

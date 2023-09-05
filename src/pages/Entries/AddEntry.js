@@ -7,8 +7,8 @@ import React, { useEffect, useState } from 'react';
 import {useHistory} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
-import { useDispatch } from 'react-redux'
 import { setRecent } from '../../redux/historySlice';
+import { useRAccountsDispatch, reloadAccounts } from '../../helperfuncs/UpdateFunctions';
 
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
@@ -19,10 +19,9 @@ import { addEntry } from '../../helperfuncs/EntryFunctions';
 
 function AddEntry() {
     const history = useHistory()
-    const dispatch = useDispatch()
 
-    const accounts = useSelector(state => state.accounts.value)
     const lastUsedAccount = useSelector(state => state.recentAccount.value)
+    const [user, accounts, dispatch] = useRAccountsDispatch()
 
     const today = convertTodayToDate()
 
@@ -52,6 +51,7 @@ function AddEntry() {
         const res = await addEntry(entry)
 
         dispatch(setRecent(account))
+        await reloadAccounts(user, dispatch)
 
         // returns the user to the main page
         if (res) history.push({pathname:"/main"})

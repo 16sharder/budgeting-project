@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
-import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useRAccountsDispatch, reloadAccounts } from '../../helperfuncs/UpdateFunctions';
 
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
 import { deleteEntry, updateEntry } from '../../helperfuncs/EntryFunctions';
@@ -20,8 +20,7 @@ function EditEntry() {
     const history = useHistory()
     const location = useLocation()
 
-    const accounts = useSelector(state => state.accounts.value)
-
+    const [user, accounts, dispatch] = useRAccountsDispatch
     const {entry, back} = location.state
 
     const [account, setAccount] = useState(entry.account)
@@ -38,12 +37,16 @@ function EditEntry() {
         const editedEntry = {account, category, currency, amount, date, description}
         const res = await updateEntry(entry._id, editedEntry, entry)
 
+        await reloadAccounts(user, dispatch)
+
         // returns the user to the view details page
         if (res) history.push({pathname:"/view-details", state: back})
     }
 
     const delEntry = async () => {
         const res = await deleteEntry(entry)
+
+        await reloadAccounts(user, dispatch)
 
         // returns the user to the view details page
         if (res) history.push({pathname:"/view-details", state: back})

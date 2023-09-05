@@ -8,8 +8,8 @@ import {useState} from "react"
 import {useHistory} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
-import { useDispatch } from 'react-redux'
 import { setRecent } from '../../redux/historySlice';
+import { reloadAccounts, useRAccountsDispatch } from '../../helperfuncs/UpdateFunctions';
 
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
@@ -20,10 +20,9 @@ import { AccountSelector, AmountEntry, DateEntry, DescriptionEntry } from '../..
 
 function AddEarning() {
     const history = useHistory()
-    const dispatch = useDispatch()
 
-    const accounts = useSelector(state => state.accounts.value)
     const lastUsedAccount = useSelector(state => state.recentAccount.value)
+    const [user, accounts, dispatch] = useRAccountsDispatch()
 
     const [account, setAccount] = useState(lastUsedAccount)
     const category = "Earnings"
@@ -52,6 +51,7 @@ function AddEarning() {
         const res = await addEntry(entry)
 
         dispatch(setRecent(account))
+        await reloadAccounts(user, dispatch)
 
         // returns the user to the main page
         if (res) history.push({pathname:"/main"})

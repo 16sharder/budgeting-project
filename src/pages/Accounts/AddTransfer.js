@@ -7,7 +7,7 @@ import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory} from "react-router-dom"
 
-import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { reloadAccounts, useRAccountsDispatch } from '../../helperfuncs/UpdateFunctions';
 
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
@@ -19,7 +19,7 @@ import { AccountSelector, AmountEntry, RateEntry, DateEntry, DescriptionEntry } 
 function Transfer() {
     const history = useHistory()
 
-    const accounts = useSelector(state => state.accounts.value)
+    const [user, accounts, dispatch] = useRAccountsDispatch()
 
     const today = convertTodayToDate()
 
@@ -59,6 +59,8 @@ function Transfer() {
         newTransfer.currency2 = account2Data[0].currency
         newTransfer.month = date.slice(5, 7)
         const res = await addTransfer(newTransfer)
+
+        await reloadAccounts(user, dispatch)
 
         if (res) history.push({pathname:"/accounts-view"})
     }

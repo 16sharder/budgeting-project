@@ -7,26 +7,22 @@ import React, { useEffect } from 'react';
 import {useState} from "react"
 import {useHistory} from "react-router-dom"
 
-import { useSelector } from 'react-redux/es/hooks/useSelector';
-import { useDispatch } from 'react-redux'
-import { setAccounts } from '../../redux/accountsSlice';
+import { reloadAccounts, useRAccountsDispatch } from '../../helperfuncs/UpdateFunctions';
 
 import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecoration';
 import { AmountEntry } from '../../components/Forms/Inputs';
 
 function AddAccount() {
     const history = useHistory()
-    const dispatch = useDispatch()
 
-    const currentUser = useSelector(state => state.user.value)
+    const [currentUser, accounts, dispatch] = useRAccountsDispatch()
 
-    const accounts = useSelector(state => state.accounts.value)
     const accountNames = accounts.map((acct) => acct.account)
-    const banks = Array.from(Set(accounts.map((acct) => acct.bank)))
+    const banks = Array.from(new Set(accounts.map((acct) => acct.bank)))
     
     const [account, setName] = useState("")
     const [bank, setBank] = useState("")
-    const [user, setUser] = useState(useSelector(state => state.user.value))
+    const [user, setUser] = useState(currentUser)
     const [user2, setUser2] = useState("")
     const [currency, setCurrency] = useState("EUR")
     const [currencySymbol, setSymbol] = useState("")
@@ -53,22 +49,18 @@ function AddAccount() {
             }
         }
         
-
         newAccount = {account, bank, user, user2, currency, amount}
         const response = await fetch("/accounts", {
             method: "POST", 
             body: JSON.stringify(newAccount),
             headers: {"Content-type": "application/json"}
         })
+
+        await reloadAccounts(currentUser, dispatch)
+
         if (response.status === 201){
             alert("Successfully created a new account")
-
-            const response = await fetch(`/accounts/${currentUser}`)
-            const accounts = await response.json()
-            dispatch(setAccounts(accounts))
-
             history.push({pathname:"/accounts-view"})
-
         } else{
             alert(`Create account failed. Status code = ${response.status}`)
         }

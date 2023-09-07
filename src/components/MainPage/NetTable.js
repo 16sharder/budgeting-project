@@ -15,7 +15,7 @@ function NetTable ({data}) {
     const currency = useSelector(state => state.currency.value)
     const accounts = useSelector(state => state.accounts.value)
 
-    let [label, accountName, monthNumStr, month, year] = data
+    let [label, accountName, monthNumStr, month, year, enableBackButton] = data
 
     const [spendings, setSpendings] = useState(0)
     const [earnings, setEarnings] = useState(0)
@@ -121,8 +121,14 @@ function NetTable ({data}) {
 
     const sendEarnings = () => {
         if (accountName != "All Accounts") dispatch(setRecent(accountName))
-        
+
+        enableBackButton()
         history.push({pathname:"/earnings", state: {month: monthNumStr, account: accountName}})
+    }
+
+    const sendTransfers = () => {
+        enableBackButton()
+        history.push({pathname:"/view-transfers", state: {month: Number(month) + 1, year, accountName}})
     }
 
     return (
@@ -148,11 +154,11 @@ function NetTable ({data}) {
                             {earnings.toLocaleString('en', {style: "currency", currency})}
                         </h3></td>
 
-                        <td className='color1' onClick={() => history.push({pathname:"/view-transfers", state: {month: Number(month) + 1, year, accountName}})}><h3>
+                        <td className='color1' onClick={sendTransfers}><h3>
                             -{tOut.toLocaleString('en', {style: "currency", currency})}
                         </h3></td>
 
-                        <td onClick={() => history.push({pathname:"/view-transfers", state: {month: Number(month) + 1, year, accountName}})}><h3>
+                        <td onClick={sendTransfers}><h3>
                             {tIn.toLocaleString('en', {style: "currency", currency})}
                         </h3></td>
 

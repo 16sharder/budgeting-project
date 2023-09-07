@@ -5,9 +5,9 @@
 // Sends the user back to the Accounts Page
 
 import React, { useEffect, useState } from 'react';
-import {useHistory, useLocation} from "react-router-dom"
+import {useLocation} from "react-router-dom"
 
-import { reloadAccounts, useRAccountsDispatch } from '../../helperfuncs/UpdateFunctions';
+import { backbutton, reloadAccounts, useRAccountsDispatch, useReduxHistory } from '../../helperfuncs/ReduxFunctions';
 
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
 import { deleteTransfer, updateTransfer } from '../../helperfuncs/TransferFunctions';
@@ -16,7 +16,6 @@ import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecor
 import { AccountSelector, AmountEntry, RateEntry, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 
 function EditTransfer() {
-    const history = useHistory()
     const location = useLocation()
 
     const [user, accounts, dispatch] = useRAccountsDispatch()
@@ -46,7 +45,7 @@ function EditTransfer() {
         await reloadAccounts(user, dispatch)
 
         // returns the user to the view details page
-        if (res) history.push({pathname:"/accounts-view"})
+        if (res) goBack()
     }
 
     const deleteEntry = async () => {
@@ -55,7 +54,7 @@ function EditTransfer() {
         await reloadAccounts(user, dispatch)
 
         // returns the user to the view details page
-        if (res) history.push({pathname:"/accounts-view"})
+        if (res) goBack()
     }
 
     useEffect(() => {
@@ -63,6 +62,12 @@ function EditTransfer() {
         setCurrency(curr[0])
         setSymbol(curr[1])
     }, [account])
+
+    const buttonArgs = useReduxHistory()
+
+    const goBack = () => {
+        backbutton(buttonArgs)
+    }
 
 
     return (
@@ -87,7 +92,7 @@ function EditTransfer() {
 
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/accounts-view"})}>Back</button></td>
+                <td><button onClick={goBack}>Back</button></td>
                 <td><button onClick={editTransfer}>Confirm</button></td>
             </tr></tbody></table>
     

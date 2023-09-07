@@ -6,9 +6,9 @@
 
 import React, { useEffect } from 'react';
 import {useState} from "react"
-import {useHistory, useLocation} from "react-router-dom"
+import {useLocation} from "react-router-dom"
 
-import { useRAccountsDispatch, reloadAccounts } from '../../helperfuncs/UpdateFunctions';
+import { useRAccountsDispatch, reloadAccounts, useReduxHistory, backbutton } from '../../helperfuncs/ReduxFunctions';
 
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
 import { deleteEntry, updateEntry } from '../../helperfuncs/EntryFunctions';
@@ -17,11 +17,10 @@ import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecor
 import { AccountSelector, AmountEntry, CategorySelector, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 
 function EditEntry() {
-    const history = useHistory()
     const location = useLocation()
 
-    const [user, accounts, dispatch] = useRAccountsDispatch
-    const {entry, back} = location.state
+    const [user, accounts, dispatch] = useRAccountsDispatch()
+    const {entry} = location.state
 
     const [account, setAccount] = useState(entry.account)
     const [category, setCategory] = useState(entry.category)
@@ -40,7 +39,7 @@ function EditEntry() {
         await reloadAccounts(user, dispatch)
 
         // returns the user to the view details page
-        if (res) history.push({pathname:"/view-details", state: back})
+        if (res) goBack()
     }
 
     const delEntry = async () => {
@@ -49,7 +48,7 @@ function EditEntry() {
         await reloadAccounts(user, dispatch)
 
         // returns the user to the view details page
-        if (res) history.push({pathname:"/view-details", state: back})
+        if (res) goBack()
     }
 
 
@@ -58,6 +57,13 @@ function EditEntry() {
         setCurrency(curr[0])
         setSymbol(curr[1])
     }, [account])
+
+
+    const buttonArgs = useReduxHistory()
+
+    const goBack = () => {
+        backbutton(buttonArgs)
+    }
 
     
     return (
@@ -80,7 +86,7 @@ function EditEntry() {
 
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/view-details", state: back})}>Back</button></td>
+                <td><button onClick={goBack}>Back</button></td>
                 <td><button onClick={entryUpdate}>Confirm</button></td>
             </tr></tbody></table>
     

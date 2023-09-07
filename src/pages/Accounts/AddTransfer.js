@@ -3,11 +3,9 @@
 // Displays a form for the user to fill in all the data of their transfer
 // Sends the user back to the Accounts Page
 
-import React, { useEffect } from 'react';
-import {useState} from "react"
-import {useHistory} from "react-router-dom"
+import React, { useEffect, useState } from 'react';
 
-import { reloadAccounts, useRAccountsDispatch } from '../../helperfuncs/UpdateFunctions';
+import { backbutton, reloadAccounts, useRAccountsDispatch, useReduxHistory } from '../../helperfuncs/ReduxFunctions';
 
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
@@ -17,7 +15,6 @@ import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecor
 import { AccountSelector, AmountEntry, RateEntry, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 
 function Transfer() {
-    const history = useHistory()
 
     const [user, accounts, dispatch] = useRAccountsDispatch()
 
@@ -62,7 +59,7 @@ function Transfer() {
 
         await reloadAccounts(user, dispatch)
 
-        if (res) history.push({pathname:"/accounts-view"})
+        if (res) goBack()
     }
 
     useEffect(() => {
@@ -79,6 +76,12 @@ function Transfer() {
             return () => input.removeEventListener("keypress", (key) => checkKey(key, children))
         }
     }, [input])
+
+    const buttonArgs = useReduxHistory()
+
+    const goBack = () => {
+        backbutton(buttonArgs)
+    }
 
     return (
         <>
@@ -101,7 +104,7 @@ function Transfer() {
 
 
             <table className='twoButtons'><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/accounts-view"})}>Back</button></td>
+                <td><button onClick={goBack}>Back</button></td>
                 <td><button onClick={() => performTransfer({account, account2, currency, amount, fee, exchangeRate, date, description})}>Transfer</button></td>
             </tr></tbody></table>
             </div>

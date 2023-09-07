@@ -11,7 +11,7 @@ import {useHistory} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useDispatch } from 'react-redux'
-import { setRecent } from '../../redux/historySlice';
+import { pushLink, setRecent } from '../../redux/historySlice';
 
 import { retrieveNetSpendings, retrieveUserAccountNames } from '../../helperfuncs/FetchFunctions';
 import {monthName, stringifyDate} from "../../helperfuncs/DateCalculators"
@@ -122,7 +122,10 @@ function Accounts() {
 
     const sendTransfer = () => {
         if (accounts.length < 2) alert ("You must have at least two bank accounts before you can perform a transfer")
-        else history.push({pathname:"/transfer"})
+        else {
+            dispatch(pushLink({link: "/accounts-view", state: {}}))
+            history.push({pathname:"/transfer"})
+        }
     }
 
     const editTransfer = (transfer) => {
@@ -131,13 +134,21 @@ function Accounts() {
             if (transfer.account == acct.account) bool += 1
             if (transfer.account2 == acct.account) bool += 1
         }
-        if (bool == 2) history.push({pathname:"/edit-transfer", state: {entry: transfer, month}})
+        if (bool == 2) {
+            dispatch(pushLink({link: "/accounts-view", state: {}}))
+            history.push({pathname:"/edit-transfer", state: {entry: transfer, month}})
+        }
         else alert("You do not have permission to edit this transfer because you are not a user on one of the accounts involved")
     }
 
     const selectAccount = (account) => {
         dispatch(setRecent(account.account))
         history.push({pathname:"/previous-spendings", state: {month, accountName: account.account}})
+    }
+
+    const addAccount = () => {
+        dispatch(pushLink({link: "/accounts-view", state: {}}))
+        history.push({pathname:"/add-account"})
     }
 
     return (
@@ -168,7 +179,7 @@ function Accounts() {
             <table className='twoButtons'><tbody><tr>
                 <td><button onClick={sendTransfer}>Bank Transfer</button></td>
                 <td></td>
-                <td><button onClick={() => history.push({pathname:"/add-account"})}>Add New Account</button></td>
+                <td><button onClick={addAccount}>Add New Account</button></td>
             </tr></tbody></table>
             
             <h3>Total Net Worth</h3>

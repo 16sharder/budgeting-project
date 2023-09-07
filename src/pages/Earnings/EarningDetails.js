@@ -8,6 +8,9 @@ import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useDispatch } from 'react-redux';
+import { backbutton, useReduxHistory } from '../../helperfuncs/ReduxFunctions';
+import { pushLink } from '../../redux/historySlice';
 
 import {retrieveEarnings} from "../../helperfuncs/FetchFunctions"
 import { monthName } from '../../helperfuncs/DateCalculators';
@@ -19,6 +22,7 @@ import { FiEdit } from 'react-icons/fi';
 function Earnings () {
     const history = useHistory()
     const location = useLocation()
+    const dispatch = useDispatch()
 
     const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
@@ -45,6 +49,21 @@ function Earnings () {
         loadEarnings()
     }, [])
 
+    const addEarning = () => {
+        dispatch(pushLink({link: "/earnings", state: location.state}))
+        history.push({pathname:"/add-earning"})
+    }
+    
+    const editEarning = (entry) => {
+        dispatch(pushLink({link: "/earnings", state: location.state}))
+        history.push({pathname:"/edit-earning", state: {entry: entry, month: month}})
+    }
+
+    const buttonArgs = useReduxHistory()
+
+    const goBack = () => {
+        backbutton(buttonArgs)
+    }
 
     return (
         <><div className='box'>
@@ -61,7 +80,7 @@ function Earnings () {
                 {entries.map((entry, index) => 
                     <table key={index} className='singleColumn'>
                         <thead><tr className='toprow'><th>Entry {index+1}
-                            <FiEdit className="edit" onClick={() => {history.push({pathname:"/edit-earning", state: {entry: entry, month: month}})}}/></th></tr></thead>
+                            <FiEdit className="edit" onClick={() => editEarning(entry)}/></th></tr></thead>
                         <tbody><tr><td className='color1'><div>Account: {entry.account}</div><div>Amount: {(entry.amount*-1).toLocaleString('en', {style: "currency", currency: entry.currency})}</div><div>Description: {entry.description}</div><div></div></td></tr></tbody>
                     </table>
                 )}
@@ -70,9 +89,9 @@ function Earnings () {
             <br></br>
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/add-earning"})}>
+                <td><button onClick={addEarning}>
                     Add New Earnings</button></td>
-                <td><button onClick={() => history.push({pathname:"/previous-month", state: {month: month - 1}})}>
+                <td><button onClick={goBack}>
                     Return to {monthName(Number(month) -1)} Finances</button></td>
             </tr></tbody></table>
             

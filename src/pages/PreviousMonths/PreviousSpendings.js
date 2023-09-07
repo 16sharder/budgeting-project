@@ -13,6 +13,7 @@ import {useHistory, useLocation} from "react-router-dom"
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useDispatch } from 'react-redux'
 import { toEuro, toDollar } from '../../redux/currencySlice';
+import { pushLink } from '../../redux/historySlice';
 
 import {monthName} from "../../helperfuncs/DateCalculators"
 
@@ -56,7 +57,8 @@ function SpendingsPage () {
 
     // sends the user to a page displaying the desired week's information
     const viewWeek = async dates => {
-        history.push({pathname:"/weekly-view2", state: {dates, month, accountName}})
+        dispatch(pushLink({link: "/previous-spendings", state: location.state}))
+        history.push({pathname:"/weekly-view2", state: {dates, accountName}})
     }
 
     // either raises an error or sends the user to the add entry page

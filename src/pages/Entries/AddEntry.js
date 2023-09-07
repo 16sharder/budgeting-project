@@ -4,11 +4,10 @@
 // Sends the user back to the MainPage
 
 import React, { useEffect, useState } from 'react';
-import {useHistory} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { setRecent } from '../../redux/historySlice';
-import { useRAccountsDispatch, reloadAccounts } from '../../helperfuncs/UpdateFunctions';
+import { useRAccountsDispatch, reloadAccounts, useReduxHistory, backbutton } from '../../helperfuncs/ReduxFunctions';
 
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
@@ -18,8 +17,6 @@ import { AccountSelector, AmountEntry, CategorySelector, DateEntry, DescriptionE
 import { addEntry } from '../../helperfuncs/EntryFunctions';
 
 function AddEntry() {
-    const history = useHistory()
-
     const lastUsedAccount = useSelector(state => state.recentAccount.value)
     const [user, accounts, dispatch] = useRAccountsDispatch()
 
@@ -54,7 +51,7 @@ function AddEntry() {
         await reloadAccounts(user, dispatch)
 
         // returns the user to the main page
-        if (res) history.push({pathname:"/main"})
+        if (res) goBack()
     }
 
     useEffect(() => {
@@ -70,6 +67,13 @@ function AddEntry() {
             return () => input.removeEventListener("keypress", (key) => checkKey(key, children))
         }
     }, [input])
+
+
+    const buttonArgs = useReduxHistory()
+
+    const goBack = () => {
+        backbutton(buttonArgs)
+    }
 
 
     return (
@@ -92,7 +96,7 @@ function AddEntry() {
 
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/main"})}>Back</button></td>
+                <td><button onClick={goBack}>Back</button></td>
                 <td><button onClick={() => newEntry({account, category, currency, amount, date, description})}>Add</button></td>
             </tr></tbody></table>
         </div>

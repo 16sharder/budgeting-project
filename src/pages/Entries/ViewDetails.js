@@ -8,6 +8,9 @@ import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useDispatch } from 'react-redux';
+import { pushLink } from '../../redux/historySlice';
+import { backbutton, useReduxHistory } from '../../helperfuncs/ReduxFunctions';
 
 import {retrieveDayEntries} from "../../helperfuncs/FetchFunctions"
 
@@ -19,10 +22,11 @@ import { FiEdit } from "react-icons/fi";
 function ViewDetails () {
     const history = useHistory()
     const location = useLocation()
+    const dispatch = useDispatch()
 
     const user = useSelector(state => state.user.value)
 
-    const {date, weekDates, category, month} = location.state
+    const {date, category} = location.state
     let {accountName} = location.state
     if (accountName == undefined) accountName = "All Accounts"
 
@@ -45,14 +49,16 @@ function ViewDetails () {
     }, [])
 
 
-    const sendMonth = () => {
-        if (month == undefined) history.push({pathname:"/main", state: {}})
-        else history.push({pathname:"/previous-spendings", state: {month, accountName}})
+    const editEntry = (entry) => {
+        dispatch(pushLink({link: "/view-details", state: location.state}))
+        history.push({pathname:"/edit", state: {entry}})
     }
 
-    const sendWeek = () => {
-        if (month == undefined) history.push({pathname:"/weekly-view", state: {dates: weekDates}})
-        else history.push({pathname:"/weekly-view2", state: {dates: weekDates, month, accountName}})
+
+    const buttonArgs = useReduxHistory()
+
+    const goBack = (int) => {
+        backbutton(buttonArgs, int)
     }
 
     return (
@@ -66,14 +72,14 @@ function ViewDetails () {
                 {entries.map((entry, index) => 
                     <table key={index} className='singleColumn'>
                         <thead><tr className='toprow'><th>Entry {index+1}
-                            <FiEdit className="edit" onClick={() => {history.push({pathname:"/edit", state: {entry, back: location.state}})}}/></th></tr></thead>
+                            <FiEdit className="edit" onClick={() => editEntry(entry)}/></th></tr></thead>
                         <tbody><tr><td className='color1'><div>Account: {entry.account}</div><div>Amount: {entry.amount.toLocaleString('en', {style: "currency", currency: entry.currency})}</div><div>Description: {entry.description}</div><div></div></td></tr></tbody>
                     </table>
                 )}
 
             <table className='twoButtons'><tbody><tr>
-                <td><button onClick={sendWeek}>Return to weekly view</button></td>
-                <td><button onClick={sendMonth}>Return to monthly view</button></td>
+                <td><button onClick={() => goBack(1)}>Return to weekly view</button></td>
+                <td><button onClick={() => goBack(2)}>Return to monthly view</button></td>
             </tr></tbody></table>
 
             </div>

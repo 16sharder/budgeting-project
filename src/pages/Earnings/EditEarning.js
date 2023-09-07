@@ -4,11 +4,10 @@
         // also includes a delete button
 // Sends the user back to the MainPage
 
-import React, { useEffect } from 'react';
-import {useState} from "react"
-import {useHistory, useLocation} from "react-router-dom"
+import React, { useEffect, useState } from 'react';
+import {useLocation} from "react-router-dom"
 
-import { useRAccountsDispatch, reloadAccounts } from '../../helperfuncs/UpdateFunctions';
+import { useRAccountsDispatch, reloadAccounts, useReduxHistory, backbutton } from '../../helperfuncs/ReduxFunctions';
 
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
 import { deleteEntry, updateEntry } from '../../helperfuncs/EntryFunctions';
@@ -17,7 +16,6 @@ import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecor
 import { AccountSelector, AmountEntry, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 
 function EditEarning() {
-    const history = useHistory()
     const location = useLocation()
 
     const [user, accounts, dispatch] = useRAccountsDispatch()
@@ -40,7 +38,7 @@ function EditEarning() {
         await reloadAccounts(user, dispatch)
 
         // returns the user to the view details page
-        if (res) history.push({pathname:"/main", state: {}})
+        if (res) goBack()
     }
 
     const deleteEarning = async () => {
@@ -49,7 +47,7 @@ function EditEarning() {
         await reloadAccounts(user, dispatch)
 
         // returns the user to the view details page
-        if (res) history.push({pathname:"/main", state: {}})
+        if (res) goBack()
     }
 
     useEffect(() => {
@@ -58,6 +56,12 @@ function EditEarning() {
         setSymbol(curr[1])
     }, [account])
 
+
+    const buttonArgs = useReduxHistory()
+
+    const goBack = () => {
+        backbutton(buttonArgs)
+    }
 
     return (
         <>
@@ -78,7 +82,7 @@ function EditEarning() {
 
 
             <table className="twoButtons"><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/main", state: {}})}>Back</button></td>
+                <td><button onClick={goBack}>Back</button></td>
                 <td><button onClick={updateEarning}>Confirm</button></td>
             </tr></tbody></table>
     

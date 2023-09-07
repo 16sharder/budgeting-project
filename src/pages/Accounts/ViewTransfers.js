@@ -3,6 +3,9 @@ import {useState, useEffect} from "react"
 import {useHistory, useLocation} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useDispatch } from 'react-redux';
+import { backbutton, useReduxHistory } from '../../helperfuncs/ReduxFunctions';
+import { pushLink } from '../../redux/historySlice';
 
 import { retrieveUserAccountNames} from "../../helperfuncs/FetchFunctions"
 
@@ -15,6 +18,7 @@ import TransferItem from '../../components/TransferItem';
 function ViewTransfers () {
     const history = useHistory()
     const location = useLocation()
+    const dispatch = useDispatch()
 
     const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
@@ -87,9 +91,19 @@ function ViewTransfers () {
             if (transfer.account == acct.account) bool += 1
             if (transfer.account2 == acct.account) bool += 1
         }
-        if (bool == 2) history.push({pathname:"/edit-transfer", state: {entry: transfer, month}})
+        if (bool == 2) {
+            dispatch(pushLink({link: "/view-transfers", state: location.state}))
+            history.push({pathname:"/edit-transfer", state: {entry: transfer, month}})
+        }
         else alert("You do not have permission to edit this transfer because you are not a user on one of the accounts involved")
     }
+
+    const buttonArgs = useReduxHistory()
+
+    const goBack = () => {
+        backbutton(buttonArgs)
+    }
+
 
     return (
         <><div className='box'>
@@ -122,7 +136,7 @@ function ViewTransfers () {
             </table>
 
             <br/>      
-            <button onClick={() => history.push({pathname:"/previous-month", state: {month: month - 1}})}>
+            <button onClick={goBack}>
                 Return to {monthName(Number(month) -1)} Finances</button>
 
             

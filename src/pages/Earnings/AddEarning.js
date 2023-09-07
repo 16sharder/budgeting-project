@@ -3,13 +3,11 @@
 // Displays a form for the user to fill in all the data for their new earnings entry
 // Sends the user back to the MainPage
 
-import React, { useEffect } from 'react';
-import {useState} from "react"
-import {useHistory} from "react-router-dom"
+import React, { useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { setRecent } from '../../redux/historySlice';
-import { reloadAccounts, useRAccountsDispatch } from '../../helperfuncs/UpdateFunctions';
+import { backbutton, reloadAccounts, useRAccountsDispatch, useReduxHistory } from '../../helperfuncs/ReduxFunctions';
 
 import { convertTodayToDate } from '../../helperfuncs/DateCalculators';
 import { findCurrency } from '../../helperfuncs/OtherCalcs';
@@ -19,8 +17,6 @@ import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecor
 import { AccountSelector, AmountEntry, DateEntry, DescriptionEntry } from '../../components/Forms/Inputs';
 
 function AddEarning() {
-    const history = useHistory()
-
     const lastUsedAccount = useSelector(state => state.recentAccount.value)
     const [user, accounts, dispatch] = useRAccountsDispatch()
 
@@ -54,7 +50,7 @@ function AddEarning() {
         await reloadAccounts(user, dispatch)
 
         // returns the user to the main page
-        if (res) history.push({pathname:"/main"})
+        if (res) goBack()
     }
 
 
@@ -71,6 +67,13 @@ function AddEarning() {
             return () => input.removeEventListener("keypress", (key) => checkKey(key, children))
         }
     }, [input])
+
+
+    const buttonArgs = useReduxHistory()
+
+    const goBack = () => {
+        backbutton(buttonArgs)
+    }
 
     return (
         <>
@@ -91,7 +94,7 @@ function AddEarning() {
 
 
             <table className='twoButtons'><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/main"})}>Back</button></td>
+                <td><button onClick={goBack}>Back</button></td>
                 <td><button onClick={() => newEntry({account, category, currency, amount: amount * -1, date, description})}>Add</button></td>
             </tr></tbody></table>
         </div>

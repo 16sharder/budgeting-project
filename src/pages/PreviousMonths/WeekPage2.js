@@ -12,6 +12,8 @@ import {useHistory, useLocation} from "react-router-dom"
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useDispatch } from 'react-redux'
 import { toEuro, toDollar } from '../../redux/currencySlice';
+import { pushLink } from '../../redux/historySlice';
+import { backbutton, useReduxHistory } from '../../helperfuncs/ReduxFunctions';
 
 import {calcWeekDates} from "../../helperfuncs/DateCalculators"
 import {organizeDaysEntries, retrieveWeekEntries} from "../../helperfuncs/FetchFunctions"
@@ -32,14 +34,15 @@ function WeekPage2 () {
     const user = useSelector(state => state.user.value)
     const currency = useSelector(state => state.currency.value)
     
-    const {accountName, dates, month} = location.state
+    const {accountName, dates} = location.state
 
     const [message, setMessage] = useState("Loading...")
 
 
     // sends the user to a page displaying the desired entry's information
     const viewDetails = async (date, category) => {
-        history.push({pathname:"/view-details", state: {date, weekDates: dates, category, month, accountName}})
+        dispatch(pushLink({link: "/weekly-view2", state: location.state}))
+        history.push({pathname:"/view-details", state: {date, category}})
     }
     
 
@@ -73,6 +76,12 @@ function WeekPage2 () {
         history.push({pathname:"/weekly-view2", state: location.state})
         window.location.reload()
     }
+
+    const buttonArgs = useReduxHistory()
+
+    const goBack = () => {
+        backbutton(buttonArgs)
+    }
     
 
     return (
@@ -89,7 +98,7 @@ function WeekPage2 () {
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={toggleCurrency}>Change Currency</button></td>
                 <td></td>
-                <td><button onClick={() => history.push({pathname:"/previous-spendings", state: {month, accountName}})}>Return to monthly view</button></td>
+                <td><button onClick={goBack}>Return to monthly view</button></td>
             </tr></tbody></table>
 
             <p></p>

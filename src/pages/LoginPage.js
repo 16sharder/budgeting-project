@@ -10,7 +10,7 @@ import {useHistory} from "react-router-dom"
 import { useDispatch } from 'react-redux'
 import { login } from '../redux/userSlice';
 import { setAccounts } from '../redux/accountsSlice';
-import { setRecent } from '../redux/historySlice';
+import { resetLink, setRecent } from '../redux/historySlice';
 
 import BasicBorders, {BorderFlourish} from '../components/Styling/BorderDecoration';
 
@@ -37,6 +37,7 @@ function LoginPage () {
         dispatch(setAccounts(accounts))
 
         dispatch(setRecent(accounts[0].account))
+        dispatch(resetLink())
         
         history.push({pathname:"/main"})
     }

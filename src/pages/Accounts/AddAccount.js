@@ -3,17 +3,14 @@
 // Displays a form for the user to fill in all the data for their new account
 // Sends the user back to the Accounts Page
 
-import React, { useEffect } from 'react';
-import {useState} from "react"
-import {useHistory} from "react-router-dom"
+import React, { useEffect, useState } from 'react';
 
-import { reloadAccounts, useRAccountsDispatch } from '../../helperfuncs/UpdateFunctions';
+import { backbutton, reloadAccounts, useRAccountsDispatch, useReduxHistory } from '../../helperfuncs/ReduxFunctions';
 
 import BasicBorders, {BorderFlourish} from '../../components/Styling/BorderDecoration';
 import { AmountEntry } from '../../components/Forms/Inputs';
 
 function AddAccount() {
-    const history = useHistory()
 
     const [currentUser, accounts, dispatch] = useRAccountsDispatch()
 
@@ -60,7 +57,7 @@ function AddAccount() {
 
         if (response.status === 201){
             alert("Successfully created a new account")
-            history.push({pathname:"/accounts-view"})
+            goBack()
         } else{
             alert(`Create account failed. Status code = ${response.status}`)
         }
@@ -84,6 +81,12 @@ function AddAccount() {
         }
     }, [input])
 
+
+    const buttonArgs = useReduxHistory()
+
+    const goBack = () => {
+        backbutton(buttonArgs)
+    }
 
     return (
         <>
@@ -157,7 +160,7 @@ function AddAccount() {
             
 
             <table className='twoButtons'><tbody><tr>
-                <td><button onClick={() => history.push({pathname:"/accounts-view"})}>Back</button></td>
+                <td><button onClick={goBack}>Back</button></td>
                 <td></td>
                 <td><button onClick={() => addAccount({account, bank, user, user2, currency, amount})}>Add</button></td>
             </tr></tbody></table>

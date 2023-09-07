@@ -2,6 +2,8 @@ import React from 'react';
 import {useLocation} from "react-router-dom"
 
 import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useDispatch } from 'react-redux';
+import { pushLink } from '../../redux/historySlice';
 
 import { monthName, monthNumString } from '../../helperfuncs/DateCalculators';
 
@@ -10,8 +12,8 @@ import BasicBorders, {NoBorderFlourish} from '../../components/Styling/BorderDec
 import Navigation from '../../components/Styling/Navigation';
 
 function PreviousMonth () {
-
     const location = useLocation()
+    const dispatch = useDispatch()
 
     const accounts = useSelector(state => state.accounts.value)
 
@@ -24,6 +26,8 @@ function PreviousMonth () {
     let year = today.getFullYear()
     if (month > today.getMonth()) {year = year - 1}
 
+    const enableBackButton = () => dispatch(pushLink({link: "/previous-month", state: location.state}))
+
     return (
         <><div className='box'>
             <BasicBorders/>
@@ -34,9 +38,9 @@ function PreviousMonth () {
             <h2>Financials in {monthName(month)}</h2>
             <div>Click on a section to view more details</div>
             <br></br>
-            <NetTable data={["All Accounts", "All Accounts", monthNumStr, month, year]}/>
+            <NetTable data={["All Accounts", "All Accounts", monthNumStr, month, year, enableBackButton]}/>
             {accounts.map((account, index) => 
-            <NetTable data={[account.account, account.account, monthNumStr, month, year]} key={index}/>)}
+            <NetTable data={[account.account, account.account, monthNumStr, month, year, enableBackButton]} key={index}/>)}
 
             <p></p>
         </div></>

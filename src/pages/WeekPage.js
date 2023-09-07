@@ -12,6 +12,8 @@ import {useHistory, useLocation} from "react-router-dom"
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useDispatch } from 'react-redux'
 import { toEuro, toDollar } from '../redux/currencySlice';
+import { pushLink } from '../redux/historySlice';
+import { backbutton, useReduxHistory } from '../helperfuncs/ReduxFunctions';
 
 import {calcWeekDates} from "../helperfuncs/DateCalculators"
 import {organizeDaysEntries, retrieveWeekEntries} from "../helperfuncs/FetchFunctions"
@@ -39,7 +41,13 @@ function WeekPage () {
 
     // sends the user to a page displaying the desired entry's information
     const viewDetails = async (date, category) => {
-        history.push({pathname:"/view-details", state: {date, weekDates: dates, category}})
+        dispatch(pushLink({link: "/weekly-view", state: location.state}))
+        history.push({pathname:"/view-details", state: {date, category}})
+    }
+
+    const addEntry = () => {
+        dispatch(pushLink({link: "/weekly-view", state: location.state}))
+        history.push({pathname:"/add-entry"})
     }
     
 
@@ -73,7 +81,12 @@ function WeekPage () {
         history.push({pathname:"/weekly-view", state: location.state})
         window.location.reload()
     }
-    
+
+    const buttonArgs = useReduxHistory()
+
+    const goBack = () => {
+        backbutton(buttonArgs)
+    }
 
     return (
         <><div className='box'>
@@ -89,10 +102,10 @@ function WeekPage () {
             <table className="twoButtons"><tbody><tr>
                 <td><button onClick={toggleCurrency}>Change Currency</button></td>
                 <td></td>
-                <td><button onClick={() => history.push({pathname:"/add-entry"})}>Add New Entry</button></td>
+                <td><button onClick={addEntry}>Add New Entry</button></td>
             </tr></tbody></table>
 
-            <button onClick={() => history.push({pathname:"/main"})}>Return to monthly view</button>
+            <button onClick={goBack}>Return to monthly view</button>
             <p></p>
         </div></>
     )

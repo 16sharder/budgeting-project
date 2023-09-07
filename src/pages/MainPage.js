@@ -14,6 +14,7 @@ import {useHistory} from "react-router-dom"
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useDispatch } from 'react-redux'
 import { toEuro, toDollar } from '../redux/currencySlice';
+import { pushLink } from '../redux/historySlice';
 
 import { monthNumString } from '../helperfuncs/DateCalculators';
 
@@ -50,16 +51,20 @@ function MainPage () {
 
     // sends the user to a page displaying the desired week's information
     const viewWeek = async dates => {
+        enableBackButton()
         history.push({pathname:"/weekly-view", state: {dates}})
     }
 
     // either raises an error or sends the user to the add entry page
     const sendAddEntry = () => {
         if (accounts.length === 0) alert ("You must add a bank account before you can add a new entry. Please navigate to the accounts page.")
-        else history.push({pathname:"/add-entry"})
+        else {
+            enableBackButton()
+            history.push({pathname:"/add-entry"})
+        }
     }
 
-
+    const enableBackButton = () => dispatch(pushLink({link: "/main", state: {}}))
     
     return (
         <><div className='box'>
@@ -81,7 +86,7 @@ function MainPage () {
             </tr></tbody></table>
 
 
-            <NetTable data={["", "All Accounts", monthNumString(today.getMonth()), today.getMonth(), today.getFullYear()]}/>
+            <NetTable data={["", "All Accounts", monthNumString(today.getMonth()), today.getMonth(), today.getFullYear(), enableBackButton]}/>
 
 
 
